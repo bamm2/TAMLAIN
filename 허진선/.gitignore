@@ -1,0 +1,6 @@
+*.json
+*.cvs
+
+**/.ipynb_checkpoints
+**/.idea
+**/venv
