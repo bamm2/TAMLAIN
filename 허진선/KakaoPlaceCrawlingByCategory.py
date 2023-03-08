@@ -66,102 +66,92 @@ class PlaceInfoScraper:
 
 class PlaceListScraper:
     def __init__(self):
-        self.df = pd.DataFrame()
+        self.category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                              {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}]
         self.start_x = 126.10  # 왼쪽 아래 경도
         self.start_y = 33.10  # 왼쪽 아래 위도
-        self.next_x = 0.01  # 경도 이동 크기
-        self.next_y = 0.01  # 위도 이동 크기
-        self.num_x = 90  # 경도 총 이동 횟수
-        self.num_y = 50  # 위도 총 이동 횟수
-        self.research_size = 10
+        self.next_x = 0.1  # 경도 이동 크기
+        self.next_y = 0.1  # 위도 이동 크기
+        self.num_x = 9  # 경도 총 이동 횟수
+        self.num_y = 5  # 위도 총 이동 횟수
 
-    def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1):
+    def search_places_in_range(self, code, start_x, start_y, end_x, end_y):
         page_num = 1
         all_data_list = []  # 장소 리스트
         while 1:
-            url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
-            params = {'query': '제주특별자치도', 'page': page_num,
+            url = 'https://dapi.kakao.com/v2/local/search/category.json'
+            params = {'category_group_code': " ", 'page': page_num,
                       'rect': f'{start_x},{start_y},{end_x},{end_y}'}
             headers = {"Authorization": "KakaoAK 344aa8ae1b69c829e695e47c8a7beb1e"}
             resp = requests.get(url, params=params, headers=headers)
             search_count = resp.json()["meta"]["total_count"]
 
-            # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 100개 구역으로 나누어 재검색
+            # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 나누어 재검색
             if search_count > 45:
-                print("(", search_count, "=",  end=" ")
-                resize = self.research_size ** step
-                next_x = self.next_x / resize
-                next_y = self.next_y / resize
-                for i in range(0, self.research_size):
-                    end_x = start_x + next_x
-                    initial_start_y = start_y
-                    for j in range(0, self.research_size):
-                        end_y = initial_start_y + next_y
-                        each_data = self.search_places_in_range(start_x, initial_start_y, end_x, end_y, step+1)
-                        # print("+", len(each_data), end=" ")
-                        all_data_list.extend(each_data)
-                        initial_start_y = end_y
-                    start_x = end_x
-                print("=", len(all_data_list), ")", end=" ")
+                dividing_x = (start_x + end_x) / 2
+                dividing_y = (start_y + end_y) / 2
+                all_data_list.extend(
+                    self.search_places_in_range(code, start_x, start_y, dividing_x, dividing_y))  # 4등분 중 왼쪽 아래
+                all_data_list.extend(
+                    self.search_places_in_range(code, dividing_x, start_y, end_x, dividing_y))  # 4등분 중 오른쪽 아래
+                all_data_list.extend(
+                    self.search_places_in_range(code, start_x, dividing_y, dividing_x, end_y))  # 4등분 중 왼쪽 위
+                all_data_list.extend(
+                    self.search_places_in_range(code, dividing_x, dividing_y, end_x, end_y))  # 4등분 중 오른쪽 위
                 return all_data_list
 
             else:
                 if resp.json()["meta"]["is_end"]:
-                    # print("마지막 페이지")
                     all_data_list.extend(resp.json()["documents"])
                     return all_data_list
                 else:
-                    # print("탐색중")
                     page_num += 1
                     all_data_list.extend(resp.json()["documents"])
 
-    def get_place_list(self):
+    def get_place_list(self, category_idx):
+        code = self.category_list[category_idx]["code"]
         overlapped_result = []  # 장소 리스트
         for i in range(1, self.num_x + 1):  # 지도를 사각형으로 나누면서 데이터 받아옴
             end_x = self.start_x + self.next_x
             initial_start_y = self.start_y
             for j in range(1, self.num_y + 1):
                 end_y = initial_start_y + self.next_y
-                each_result = self.search_places_in_range(self.start_x, initial_start_y, end_x,
+                each_result = self.search_places_in_range(code, self.start_x, initial_start_y, end_x,
                                                           end_y)
                 overlapped_result.extend(each_result)
+                print(each_result)
                 initial_start_y = end_y
-                print(len(each_result), end=" ")
             self.start_x = end_x
-            print()
-            print(i, "/", self.num_x, " (" , len(overlapped_result), ")")  # 진행률 출력
+
+        place_list = list(
+            map(dict, OrderedDict.fromkeys(tuple(sorted(d.items())) for d in overlapped_result)))  # 중복값 제거
 
         x = []
         y = []
-        place_code = []
         place_name = []
         road_address = []
         place_url = []
-        category_code = []
         category_name = []
-        for place in overlapped_result:
+        for place in place_list:
             x.append(float(place["x"]))
             y.append(float(place["y"]))
             place_name.append(place["place_name"])
             road_address.append(place["road_address_name"])
             place_url.append(place["place_url"])
-            place_code.append(place['id'])
-            category_code.append(place["category_code"])
             category_name.append(place["category_name"])
 
-        ar = np.array([place_code, place_name, category_code, category_name, x, y, road_address, place_url]).T
-        df = pd.DataFrame(ar, columns=["place_code", "place_name", "category_code", "category_name", "x", "y", "road_address", "place_url"]);
-        df = df.drop_duplicates(['place_code'])
-        df = df.reset_index()
+        ar = np.array([place_name, category_name, x, y, road_address, place_url]).T
+        df = pd.DataFrame(ar, columns=["place_name", "category", "x", "y", "road_address", "place_url"]);
         return df
 
 
 if __name__ == "__main__":
     listScraper = PlaceListScraper()
-    place_df = listScraper.get_place_list()
-    filename = "전체.xlsx"
+    category_idx = 1
+    category_name = listScraper.category_list[category_idx]["name"]
+    place_df = listScraper.get_place_list(category_idx)
+    filename = "%s.xlsx" % category_name
     place_df.to_excel(filename, sheet_name='COUNTRIES')
-    place_df.to_pickle('jeju.pkl')
 
     # infoScraper = PlaceInfoScraper()
     # img_url = []

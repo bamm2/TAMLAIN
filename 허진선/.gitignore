@@ -1,5 +1,7 @@
 *.json
 *.cvs
+*.xlsx
+*.zip
 
 **/.ipynb_checkpoints
 **/.idea
