@@ -80,7 +80,7 @@ class PlaceListScraper:
         all_data_list = []  # 장소 리스트
         while 1:
             url = 'https://dapi.kakao.com/v2/local/search/category.json'
-            params = {'category_group_code': " ", 'page': page_num,
+            params = {'category_group_code': code, 'page': page_num,
                       'rect': f'{start_x},{start_y},{end_x},{end_y}'}
             headers = {"Authorization": "KakaoAK 344aa8ae1b69c829e695e47c8a7beb1e"}
             resp = requests.get(url, params=params, headers=headers)
@@ -123,25 +123,26 @@ class PlaceListScraper:
                 initial_start_y = end_y
             self.start_x = end_x
 
-        place_list = list(
-            map(dict, OrderedDict.fromkeys(tuple(sorted(d.items())) for d in overlapped_result)))  # 중복값 제거
-
         x = []
         y = []
+        place_code = []
         place_name = []
         road_address = []
         place_url = []
         category_name = []
-        for place in place_list:
+        for place in overlapped_result:
             x.append(float(place["x"]))
             y.append(float(place["y"]))
             place_name.append(place["place_name"])
             road_address.append(place["road_address_name"])
             place_url.append(place["place_url"])
+            place_code.append(place['id'])
             category_name.append(place["category_name"])
 
-        ar = np.array([place_name, category_name, x, y, road_address, place_url]).T
-        df = pd.DataFrame(ar, columns=["place_name", "category", "x", "y", "road_address", "place_url"]);
+        ar = np.array([place_code, place_name, category_name, x, y, road_address, place_url]).T
+        df = pd.DataFrame(ar, columns=["place_code", "place_name", "category", "x", "y", "road_address", "place_url"]);
+        df = df.drop_duplicates(['place_code'])
+        df = df.reset_index()
         return df
 
 
