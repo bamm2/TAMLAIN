@@ -64,22 +64,17 @@ class PlaceInfoScraper:
 
 
 class PlaceListScraper:
-    def __init__(self):
-        self.df = pd.DataFrame()
+    def __init__(self, n):
         # self.start_x = 126.10  # 왼쪽 아래 경도
         # self.start_y = 33.10  # 왼쪽 아래 위도
-        # self.next_x = 0.01  # 경도 이동 크기
-        # self.next_y = 0.01  # 위도 이동 크기
-        # self.num_x = 90  # 경도 총 이동 횟수
-        # self.num_y = 50  # 위도 총 이동 횟수
-        self.research_size = 10
 
-        self.start_x = 126.48660  # 왼쪽 아래 경도
-        self.start_y = 33.49063  # 왼쪽 아래 위도
-        self.next_x = 0.1  # 경도 이동 크기
-        self.next_y = 0.1  # 위도 이동 크기
-        self.num_x = 1  # 경도 총 이동 횟수
-        self.num_y = 1  # 위도 총 이동 횟수
+        self.next_x = 0.01  # 경도 이동 크기
+        self.next_y = 0.01  # 위도 이동 크기
+        self.start_x = 126.10 + (self.next_x * (n - 1))
+        self.start_y = 33.10
+        self.num_x = 10  # 경도 총 이동 횟수
+        self.num_y = 50  # 위도 총 이동 횟수
+        self.research_size = 10
 
     def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1, pre_search_count=0):
         if step > 5:
@@ -161,11 +156,15 @@ class PlaceListScraper:
 
 
 if __name__ == "__main__":
-    listScraper = PlaceListScraper()
+    # for n in range(1, 10):
+    #     listScraper = PlaceListScraper(n)
+    #     print(listScraper.start_x, listScraper.start_y)
+    n = 1 # 1~9 값으로 설정
+    listScraper = PlaceListScraper(n)
     place_df = listScraper.get_place_list()
-    filename = "전체.xlsx"
+    filename = f"전체({n}).xlsx"
     place_df.to_excel(filename, sheet_name='COUNTRIES')
-    place_df.to_pickle('jeju.pkl')
+    place_df.to_pickle(f'jeju({n}).pkl')
 
     # infoScraper = PlaceInfoScraper()
     # img_url = []

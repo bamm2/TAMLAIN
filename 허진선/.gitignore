@@ -2,6 +2,7 @@
 *.cvs
 *.xlsx
 *.zip
+*.pkl
 
 **/.ipynb_checkpoints
 **/.idea

@@ -66,37 +66,47 @@ class PlaceInfoScraper:
 class PlaceListScraper:
     def __init__(self):
         self.df = pd.DataFrame()
-        # self.start_x = 126.10  # 왼쪽 아래 경도
-        # self.start_y = 33.10  # 왼쪽 아래 위도
-        # self.next_x = 0.01  # 경도 이동 크기
-        # self.next_y = 0.01  # 위도 이동 크기
-        # self.num_x = 90  # 경도 총 이동 횟수
-        # self.num_y = 50  # 위도 총 이동 횟수
-        self.research_size = 10
+        # RecursionError가 발생하는 좌표
+        # self.start_x = 126.48660  # 왼쪽 아래 경도
+        # self.start_y = 33.49063  # 왼쪽 아래 위도
+        # self.next_x = 0.00001  # 경도 이동 크기
+        # self.next_y = 0.00001  # 위도 이동 크기
+        # self.num_x = 1  # 경도 총 이동 횟수
+        # self.num_y = 1  # 위도 총 이동 횟수
 
         self.start_x = 126.48660  # 왼쪽 아래 경도
         self.start_y = 33.49063  # 왼쪽 아래 위도
-        self.next_x = 0.1  # 경도 이동 크기
-        self.next_y = 0.1  # 위도 이동 크기
+        self.next_x = 0.00001  # 경도 이동 크기
+        self.next_y = 0.00001  # 위도 이동 크기
         self.num_x = 1  # 경도 총 이동 횟수
         self.num_y = 1  # 위도 총 이동 횟수
 
-    def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1, pre_search_count=0):
-        if step > 5:
-            return []
+        self.research_size = 10
+
+    def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1, pre_search_count=0, repeat_count=1):
         page_num = 1
         all_data_list = []  # 장소 리스트
         while 1:
             url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
-            params = {'query': '제주특별자치도', 'page': page_num ,
+            params = {'query': '제주특별자치도', 'page': page_num,
                       'rect': f'{start_x},{start_y},{end_x},{end_y}'}
-            headers = {"Authorization": "KakaoAK 27108d6e6d264aa1ede95e799b97a8c3"}
+            headers = {"Authorization": "KakaoAK 344aa8ae1b69c829e695e47c8a7beb1e"}
             resp = requests.get(url, params=params, headers=headers)
             search_count = resp.json()["meta"]["total_count"]
+            if search_count == pre_search_count: repeat_count = repeat_count+1
+            # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 100개 구역으로 나누어 재검색
 
-            if search_count > 45: # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 100개 구역으로 나누어 재검색
+            if search_count > 45:
+                if step > 1 and repeat_count > 2:
+                    if resp.json()["meta"]["is_end"]:
+                        all_data_list.extend(resp.json()["documents"])
+                        return all_data_list
+                    else:
+                        page_num += 1
+                        all_data_list.extend(resp.json()["documents"])
+                        continue
                 print(f"({search_count} =", end=" ")
-                resize = 1 / self.research_size ** step
+                resize = 1/self.research_size ** step
                 next_x = self.next_x * resize
                 next_y = self.next_y * resize
                 for i in range(0, self.research_size):
@@ -104,7 +114,7 @@ class PlaceListScraper:
                     initial_start_y = start_y
                     for j in range(0, self.research_size):
                         end_y = initial_start_y + next_y
-                        each_data = self.search_places_in_range(start_x, initial_start_y, end_x, end_y, step + 1, search_count)
+                        each_data = self.search_places_in_range(start_x, initial_start_y, end_x, end_y, step + 1, search_count, repeat_count)
                         all_data_list.extend(each_data)
                         initial_start_y = end_y
                     start_x = end_x

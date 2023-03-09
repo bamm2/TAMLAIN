@@ -9,7 +9,7 @@ def search_by_keyword(keyword):
     url = 'https://dapi.kakao.com/v2/local/search/keyword.json'
     params = {'query': keyword, 'page': 1,
               'rect': f'{start_x},{start_y},{end_x},{end_y}'}
-    headers = {"Authorization": "KakaoAK 344aa8ae1b69c829e695e47c8a7beb1e"}
+    headers = {"Authorization": "KakaoAK 27108d6e6d264aa1ede95e799b97a8c3"}
 
     places = requests.get(url, params=params, headers=headers).json()["documents"]
     total = requests.get(url, params=params, headers=headers).json()["meta"]["total_count"]
@@ -21,7 +21,7 @@ def search_by_category(category_index):
     url = 'https://dapi.kakao.com/v2/local/search/category.json'
     params = {'category_group_code': category_list[category_index]["code"], 'page': 1,
               'rect': f'{start_x},{start_y},{end_x},{end_y}'}
-    headers = {"Authorization": "KakaoAK 344aa8ae1b69c829e695e47c8a7beb1e"}
+    headers = {"Authorization": "KakaoAK 27108d6e6d264aa1ede95e799b97a8c3"}
 
     places = requests.get(url, params=params, headers=headers).json()["documents"]
     total = requests.get(url, params=params, headers=headers).json()["meta"]["total_count"]
