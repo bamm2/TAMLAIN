@@ -70,13 +70,13 @@ class PlaceListScraper:
 
         self.next_x = 0.01  # 경도 이동 크기
         self.next_y = 0.01  # 위도 이동 크기
-        self.start_x = 126.10 + (self.next_x * (n - 1))
-        self.start_y = 33.10
         self.num_x = 10  # 경도 총 이동 횟수
         self.num_y = 50  # 위도 총 이동 횟수
+        self.start_x = 126.10 + (self.next_x * self.num_x * (n - 1))
+        self.start_y = 33.10
         self.research_size = 10
 
-    def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1, pre_search_count=0):
+    def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1):
         if step > 5:
             return []
         page_num = 1
@@ -99,7 +99,7 @@ class PlaceListScraper:
                     initial_start_y = start_y
                     for j in range(0, self.research_size):
                         end_y = initial_start_y + next_y
-                        each_data = self.search_places_in_range(start_x, initial_start_y, end_x, end_y, step + 1, search_count)
+                        each_data = self.search_places_in_range(start_x, initial_start_y, end_x, end_y, step + 1)
                         all_data_list.extend(each_data)
                         initial_start_y = end_y
                     start_x = end_x
