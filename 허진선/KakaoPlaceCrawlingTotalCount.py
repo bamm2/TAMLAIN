@@ -30,7 +30,7 @@ def search_by_category(category_index):
 
 
 if __name__ == "__main__":
-    keyword = "레저"
+    keyword = "제주특별자치도"
     count = search_by_keyword(keyword)
 
     # category_index = 0
