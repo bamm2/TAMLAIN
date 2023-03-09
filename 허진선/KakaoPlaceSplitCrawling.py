@@ -1,95 +1,80 @@
 import pandas as pd
 import numpy as np
 import requests
-<<<<<<< HEAD
-# from collections import OrderedDict
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.common.by import By
-# from bs4 import BeautifulSoup
-# from time import sleep
-=======
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from time import sleep
->>>>>>> 31b66595dd2d3e0b1967f15a79bf086b1f8f79a1
 
 
-# class PlaceInfoScraper:
-#     def __init__(self):
-#         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-#         self.driver.implicitly_wait(5)
-#
-#     def get_place_info(self, address):  # 각 장소별 리뷰 데이터를 크롤링
-#         self.driver.get(address)
-#         sleep(2)
-#
-#         # 장소 이미지 찾기
-#         html = self.driver.page_source
-#         soup = BeautifulSoup(html, "html.parser")
-#         place_info = soup.select_one("div.cont_essential")
-#         review_count = place_info.select_one("a.link_evaluation > span.color_g")
-#         if review_count is not None:
-#             review_count = int(review_count.text[1:-5])
-#         img_url = place_info.select_one("a.link_present > span.bg_present")
-#         if img_url is not None:
-#             img_url = img_url["style"][24:-2]
-#
-#         # 리뷰 찾기
-#         while review_count is not None and review_count > 3:  # 후기 더보기 버튼 끝까지 클릭
-#             button = self.driver.find_element(By.CLASS_NAME, 'link_more')
-#             sleep(0.5)
-#             btn_text = button.text
-#
-#             if btn_text == "메뉴 더보기" or btn_text == "코스 더보기":
-#                 button = self.driver.find_elements(By.CLASS_NAME, 'link_more')
-#                 sleep(0.5)
-#                 btn_text = button[1].text
-#                 button = button[1]
-#
-#             if btn_text == "후기 접기":
-#                 break
-#             button.click()
-#
-#         html = self.driver.page_source
-#         soup = BeautifulSoup(html, "html.parser")
-#         reviews = soup.select("ul.list_evaluation > li")
-#         written_at = []
-#         star_rate = []
-#
-#         for review in reviews:
-#             time_write = review.select_one("div.unit_info > span.time_write").text
-#             rating_per = review.select_one("div.star_info > div > span > span")["style"][6:-2]
-#             user_rating = int(int(rating_per) / 20)  # 유저별 별점
-#             written_at.append(time_write)
-#             star_rate.append(user_rating)
-#
-#         ar = np.array([star_rate, written_at]).T
-#         df = pd.DataFrame(ar, columns=["star_rate", "written_at"]);
-#         return img_url, df
+class PlaceInfoScraper:
+    def __init__(self):
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.driver.implicitly_wait(5)
+
+    def get_place_info(self, address):  # 각 장소별 리뷰 데이터를 크롤링
+        self.driver.get(address)
+        sleep(2)
+
+        # 장소 이미지 찾기
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, "html.parser")
+        place_info = soup.select_one("div.cont_essential")
+        review_count = place_info.select_one("a.link_evaluation > span.color_g")
+        if review_count is not None:
+            review_count = int(review_count.text[1:-5])
+        img_url = place_info.select_one("a.link_present > span.bg_present")
+        if img_url is not None:
+            img_url = img_url["style"][24:-2]
+
+        # 리뷰 찾기
+        while review_count is not None and review_count > 3:  # 후기 더보기 버튼 끝까지 클릭
+            button = self.driver.find_element(By.CLASS_NAME, 'link_more')
+            sleep(0.5)
+            btn_text = button.text
+
+            if btn_text == "메뉴 더보기" or btn_text == "코스 더보기":
+                button = self.driver.find_elements(By.CLASS_NAME, 'link_more')
+                sleep(0.5)
+                btn_text = button[1].text
+                button = button[1]
+
+            if btn_text == "후기 접기":
+                break
+            button.click()
+
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, "html.parser")
+        reviews = soup.select("ul.list_evaluation > li")
+        written_at = []
+        star_rate = []
+
+        for review in reviews:
+            time_write = review.select_one("div.unit_info > span.time_write").text
+            rating_per = review.select_one("div.star_info > div > span > span")["style"][6:-2]
+            user_rating = int(int(rating_per) / 20)  # 유저별 별점
+            written_at.append(time_write)
+            star_rate.append(user_rating)
+
+        ar = np.array([star_rate, written_at]).T
+        df = pd.DataFrame(ar, columns=["star_rate", "written_at"]);
+        return img_url, df
 
 
 class PlaceListScraper:
-    def __init__(self):
-        self.df = pd.DataFrame()
+    def __init__(self, n):
         # self.start_x = 126.10  # 왼쪽 아래 경도
         # self.start_y = 33.10  # 왼쪽 아래 위도
-        # self.next_x = 0.01  # 경도 이동 크기
-        # self.next_y = 0.01  # 위도 이동 크기
-        # self.num_x = 90  # 경도 총 이동 횟수
-        # self.num_y = 50  # 위도 총 이동 횟수
-        self.research_size = 10
 
-        self.start_x = 126.48660  # 왼쪽 아래 경도
-        self.start_y = 33.49063  # 왼쪽 아래 위도
-        self.next_x = 0.1  # 경도 이동 크기
-        self.next_y = 0.1  # 위도 이동 크기
-        self.num_x = 1  # 경도 총 이동 횟수
-        self.num_y = 1  # 위도 총 이동 횟수
+        self.next_x = 0.01  # 경도 이동 크기
+        self.next_y = 0.01  # 위도 이동 크기
+        self.start_x = 126.10 + (self.next_x * (n - 1))
+        self.start_y = 33.10
+        self.num_x = 10  # 경도 총 이동 횟수
+        self.num_y = 50  # 위도 총 이동 횟수
+        self.research_size = 10
 
     def search_places_in_range(self, start_x, start_y, end_x, end_y, step=1, pre_search_count=0):
         if step > 5:
@@ -104,22 +89,11 @@ class PlaceListScraper:
             resp = requests.get(url, params=params, headers=headers)
             search_count = resp.json()["meta"]["total_count"]
 
-<<<<<<< HEAD
-            # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 100개 구역으로 나누어 재검색
-            if search_count > 45:
-
-                # 확인
-                print(f"({search_count} =",  end=" ")
-                resize = self.research_size ** step
-                next_x = self.next_x / resize
-                next_y = self.next_y / resize
-=======
             if search_count > 45: # 카카오맵의 검색 결과는 최대 45개만 제공되므로 45개가 넘는 경우 범위를 100개 구역으로 나누어 재검색
                 print(f"({search_count} =", end=" ")
                 resize = 1 / self.research_size ** step
                 next_x = self.next_x * resize
                 next_y = self.next_y * resize
->>>>>>> 31b66595dd2d3e0b1967f15a79bf086b1f8f79a1
                 for i in range(0, self.research_size):
                     end_x = start_x + next_x
                     initial_start_y = start_y
@@ -129,20 +103,7 @@ class PlaceListScraper:
                         all_data_list.extend(each_data)
                         initial_start_y = end_y
                     start_x = end_x
-<<<<<<< HEAD
-                # 확인
-                print(f"{len(all_data_list)}", end=" ")
-
-                if search_count > len(all_data_list) :
-                    print("resp.json : ")
-                    print(resp.json()["documents"])
-                    print("=======================================")
-                    print("all_data_list 입니다ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
-                    print(all_data_list)
-
-=======
                 print(f"{len(all_data_list)})", end=" ")
->>>>>>> 31b66595dd2d3e0b1967f15a79bf086b1f8f79a1
                 return all_data_list
 
             else:
@@ -195,11 +156,15 @@ class PlaceListScraper:
 
 
 if __name__ == "__main__":
-    listScraper = PlaceListScraper()
+    # for n in range(1, 10):
+    #     listScraper = PlaceListScraper(n)
+    #     print(listScraper.start_x, listScraper.start_y)
+    n = 1 # 1~9 값으로 설정
+    listScraper = PlaceListScraper(n)
     place_df = listScraper.get_place_list()
-    filename = "전체.xlsx"
+    filename = f"전체({n}).xlsx"
     place_df.to_excel(filename, sheet_name='COUNTRIES')
-    place_df.to_pickle('jeju.pkl')
+    place_df.to_pickle(f'jeju({n}).pkl')
 
     # infoScraper = PlaceInfoScraper()
     # img_url = []
