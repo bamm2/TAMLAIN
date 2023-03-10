@@ -11,3 +11,7 @@
 ```
 - 제주 관광 데이터 수집 코드 완성(KakaoPlaceSplitCrawling.py)
 ```
+# 23.03.10.
+```
+- 제주 관광 데이터 수집 및 정제(KakaoPlaceSplitCrawling.py)
+```

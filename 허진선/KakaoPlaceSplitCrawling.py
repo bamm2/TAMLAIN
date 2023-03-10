@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # for n in range(1, 10):
     #     listScraper = PlaceListScraper(n)
     #     print(listScraper.start_x, listScraper.start_y)
-    n = 1 # 1~9 값으로 설정
+    n = 4 # 1~9 값으로 설정
     listScraper = PlaceListScraper(n)
     place_df = listScraper.get_place_list()
     filename = f"전체({n}).xlsx"
