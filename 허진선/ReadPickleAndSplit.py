@@ -107,7 +107,7 @@ class PlaceInfoScraper:
 
 
 if __name__ == "__main__":
-    n = 1 # 1~5
+    n = 2 # 1~5
     scraper = PlaceInfoScraper()
     category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
                      {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
