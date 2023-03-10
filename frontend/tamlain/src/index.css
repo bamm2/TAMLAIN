@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #3a3a3a;
+  background-color: #fff;
   /* 스크롤바 없에기 */
   -ms-overflow-style: none;
 }
