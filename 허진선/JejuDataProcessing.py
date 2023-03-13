@@ -129,6 +129,9 @@ class PlaceInfoScraper:
 
 if __name__ == "__main__":
     n = 3  # 1~5
+    scraper = PlaceInfoScraper()
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
 
     for i in range(0, 13):
         crawling_review_count(n, i*1000, (i+1)*1000)
