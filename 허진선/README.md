@@ -15,3 +15,7 @@
 ```
 - 제주 관광 데이터 수집 및 정제(KakaoPlaceSplitCrawling.py)
 ```
+# 23.03.13.
+```
+- 제주 관광 데이터 분석 & 유효성 검증(JejuDataProcessing.py)
+```
