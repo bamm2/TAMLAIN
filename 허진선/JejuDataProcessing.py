@@ -1,11 +1,10 @@
 import pandas as pd
-import numpy as np
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup
 from time import sleep
+import sys
 
 
 def remove_duplicate_place_code(df):
@@ -84,6 +83,28 @@ def drop_by_category():
     df.to_excel("기타(필터링).xlsx")
 
 
+def crawling_review_count(n, start, end):
+    print(start, end)
+    scraper = PlaceInfoScraper()
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+
+    comment_count_list = []
+    review_count_list = []
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}.pkl')[start:end].drop(columns='index')
+    for idx, ser in df.iterrows():
+        url = ser["place_url"]
+        comment_count, review_count = scraper.get_place_info(url)
+        comment_count_list.append(comment_count)
+        review_count_list.append(review_count)
+        print(f"{idx + 1}/{len(df)} ({comment_count}, {review_count})     {url}")
+    df["comment_count"] = comment_count_list
+    df["review_count"] = review_count_list
+
+    df.to_pickle(f'{category_list[n - 1]["name"]}_new_{start}.pkl')
+    df.to_excel(f'{category_list[n - 1]["name"]}_new_{start}.xlsx')
+
+
 class PlaceInfoScraper:
     def __init__(self):
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -107,22 +128,24 @@ class PlaceInfoScraper:
 
 
 if __name__ == "__main__":
-    n = 1 # 1~5
-    scraper = PlaceInfoScraper()
-    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
-                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+    n = 3  # 1~5
 
-    comment_count_list = []
-    review_count_list = []
-    df = pd.read_pickle(f'{category_list[n-1]["name"]}.pkl').drop(columns='index')
-    for idx, ser in df.iterrows():
-        url = ser["place_url"]
-        comment_count, review_count = scraper.get_place_info(url)
-        comment_count_list.append(comment_count)
-        review_count_list.append(review_count)
-        print(f"{idx+1}/{len(df)} ({comment_count}, {review_count})     {url}")
-    df["comment_count"] = comment_count_list
-    df["review_count"] = review_count_list
+    for i in range(0, 13):
+        crawling_review_count(n, i*1000, (i+1)*1000)
+    # crawling_review_count(n, 13000, (i + 1) * 1000)
 
-    df.to_pickle(f'{category_list[n-1]["name"]}_new.pkl')
-    df.to_excel(f'{category_list[n-1]["name"]}_new.xlsx')
+    # category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+    #                  {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+    #
+    # df1 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_1.pkl')
+    # print(df1)
+    # df2 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_2.pkl')
+    # df3 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_3.pkl')
+    #
+    #
+    # df1 = pd.concat([df1, df2], ignore_index=True)
+    # df1 = pd.concat([df1, df3], ignore_index=True)
+    #
+    # df1.to_pickle(f'{category_list[n - 1]["name"]}_new.pkl')
+    # df1.to_excel(f'{category_list[n - 1]["name"]}_new.xlsx')
+
