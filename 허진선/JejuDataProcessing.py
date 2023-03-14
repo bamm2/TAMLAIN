@@ -82,7 +82,6 @@ def drop_by_category():
     df.to_pickle('기타(필터링).pkl')
     df.to_excel("기타(필터링).xlsx")
 
-
 def crawling_review_count(n, start, end):
     print(start, end)
     scraper = PlaceInfoScraper()
@@ -91,7 +90,7 @@ def crawling_review_count(n, start, end):
 
     comment_count_list = []
     review_count_list = []
-    df = pd.read_pickle(f'{category_list[n - 1]["name"]}.pkl')[start:end].drop(columns='index')
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}.pkl')[start:end]
     for idx, ser in df.iterrows():
         url = ser["place_url"]
         comment_count, review_count = scraper.get_place_info(url)
@@ -104,6 +103,74 @@ def crawling_review_count(n, start, end):
     df.to_pickle(f'{category_list[n - 1]["name"]}_new_{start}.pkl')
     df.to_excel(f'{category_list[n - 1]["name"]}_new_{start}.xlsx')
 
+def concat_pickle(n):
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_0.pkl')
+    if 'index' in df.columns:
+        df = df.drop(columns='index')
+
+    for i in range(1, 5):
+        data = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_{i * 1000}.pkl')
+        if 'index' in data.columns:
+            data = data.drop(columns='index')
+        df = pd.concat([df, data], ignore_index=True)
+
+    df.to_pickle(f'{category_list[n - 1]["name"]}_new.pkl')
+    df.to_excel(f'{category_list[n - 1]["name"]}_new.xlsx')
+
+def drop_row_by_review_count(n):
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}_new.pkl')
+    if 'index' in df.columns:
+        df = df.drop(columns='index')
+    new_df = pd.DataFrame()
+    sum_list = []
+    for idx, ser in df.iterrows():
+        sum = int(ser["comment_count"]) + int(ser["review_count"])
+        if sum == 0:
+            continue
+        sum_list.append(sum)
+        new_df = pd.concat([new_df, ser.to_frame().T], ignore_index=True)
+    new_df["sum"] = sum_list
+
+    new_df.to_pickle(f'{category_list[n - 1]["name"]}_nonezero.pkl')
+    new_df.to_excel(f'{category_list[n - 1]["name"]}_nonezero.xlsx')
+
+
+def select_row_by_review_count(n):
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}_nonezero.pkl')
+    if 'index' in df.columns:
+        df = df.drop(columns='index')
+    new_df = pd.DataFrame()
+    for idx, ser in df.iterrows():
+        if int(ser["sum"]) < 10:
+            continue
+        new_df = pd.concat([new_df, ser.to_frame().T], ignore_index=True)
+
+    new_df.to_pickle(f'{category_list[n - 1]["name"]}_select.pkl')
+    new_df.to_excel(f'{category_list[n - 1]["name"]}_select.xlsx')
+
+
+def count_place_by_category(n):
+    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
+                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
+    df = pd.read_pickle(f'{category_list[n - 1]["name"]}_select.pkl')
+    category_count_dic = {}
+    for idx, ser in df.iterrows():
+        category_name = ser["category_name"]
+        if category_name in category_count_dic.keys():
+            category_count_dic[category_name] = category_count_dic[category_name] + 1
+        else:
+            category_count_dic[category_name] = 1
+    for key, value in category_count_dic.items():
+        print(key, value)
 
 class PlaceInfoScraper:
     def __init__(self):
@@ -128,27 +195,4 @@ class PlaceInfoScraper:
 
 
 if __name__ == "__main__":
-    n = 3  # 1~5
-    scraper = PlaceInfoScraper()
-    category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
-                     {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
-
-    for i in range(0, 13):
-        crawling_review_count(n, i*1000, (i+1)*1000)
-    # crawling_review_count(n, 13000, (i + 1) * 1000)
-
-    # category_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
-    #                  {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
-    #
-    # df1 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_1.pkl')
-    # print(df1)
-    # df2 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_2.pkl')
-    # df3 = pd.read_pickle(f'{category_list[n - 1]["name"]}_new_3.pkl')
-    #
-    #
-    # df1 = pd.concat([df1, df2], ignore_index=True)
-    # df1 = pd.concat([df1, df3], ignore_index=True)
-    #
-    # df1.to_pickle(f'{category_list[n - 1]["name"]}_new.pkl')
-    # df1.to_excel(f'{category_list[n - 1]["name"]}_new.xlsx')
-
+    count_place_by_category(2)
