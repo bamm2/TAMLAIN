@@ -40,3 +40,13 @@
 5. 무중단 배포 진행(x)
 6. entity 설계 (o)
 ```
+
+# 23.03.14.
+```
+1. 서버 배포 ssl 적용 완료
+2. 젠킨스 설정 ( △ )
+	실패 
+		1. Warning: CredentialId "gitlab-jenkins" could not be found.
+		2. docker file이 없어서 ?
+3. 카카오 로그인 하는 중..
+```
