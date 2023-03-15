@@ -23,3 +23,7 @@
 ```
 - 제주 관광 데이터 분석 & 유효성 검증(JejuDataProcessing.py)
 ```
+# 23.03.15.
+```
+- 제주 관광 데이터 카테고리 분류(JejuDataProcessing.py)
+```
