@@ -27,3 +27,8 @@
 ```
 - 제주 관광 데이터 카테고리 분류(JejuDataProcessing.py)
 ```
+# 23.03.15.
+```
+- 제주 관광 데이터 카테고리 분류(JejuDataProcessing.py)
+- 중간 발표 준비
+```

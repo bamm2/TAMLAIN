@@ -178,7 +178,7 @@ def count_place_by_category(n):
         print(key, value)
 
 
-def separation_by_categorie_name():
+def separation_by_category_name():
     file_list = [{"name": "문화시설", "code": "CT1"}, {"name": "관광명소", "code": "AT4"},
                  {"name": "음식점", "code": "FD6"}, {"name": "카페", "code": "CE7"}, {"name": "기타(필터링)", "code": ""}]
 
@@ -217,7 +217,8 @@ def separation_by_categorie_name():
                            "과학": ["과학관", "천문대"]}
     subcategory_list[3] = {"골프": ["골프장"],
                            "해양": ["낚시", "낚시터", "수영,수상", "수상스포츠", "스킨스쿠버"],
-                           "스카이": []}
+                           "스카이": [],
+                           "자전거/싸이클": ["스포츠,레저", "자전거,싸이클", "자전거대여소"]}
     subcategory_list[4] = {"박물관": ["박물관", "테디베어뮤지엄"],
                            "미술관": ["미술관"],
                            "전시관": ["전시관"],
@@ -237,65 +238,67 @@ def separation_by_categorie_name():
 
     exception_category_name = ["음식점", "관광,명소", "생태보존,서식지"]
     subcategory_by_place_name = {"이령": "한식",
-                              "와인도시": "양식",
-                              "광명대창집 신서귀포점": "한식",
-                              "텐더로인": "일식",
-                              "싱싱식당": "중식",
-                              "생이기정": "도보",
-                              "도구리알": "해변",
-                              "월령코지": "해변",
-                              "산양큰엉곶": "도보",
-                              "저지예술인마을": "도보",
-                              "한담해안산책로": "도보",
-                              "제주탐나라공화국": "테마체험",
-                              "화순곶자왈": "도보",
-                              "박수기정": "해변",
-                              "어음리억새군락지": "도보",
-                              "돌염전": "해변",
-                              "갯깍주상절리대": "해변",
-                              "진곶내 (폐쇄)": "해변",
-                              "선녀코지": "해변",
-                              "한라산영실": "산",
-                              "메밀꽃밭": "도보",
-                              "법환어촌계해녀체험센터": "테마체험",
-                              "속골": "자연생태",
-                              "돔베낭골": "해변",
-                              "황우지선녀탕": "해변",
-                              "동너븐덕": "해변",
-                              "소남머리": "공원",
-                              "정모시쉼터": "도보",
-                              "소천지": "자연생태",
-                              "생이돌": "해변",
-                              "닭머르": "해변",
-                              "김경숙해바라기농장": "관광농원",
-                              "조천만세동산": "공원",
-                              "관곶": "해변",
-                              "서우봉 일몰지": "해변",
-                              "위미리수국길": "도보",
-                              "태웃개": "해변",
-                              "올티스": "테마체험",
-                              "동복관광체험어장": "테마체험",
-                              "유채꽃프라자": "도보",
-                              "가시리 국산화 풍력발전단지": "도보",
-                              "제주동백마을": "도보",
-                              "김녕금속공예벽화마을": "도보",
-                              "청굴물": "해변",
-                              "송당무끈모루": "도보",
-                              "오저여": "해변",
-                              "짱구네 유채꽃밭": "도보",
-                              "유채꽃밭": "도보",
-                              "비양도망대": "해변",
-                              "청수곶자왈" : "도보",
-                              "납읍난대림지역" :"도보",
-                              "1100고지습지" : "산",
-                              "제주농업생태원" : "테마체험",
-                              "하도리철새도래지" : "해변"
-                              }
+                                 "와인도시": "양식",
+                                 "광명대창집 신서귀포점": "한식",
+                                 "텐더로인": "일식",
+                                 "싱싱식당": "중식",
+                                 "생이기정": "도보",
+                                 "도구리알": "해변",
+                                 "월령코지": "해변",
+                                 "산양큰엉곶": "도보",
+                                 "저지예술인마을": "도보",
+                                 "한담해안산책로": "도보",
+                                 "제주탐나라공화국": "테마체험",
+                                 "화순곶자왈": "도보",
+                                 "박수기정": "해변",
+                                 "어음리억새군락지": "도보",
+                                 "돌염전": "해변",
+                                 "갯깍주상절리대": "해변",
+                                 "진곶내 (폐쇄)": "해변",
+                                 "선녀코지": "해변",
+                                 "한라산영실": "산",
+                                 "메밀꽃밭": "도보",
+                                 "법환어촌계해녀체험센터": "테마체험",
+                                 "속골": "자연생태",
+                                 "돔베낭골": "해변",
+                                 "황우지선녀탕": "해변",
+                                 "동너븐덕": "해변",
+                                 "소남머리": "공원",
+                                 "정모시쉼터": "도보",
+                                 "소천지": "자연생태",
+                                 "생이돌": "해변",
+                                 "닭머르": "해변",
+                                 "김경숙해바라기농장": "관광농원",
+                                 "조천만세동산": "공원",
+                                 "관곶": "해변",
+                                 "서우봉 일몰지": "해변",
+                                 "위미리수국길": "도보",
+                                 "태웃개": "해변",
+                                 "올티스": "테마체험",
+                                 "동복관광체험어장": "테마체험",
+                                 "유채꽃프라자": "도보",
+                                 "가시리 국산화 풍력발전단지": "도보",
+                                 "제주동백마을": "도보",
+                                 "김녕금속공예벽화마을": "도보",
+                                 "청굴물": "해변",
+                                 "송당무끈모루": "도보",
+                                 "오저여": "해변",
+                                 "짱구네 유채꽃밭": "도보",
+                                 "유채꽃밭": "도보",
+                                 "비양도망대": "해변",
+                                 "청수곶자왈": "도보",
+                                 "납읍난대림지역": "도보",
+                                 "1100고지습지": "산",
+                                 "제주농업생태원": "테마체험",
+                                 "하도리철새도래지": "해변"
+                                 }
     category_col = []
     subcategory_col = []
     # 5개 파일 읽어오면서 반복
     for i in range(0, len(file_list)):
         temp_df = pd.read_pickle(f'{file_list[i]["name"]}_select.pkl')
+        print(file_list[i]["name"])
+        print(temp_df)
         # 각 파일의 row 마다 category_name을 이용하여 카테고리 분류
         for idx, ser in temp_df.iterrows():
             find = False
@@ -330,6 +333,26 @@ def separation_by_categorie_name():
     drop_ser.to_pickle(f'drop_subcategory.pkl')
     drop_ser.to_excel(f'drop_subcategory.xlsx')
 
+    print(df)
+    print(temp_df)
+
+
+def count_place_by_subcategory():
+    df = pd.read_pickle('전체_subcategory.pkl')
+    count = {"맛집": {}, "카페/간식": {}, "액티비티/체험": {}, "스포츠/레저": {}, "전시": {}, "휴양": {}}
+    for idx, ser in df.iterrows():
+        category = ser["category"]
+        subcategory = ser["subcategory"]
+        if subcategory in count[category].keys():
+            count[category][subcategory] = count[category][subcategory] + 1
+        else:
+            count[category][subcategory] = 1
+    for category in count.keys():
+        print(category)
+        sub_dic = dict(sorted(count[category].items()))
+        for key, value in sub_dic.items():
+            print(key, value)
+        print()
 
 class PlaceInfoScraper:
     def __init__(self):
@@ -353,5 +376,6 @@ class PlaceInfoScraper:
         return comment_count, review_count
 
 
+
 if __name__ == "__main__":
-    separation_by_categorie_name()
+    count_place_by_subcategory()
