@@ -1,0 +1,12 @@
+import styled from "styled-components";
+
+export const FilterBox = styled.div`
+  position: absolute;
+  z-index: 1;
+  background-color: gray;
+  opacity: 0.9;
+  width: 1520px;
+  height: 1005px;
+  top: 0%;
+  left: 0%;
+`;
