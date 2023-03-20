@@ -1,6 +1,8 @@
+import numpy as np
 import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from time import sleep
@@ -208,7 +210,6 @@ def separation_by_category_name():
         "이색카페": ["테마카페", "갤러리카페", "고양이카페", "만화카페", "놀숲", "벌툰", "북카페", "애견카페", "키즈카페"]}
     subcategory_list[2] = {"공연": [],
                            "승마": ["승마", "승마장"],
-                           "캠핑": [],
                            "관광농원": ["관광농원"],
                            "동물원": ["동물원", "실내동물원"],
                            "유원지/민속촌": ["유원지", "민속촌"],
@@ -217,24 +218,24 @@ def separation_by_category_name():
                            "과학": ["과학관", "천문대"]}
     subcategory_list[3] = {"골프": ["골프장"],
                            "해양": ["낚시", "낚시터", "수영,수상", "수상스포츠", "스킨스쿠버"],
-                           "스카이": [],
                            "자전거/싸이클": ["스포츠,레저", "자전거,싸이클", "자전거대여소"]}
     subcategory_list[4] = {"박물관": ["박물관", "테디베어뮤지엄"],
                            "미술관": ["미술관"],
                            "전시관": ["전시관"],
-                           "문화재": [],
+                           "문화유적": ["문화유적", "릉,묘,총", "봉수대", "사당,제단", "산성,성곽", "생가,고택", "유적지", "탑,비석", "향교,서당", "종교유적지"],
                            "기념관": ["기념관"],
-                           "공연장/연극극장": ["공연장,연극극장"]}
-    subcategory_list[5] = {"산": ["산", "산봉우리"],
+                           "공연/연극": ["공연장,연극극장"]}
+    subcategory_list[5] = {"산": ["산", "산봉우리", "등산로"],
                            "오름": ["오름"],
-                           "해변": ["해수욕장,해변", "방조제"],
-                           "자연생태": ["저수지", "호수", "계곡", "동굴", "바위", "연못", "폭포", "하천"],
-                           "도보": ["도보여행", "제주올레길", "숲", "둘레길", "자연휴양림", "고개", "등산로", "촬영지"],
+                           "올레길": ["제주올레길"],
+                           "해변": ["해수욕장,해변", "방조제", "바위"],
+                           "자연생태": ["저수지", "호수", "계곡", "동굴", "연못", "폭포", "하천"],
+                           "도보": ["도보여행", "숲", "둘레길", "자연휴양림", "고개", "촬영지"],
                            "수목원/식물원": ["수목원,식물원"],
                            "섬": ["섬"],
                            "공원": ["도립공원", "국립공원"],
                            "온천": ["온천"],
-                           "문화유적": ["문화유적", "릉,묘,총", "봉수대", "사당,제단", "산성,성곽", "생가,고택", "유적지", "탑,비석", "향교,서당", "종교유적지"]}
+                           }
 
     exception_category_name = ["음식점", "관광,명소", "생태보존,서식지"]
     subcategory_by_place_name = {"이령": "한식",
@@ -297,8 +298,8 @@ def separation_by_category_name():
     # 5개 파일 읽어오면서 반복
     for i in range(0, len(file_list)):
         temp_df = pd.read_pickle(f'{file_list[i]["name"]}_select.pkl')
-        print(file_list[i]["name"])
-        print(temp_df)
+        # print(file_list[i]["name"])
+        # print(temp_df)
         # 각 파일의 row 마다 category_name을 이용하여 카테고리 분류
         for idx, ser in temp_df.iterrows():
             find = False
@@ -354,6 +355,7 @@ def count_place_by_subcategory():
             print(key, value)
         print()
 
+
 class PlaceInfoScraper:
     def __init__(self):
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
@@ -375,7 +377,119 @@ class PlaceInfoScraper:
                 review_count = int(ele["data-cnt"])
         return comment_count, review_count
 
+    def get_place_data(self, address):
+        result = {}
+        self.driver.get(address)
+        sleep(2)
+
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, "html.parser")
+
+        # 유효한 주소인지 확인
+        if soup.select_one("div.wrap_mapdetail.no_result") is not None:
+            return None
+
+        # 장소 이미지 url
+        img_url = soup.select_one("div.details_present > a.link_present > span.bg_present")
+        if img_url is not None:
+            img_url = img_url["style"][24:-2]
+
+        # 태그
+        link_tag = soup.select("div.location_detail > div.txt_tag > span.tag_g > a.link_tag")
+        ar = []
+        if link_tag is not None:
+            for tag in link_tag:
+                ar.append(tag.text[1:])
+        tag_df = pd.DataFrame(ar, columns=["tag"])
+
+        # 리뷰
+        location_evaluation = soup.select("div.location_evaluation > a.link_evaluation")
+        comment_count = 0
+        for ele in location_evaluation:
+            if ele["data-target"] == "comment":
+                comment_count = int(ele["data-cnt"])
+
+        while comment_count > 3:
+            button = self.driver.find_element(By.CLASS_NAME, 'link_more')
+            sleep(0.5)
+            btn_text = button.text
+
+            if btn_text == "메뉴 더보기" or btn_text == "코스 더보기":
+                button = self.driver.find_elements(By.CLASS_NAME, 'link_more')
+                sleep(0.5)
+                btn_text = button[1].text
+                button = button[1]
+
+            if btn_text == "후기 접기":
+                break
+            button.click()
+
+        html = self.driver.page_source
+        soup = BeautifulSoup(html, "html.parser")
+        reviews = soup.select("ul.list_evaluation > li")
+        created_date = []
+        score = []
+        for review in reviews:
+            time_write = review.select_one("div.unit_info > span.time_write").text
+            rating_per = review.select_one("div.star_info > div > span > span")["style"][6:-2]
+            user_rating = int(int(rating_per) / 20)  # 유저별 별점
+            created_date.append(time_write)
+            score.append(user_rating)
+
+        ar = np.array([score, created_date]).T
+        review_df = pd.DataFrame(ar, columns=["score", "created_date"])
+
+        result["img_url"] = img_url
+        result["tag"] = tag_df
+        result["review"] = review_df
+
+        # print(result)
+        return result
 
 
 if __name__ == "__main__":
-    count_place_by_subcategory()
+    scraper = PlaceInfoScraper()
+    df_file = pd.read_pickle('전체_subcategory.pkl')
+    # for x in range(0, 1):
+    #     df = df_file[523:524]
+    #     i = "temp"
+    for i in range(5, 88):
+        df = df_file[i*100:(i+1)*100]
+        info = pd.DataFrame()
+        tag = pd.DataFrame(columns=["place_code", "tag"])
+        review = pd.DataFrame(columns=["place_code", "score", "created_date"])
+        img_url = []
+        tag_count = []
+
+        for idx, ser in df.iterrows():
+            url = ser["place_url"]
+            code = ser["place_code"]
+            data = scraper.get_place_data(url)
+            if data is None:
+                continue
+
+            # 태그
+            data["tag"]["place_code"] = code
+            tag = pd.concat([tag, data["tag"]], ignore_index=True)
+            tag_count.append(data["tag"].shape[0])
+            # 리뷰
+            data["review"]["place_code"] = code
+            review = pd.concat([review, data["review"]], ignore_index=True)
+            # 이미지
+            info = pd.concat([info, ser.to_frame().T], ignore_index=True)
+            img_url.append(data["img_url"])
+            print(
+                f"[{i}] {idx}/{df_file.shape[0]} {url} 리뷰 {data['review'].shape[0]}개, 태그 {data['tag'].shape[0]}개, 이미지 {data['img_url']}")
+
+        info["img_url"] = img_url
+        info["tag_count"] = tag_count
+
+        # print(info)
+        info.to_pickle(f'전체_info_{i}.pkl')
+        info.to_excel(f'전체_info_{i}.xlsx')
+        # print(tag)
+        tag.to_pickle(f'전체_tag_{i}.pkl')
+        tag.to_excel(f'전체_tag_{i}.xlsx')
+        # print(review)
+        review.to_pickle(f'전체_review_{i}.pkl')
+        review.to_excel(f'전체_review_{i}.xlsx')
