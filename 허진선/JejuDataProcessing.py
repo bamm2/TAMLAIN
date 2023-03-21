@@ -453,7 +453,7 @@ if __name__ == "__main__":
     # for x in range(0, 1):
     #     df = df_file[523:524]
     #     i = "temp"
-    for i in range(5, 88):
+    for i in range(18, 88):
         df = df_file[i*100:(i+1)*100]
         info = pd.DataFrame()
         tag = pd.DataFrame(columns=["place_code", "tag"])
