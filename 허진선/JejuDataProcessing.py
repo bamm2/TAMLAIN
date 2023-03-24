@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from time import sleep
+import os.path
+from os import path
 import keyboard
 import sys
 
@@ -878,19 +880,44 @@ def convert_csv():
     df.to_csv("jeju_place.csv", encoding='utf-8-sig')
 
 
-def find_place_pk():
+def make_course():
     df = pd.read_pickle(f'jeju_place.pkl')
+    pk_list = []
+    name_list = []
     while True:
         name = input("장소 이름 : ")
-        place_pk = df.index[df['name'] == name].tolist()
+        if name == "ㅈ": # 저장
+            print("★ [ 완료 ] ★")
+            print("_".join(pk_list))
+            print("_".join(name_list))
+            break
+        place_pk = df.index[df['name'].str.contains(name)].tolist()
         if len(place_pk) == 1:
             place_pk = place_pk[0] + 1
-            print(place_pk)
+            pk_list.append(str(place_pk))
+            name_list.append(df.loc[place_pk-1]['name'])
+            print(f"{df.loc[place_pk - 1]['name']} 삽입")
+        elif len(place_pk) > 1:
+            for idx, val in enumerate(place_pk):
+                print(f"    [{idx}] {df.loc[val]['name']} ({val})")
+            select_idx = int(input("선택 인텍스 : "))
+            place_pk = place_pk[select_idx]+1
+            pk_list.append(str(place_pk))
+            name_list.append(df.loc[place_pk - 1]['name'])
+            print(f"{df.loc[place_pk - 1]['name']} 삽입")
         else:
-            print("--------------다시 입력하세요")
-            continue
-
+            print("NO!!!!! 없음")
+            place_pk = int(input("장소 Index 입력 또는 -1 : ")) + 1
+            if place_pk == 0: continue
+            pk_list.append(str(place_pk))
+            name_list.append(df.loc[place_pk - 1]['name'])
+            print(f"{df.loc[place_pk - 1]['name']} 삽입")
 
 
 if __name__ == "__main__":
-    find_place_pk()
+    make_course()
+
+# 나를 위로하는 애월_139_8505_165_힐링
+# 여행의 끝에서_377_291_3902_7486_사진
+# 겨울에 가면 더 좋은_419_329_3902_56_일출별자리
+# 동쪽으로 오세요_321_295_394
