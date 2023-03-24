@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from time import sleep
+import keyboard
 import sys
 
 
@@ -112,8 +113,9 @@ class PlaceInfoScraper:
             road_address = ' '.join(road_address.split())
             if "(우)" in road_address:
                 idx = road_address.index("(우)")
-                road_address = road_address[:idx-1]
+                road_address = road_address[:idx - 1]
         return road_address
+
 
 def remove_duplicate_place_code(df):
     df = df.drop_duplicates(['place_code'])
@@ -814,52 +816,54 @@ def save_road_address():
     df.to_pickle(f'전체_info_new_notnull.pkl')
     df.to_excel(f'전체_info_new_notnull.xlsx')
 
+
 def convert_csv():
     df = pd.read_pickle(f'전체_info_new_notnull.pkl')
     df = df.drop(columns=['place_code', "category_code", "category_name", "review_count", "sum", "tag_count"])
-    df.rename(columns={'place_name': 'name', "x" : "longitude",  "y":"latitude", "comment_count" : "review_count", "comment_sum" : "review_score_sum"}, inplace=True)
+    df.rename(columns={'place_name': 'name', "x": "longitude", "y": "latitude", "comment_count": "review_count",
+                       "comment_sum": "review_score_sum"}, inplace=True)
 
     # category, subcategory
     subcategory_list = [
-    "분식",
-    "뷔페/레스토랑",
-    "샤브샤브",
-    "술집",
-    "아시아",
-    "양식",
-    "일식",
-    "중식",
-    "치킨",
-    "퓨전",
-    "한식",
-    "디저트",
-    "이색카페",
-    "카페",
-    "과학",
-    "관광농원",
-    "동물원",
-    "승마",
-    "유원지/민속촌",
-    "테마체험",
-    "골프",
-    "자전거/싸이클",
-    "해양",
-    "공연/연극",
-    "기념관",
-    "문화유적",
-    "미술관",
-    "박물관",
-    "전시관",
-    "공원",
-    "도보",
-    "산",
-    "섬",
-    "수목원/식물원",
-    "오름",
-    "온천",
-    "올레길",
-    "자연생태",
-    "해변"
+        "분식",
+        "뷔페/레스토랑",
+        "샤브샤브",
+        "술집",
+        "아시아",
+        "양식",
+        "일식",
+        "중식",
+        "치킨",
+        "퓨전",
+        "한식",
+        "디저트",
+        "이색카페",
+        "카페",
+        "과학",
+        "관광농원",
+        "동물원",
+        "승마",
+        "유원지/민속촌",
+        "테마체험",
+        "골프",
+        "자전거/싸이클",
+        "해양",
+        "공연/연극",
+        "기념관",
+        "문화유적",
+        "미술관",
+        "박물관",
+        "전시관",
+        "공원",
+        "도보",
+        "산",
+        "섬",
+        "수목원/식물원",
+        "오름",
+        "온천",
+        "올레길",
+        "자연생태",
+        "해변"
     ]
     category_pk = []
     for idx, ser in df.iterrows():
@@ -874,5 +878,19 @@ def convert_csv():
     df.to_csv("jeju_place.csv", encoding='utf-8-sig')
 
 
+def find_place_pk():
+    df = pd.read_pickle(f'jeju_place.pkl')
+    while True:
+        name = input("장소 이름 : ")
+        place_pk = df.index[df['name'] == name].tolist()
+        if len(place_pk) == 1:
+            place_pk = place_pk[0] + 1
+            print(place_pk)
+        else:
+            print("--------------다시 입력하세요")
+            continue
+
+
+
 if __name__ == "__main__":
-    convert_csv()
+    find_place_pk()
