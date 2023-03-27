@@ -874,10 +874,11 @@ def convert_csv():
         category_pk.append(pk)
     df = df.drop(columns=['category', "subcategory"])
     df["category_id"] = category_pk
+    df["id"] = [i for i in range (1, len(df)+1)]
 
     df.to_pickle(f'jeju_place.pkl')
     df.to_excel(f'jeju_place.xlsx')
-    df.to_csv("jeju_place.csv", encoding='utf-8-sig')
+    df.to_csv("jeju_place.csv", encoding='utf-8-sig', index=False)
 
 
 def make_course():
@@ -915,7 +916,7 @@ def make_course():
 
 
 if __name__ == "__main__":
-    make_course()
+    convert_csv()
 
 # 나를 위로하는 애월_139_8505_165_힐링
 # 여행의 끝에서_377_291_3902_7486_사진
