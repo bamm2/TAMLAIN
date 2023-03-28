@@ -5,63 +5,6 @@ from surprise import KNNBaseline, Dataset, Reader, SVDpp, SVD
 from tabulate import tabulate
 
 
-age = ["10대", "20대", "30대", "40대"]
-thema = ["매운음식투어", "전통음식투어", "건강한음식투어"]
-category = ["한식", "양식", "일식", "중식", "양식", "아시아"]
-
-
-def make_data():
-    survey_df = pd.DataFrame(columns=["나이", "카테고리"])
-    place_df = pd.DataFrame(columns=["장소id", "카테고리"])
-    course_df = pd.DataFrame(columns=["일정id", "장소id"])
-
-    # 40개 일정 정보 생성
-    for s in range(len(age)):
-        # for t in range (len(thema)) :
-        for c in range(len(category)):
-            survey_df.loc[len(survey_df)] = [s, c]
-        for c in range(len(category)):
-            survey_df.loc[len(survey_df)] = [s, c]
-    # step = [7, 12, 5, 11]
-    step = [7]
-    for s in range(len(step)):
-        for i in range(0, len(survey_df), step[s]):
-            survey_df.drop(i, inplace=True)
-        survey_df.reset_index(drop=True, inplace=True)
-
-    survey_df["일정id"] = [i for i in range(len(survey_df))]
-    print(survey_df)
-
-    # 20개 장소 생성
-    idx = 0
-    for i in range(20):
-        if idx == 6: idx = 0
-        place_df.loc[len(place_df)] = [i, idx]
-        idx += 1
-    print(place_df)
-
-    # 각 일정 코스 생성
-    for i in range(len(survey_df)):
-        place_list = []
-        for j in range(randint(2, 4)):  # 방문 장소 2~4개
-            place_id = randint(0, len(place_df) - 1)
-            if place_id in place_list:
-                j -= 1
-                continue
-            place_list.append(place_id)
-            course_df.loc[len(course_df)] = [i, place_id]
-    course_df["평점"] = [randint(1, 5) for i in range(len(course_df))]
-    print(course_df)
-
-    survey_df.to_pickle('survey.pkl')
-    place_df.to_pickle('place.pkl')
-    course_df.to_pickle('course.pkl')
-
-    survey_df.to_excel('survey.xlsx')
-    place_df.to_excel('place.xlsx')
-    course_df.to_excel('course.xlsx')
-
-
 def test_model(model, testset):
     predictions = model.test(testset)
     pred_df = pd.DataFrame(predictions)  # uid, iid, r_ui(실제 평점) ,est(예측평점)
@@ -123,10 +66,13 @@ def hybrid_and_popularity(course_id, df):  # search_id : 장소 추천을 받기
     svdpp = SVDpp()
     svdpp.fit(trainset)
 
-    user_items = df[(df['일정id'] == course_id)].copy()
+    user_items = df[(df['일정id'] == course_id)].copy() # 어떤 일정의 장소들만 추출
+    # 코스(course_id)의  장소(x)의 예측 평점, 각 장소들의 예측 평점을 계산
     user_items['est'] = user_items['장소id'].apply(
-        lambda x: 0.8 * svdpp.predict(course_id, x).est + 0.2 * knnbaseline_item.predict(course_id, x).est)
-    user_items = user_items.sort_values(by='est', ascending=False)
+        # lambda x: 0.8 * svdpp.predict(course_id, x).est + 0.2 * knnbaseline_item.predict(course_id, x).est)
+        lambda x: knnbaseline_item.predict(course_id, x).est)
+
+    # user_items = user_items.sort_values(by='est', ascending=False)
     print(tabulate(user_items, headers='keys', tablefmt='psql'))
 
     # Popularity 모델 (category별 popularity)
@@ -140,20 +86,24 @@ def hybrid_and_popularity(course_id, df):  # search_id : 장소 추천을 받기
 
 
 if __name__ == '__main__':
-    survey = pd.read_pickle('survey.pkl')
-    place = pd.read_pickle('place.pkl')
-    course = pd.read_pickle('course.pkl')
+    survey = pd.read_pickle('survey.pkl').drop(columns='카테고리') # 나이
+    place = pd.read_pickle('place.pkl') # 카테고리
+    course = pd.read_pickle('course.pkl') # 장소, 평점
 
+    # 테이블 하나로 합치기
+    df = pd.merge(left=course, right=survey, how="inner", on="일정id")
+    df = pd.merge(left=df, right=place, how="inner", on="장소id")
+    print(tabulate(df, headers='keys', tablefmt='psql'))
     # print(course.isna().sum())
     # print(course['평점'].value_counts())
 
     reader = Reader(rating_scale=(1, 5))
-    trainset = Dataset.load_from_df(course[['일정id', '장소id', '평점']][:-5], reader)  # user id, item id and ratings
+    trainset = Dataset.load_from_df(df[['일정id', '장소id', '평점']][:-5], reader)  # user id, item id and ratings
     trainset = trainset.construct_trainset(trainset.raw_ratings)
-    testset = Dataset.load_from_df(course[['일정id', '장소id', '평점']][-5:], reader)  # user id, item id and ratings
+    testset = Dataset.load_from_df(df[['일정id', '장소id', '평점']][-5:], reader)  # user id, item id and ratings
     testset = testset.construct_testset(testset.raw_ratings)
 
     # CBF(trainset, testset)
     # CF(trainset, testset)
 
-    hybrid_and_popularity(1, course)
+    hybrid_and_popularity(0, df)
