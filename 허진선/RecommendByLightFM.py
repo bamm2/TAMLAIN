@@ -6,6 +6,8 @@ from lightfm.data import Dataset
 from lightfm.cross_validation import random_train_test_split
 from lightfm.evaluation import precision_at_k, auc_score
 from tabulate import tabulate
+import os
+
 
 age = ["10대", "20대", "30대", "40대"]
 thema = ["매운음식투어", "전통음식투어", "건강한음식투어"]
@@ -64,7 +66,7 @@ def make_data():
     course_df.to_excel('course.xlsx')
 
 
-def recommendation_ver1():
+def recommendation():
     # https://towardsdatascience.com/build-a-machine-learning-recommender-72be2a8f96ed
     # https://www.kaggle.com/code/parthplc/interview-building-recommendation-system-lightfm
     # https://gitee.com/fruitwater/recommenders/blob/master/examples/02_model_hybrid/lightfm_deep_dive.ipynb
@@ -95,8 +97,8 @@ def recommendation_ver1():
         (course['일정id'][i], course['장소id'][i]) for i in range(len(course)))
     print([(course['일정id'][i], course['장소id'][i]) for i in range(len(course))])
 
-    print(repr(interactions))
-    print(interactions.toarray())
+    # print(repr(interactions))
+    # print(interactions.toarray())
 
     # build the item_features and user_features
     # return objects of type sparse.coo_matrix as required by LightFM
@@ -105,22 +107,22 @@ def recommendation_ver1():
 
     '''[2] Specifying the Model'''
     # specify the model with the WARP loss function
-    model = LightFM()
+    model = LightFM(loss="warp")
 
     '''[3] Training the Model'''
     # training, test = random_train_test_split(interactions, test_percentage=0.1, random_state=1)
-    model.fit(interactions=interactions, epochs=2, item_features=item_features, user_features=user_features)
-
+    model.fit(interactions=interactions, epochs=1, item_features=item_features, user_features=user_features)
+    print("dfgdfgsfgsdfgsfdgsdgsfgdsd")
     '''[4] Making predictions using the Model'''
     user_id = len(course)
     new_user_feature = dataset.build_user_features((user_id, [0]))
     scores = model.predict(user_ids=user_id, item_ids=np.arange(num_items), item_features=item_features, user_features=new_user_feature)
-    # labels = np.array(course['장소id'].unique())
-    # scores = model.predict(user_ids=user_id, item_ids=np.arange(num_items), item_features=item_features,
-    #                        user_features=user_features)
-    # top_items_for_user = labels[np.argsort(-scores)]
-    # for x in top_items_for_user:
-    #     print("     %s" % x)
+    labels = np.array(course['장소id'].unique())
+    scores = model.predict(user_ids=user_id, item_ids=np.arange(num_items), item_features=item_features,
+                           user_features=user_features)
+    top_items_for_user = labels[np.argsort(-scores)]
+    for x in top_items_for_user:
+        print("     %s" % x)
 
     # # 예측 결과 확인
     # item_id = 0
@@ -149,76 +151,7 @@ def recommendation_ver1():
     #
     # print(tabulate(best_items, headers='keys', tablefmt='psql'))
 
-
-def recommendation_ver2():
-    survey = pd.read_pickle('survey.pkl')
-    place = pd.read_pickle('place.pkl')
-    course = pd.read_pickle('course.pkl')
-    print(f"-----설문({len(survey)})")
-    print(survey.head())
-    print(f"-----장소({len(place)})")
-    print(place.head())
-    print(f"-----코스({len(course)})")
-    print(course.head())
-    print("-----------------------------------------------------------------")
-    # 장소 id 리스트
-    # place_counts = course["장소id"].value_counts()
-
-    dataset = Dataset()
-    dataset.fit((course['일정id']), (course['장소id']))
-    dataset.fit_partial(items=(place['장소id']),
-                        item_features=(place['카테고리']))
-    # dataset.fit_partial(items=(place['장소id']),
-    #                     item_features=(place['평점']))
-    dataset.fit_partial(users=(survey['일정id']),
-                        user_features=(survey['나이']))
-
-    (interactions, weights) = dataset.build_interactions(
-        (course['일정id'][i], course['장소id'][i]) for i in range(len(course)))
-
-    item_features = dataset.build_item_features(((place['장소id'][i], [place['카테고리'][i]]) for i in range(len(place))))
-    user_features = dataset.build_user_features(((survey['일정id'][i], [survey['나이'][i]])
-                                                 for i in range(len(survey))))
-
-    training, test = random_train_test_split(interactions, test_percentage=0, random_state=0)
-    # print(repr(test))
-    # print(test.toarray())
-
-    model = LightFM()
-    model.fit(interactions=training, epochs=3, item_features=item_features, user_features=user_features)
-
-    # test_precision = precision_at_k(model, test, item_features=item_features, user_features=user_features, k=5).mean()
-    # train_auc = auc_score(model, test, item_features=item_features, user_features=user_features).mean()
-    # print("test precision: ", test_precision)
-    # print("test AUC: ", train_auc)
-
-    # 예측 결과 확인
-    item_id = 0
-    num_search_items = 5
-
-    item_biases, item_embeddings = model.get_item_representations(features=item_features)
-    # print(len(item_embeddings)) # 모든 장소 20개에 대해 임베딩
-
-    scores = item_embeddings.dot(item_embeddings[item_id])  # (10000, )
-    item_norms = np.linalg.norm(item_embeddings, axis=1)  # (10000, )
-    item_norms[item_norms == 0] = 1e-10
-    scores /= item_norms
-    best = np.argpartition(scores, -num_search_items)[-num_search_items:]
-    similar_item_id_and_scores = sorted(zip(best, scores[best] / item_norms[item_id]),
-                                        key=lambda x: -x[1])
-    print(similar_item_id_and_scores)
-
-    best_items = pd.DataFrame(columns=['장소id', '카테고리'])
-    for similar_item_id, score in similar_item_id_and_scores:
-        place_id = similar_item_id
-        category_id = place[place['장소id'] == place_id].values[0][1]
-
-        row = pd.Series([place_id, category_id], index=best_items.columns)
-        best_items = pd.concat([best_items, row.to_frame().T], ignore_index=True)
-
-    print(best_items)
-
-
 if __name__ == '__main__':
+    os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
     # make_data()
-    recommendation_ver1()
+    recommendation()
