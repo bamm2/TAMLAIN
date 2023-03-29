@@ -31,6 +31,8 @@ export const BackBtn = styled.img`
 `;
 
 export const RegistBtn = styled.button`
+  margin-top: 10px;
+  margin-left: 81%;
   width: 130px;
   height: 40px;
   background-color: #32b64f;
@@ -39,4 +41,16 @@ export const RegistBtn = styled.button`
   font-weight: bold;
   font-size: 15px;
   border-radius: 10px;
+`;
+
+export const Div = styled.div`
+  float: left;
+  width: 20%;
+  height: 350px;
+  background-color: #f9f9f9;
+  overflow: auto;
+  position: relative;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;

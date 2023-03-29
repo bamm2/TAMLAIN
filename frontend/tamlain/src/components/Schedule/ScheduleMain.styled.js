@@ -25,8 +25,8 @@ export const BackGroundFilter = styled.div`
 
 export const DayBtn = styled.div`
   position: absolute;
-  z-index: 5;
-  top: 46.5%;
+  z-index: 4;
+  top: 44%;
   width: 70px;
   height: 30px;
   border-radius: 30px;
@@ -66,7 +66,7 @@ export const DayBtn = styled.div`
 export const BackBtn = styled.img`
   position: absolute;
   z-index: 5;
-  top: 24%;
+  top: 23%;
   left: 25%;
   width: 20px;
   height: 30px;

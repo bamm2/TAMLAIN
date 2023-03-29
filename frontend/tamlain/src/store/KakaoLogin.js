@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialLoginState = {
   code: "",
+  isAuthenticated: false,
+  loginToggle: false,
 };
 
 const loginSlice = createSlice({
@@ -10,6 +12,15 @@ const loginSlice = createSlice({
   reducers: {
     kakaoLogin(state, action) {
       state.code = action.payload;
+    },
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+    toggleLogin(state) {
+      state.loginToggle = !state.loginToggle;
     },
   },
 });

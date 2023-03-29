@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
+import ScheduleCarousel from "./ScheduleCarousel";
+import ModalRegist from "../../UI/Modal/ModalRegist";
 
 const { kakao } = window;
 const ScheduleMap = () => {
@@ -217,30 +219,22 @@ const ScheduleMap = () => {
     }
     return true;
   };
-
+  const [modaltest2, setModaltest2] = useState(false);
   const registSchedule = () => {
-    window.location.reload();
+    setModaltest2((modaltest2) => !modaltest2);
   };
 
   return (
     <div style={{ marginTop: "15%" }}>
-      <div style={{ marginBottom: "20px", marginRight: "15px" }}>
+      <div style={{ marginBottom: "20px", left: "95%" }}>
         <S.RegistBtn onClick={registSchedule}>등록하기</S.RegistBtn>
+        {modaltest2 && <ModalRegist></ModalRegist>}
       </div>
       <div
         id="map"
         style={{ float: "left", width: "80%", height: "350px" }}
       ></div>
-      <div
-        style={{
-          float: "left",
-          width: "20%",
-          height: "350px",
-          backgroundColor: "#F9F9F9",
-          overflow: "auto",
-          position: "relative",
-        }}
-      >
+      <S.Div>
         <div
           style={{
             width: "3px",
@@ -259,7 +253,7 @@ const ScheduleMap = () => {
             marginBottom: "5px",
           }}
         ></div>
-      </div>
+      </S.Div>
       <Link to={`/scheduleMain/search/${idx}`}>
         <S.SearchBtn>
           <S.SearchIcon
@@ -285,6 +279,7 @@ const ScheduleMap = () => {
           </button>
         </div>
       ))}
+      <ScheduleCarousel />
     </div>
   );
 };

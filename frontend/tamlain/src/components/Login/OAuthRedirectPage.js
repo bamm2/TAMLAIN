@@ -7,6 +7,7 @@ const OAuthRedirectPage = () => {
   const backUri = process.env.REACT_APP_SERVER_URI;
 
   const code = new URL(window.location.href).searchParams.get("code");
+  console.log(code);
   useEffect(() => {
     const loadData = async () => {
       await axios({

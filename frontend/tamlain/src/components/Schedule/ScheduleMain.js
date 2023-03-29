@@ -1,6 +1,7 @@
 import * as S from "./ScheduleMain.styled";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Modal from "../../UI/Modal/Modal";
 
 const ScheduleMain = () => {
   var idx = window.location.href.substring(
@@ -17,9 +18,10 @@ const ScheduleMain = () => {
   ];
   const [day, setDay] = useState(dayArr);
 
-  // useEffect(() => {
-  //   window.location.reload();
-  // }, [navigate]);
+  const [modaltest, setModaltest] = useState(false);
+  const ModalTest = () => {
+    setModaltest((modaltest) => !modaltest);
+  };
 
   useEffect(() => {
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -37,12 +39,17 @@ const ScheduleMain = () => {
       </S.BackGround>
 
       <div>
-        <Link to={`/scheduleMain/${idx}`}>
-          <S.BackBtn
-            src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
-            alt="뒤로가기"
-          />
-        </Link>
+        <S.BackBtn
+          src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
+          alt="뒤로가기"
+          onClick={ModalTest}
+        />
+        {modaltest && (
+          <Modal
+            name="정말 일정 등록을 그만하시겠습니까?"
+            name2="(작성중인 일정은 저장되지 않습니다.)"
+          ></Modal>
+        )}
       </div>
       {day.map((item) => (
         <div key={item.id} style={{ float: "left" }}>

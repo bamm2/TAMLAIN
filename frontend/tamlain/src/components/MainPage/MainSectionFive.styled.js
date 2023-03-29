@@ -1,0 +1,31 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
+  height: 30vh;
+  background: #faa15a;
+  position: relative;
+`;
+
+export const Button = styled.button`
+  position: absolute;
+
+  color: #ffffff;
+  width: 320px;
+  height: 70px;
+  box-shadow: 0 0 0 3px #ffffff;
+  border-radius: 20px;
+  border: none;
+  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0);
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 70px 0 0 220px;
+  cursor: pointer;
+
+  :hover {
+    background-color: #e3dede;
+    transition: 0.5s;
+    color: #727272;
+  }
+`;

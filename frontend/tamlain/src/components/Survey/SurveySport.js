@@ -30,7 +30,7 @@ const SurveySport = () => {
         <img
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
-          style={{ marginRight: "50px" }}
+          style={{ marginLeft: "190px" }}
         />
       </Link>
       <S.Sport>
