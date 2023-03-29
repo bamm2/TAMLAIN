@@ -16,9 +16,10 @@ import java.util.List;
 @Api(value = "일정 내역 API", tags = {"History"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/history")
+@RequestMapping("/history")
 public class HisoryController {
     private final HistoryService historyService;
+
     @ApiOperation(value = "일정 내역 조회", notes = "마이페이지에서 나의 일정 내역 조회하기")
     @GetMapping("/{userId}")
     public ResponseEntity<?> getScheduleHistory(@PathVariable("userId") int userId) {

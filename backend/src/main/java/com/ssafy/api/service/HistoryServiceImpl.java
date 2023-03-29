@@ -34,7 +34,7 @@ public class HistoryServiceImpl implements HistoryService {
             ScheduleHistoryRes scheduleHistoryRes = ScheduleHistoryRes.builder()
                     .scheduleId(schedule.getId())
                     .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
-                    .nickName(schedule.getUser().getNickName())
+                    .nickName(schedule.getUser().getUserProfile().getNickName())
                     .name(schedule.getName())
                     .startDate(schedule.getSurvey().getStartDate())
                     .endDate(schedule.getSurvey().getEndDate())
