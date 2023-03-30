@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-import loginReducer from "./login";
+import loginReducer from "./KakaoLogin";
 
 const store = configureStore({
   reducer: {
