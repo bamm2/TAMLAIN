@@ -2,6 +2,9 @@ import * as S from "./ScheduleMain.styled";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Modal from "../../UI/Modal/Modal";
+import ModalRegist from "../../UI/Modal/ModalRegist";
+import ScheduleMap from "./ScheduleMap";
+import { useCallback } from "react";
 
 const ScheduleMain = () => {
   var idx = window.location.href.substring(
@@ -18,9 +21,17 @@ const ScheduleMain = () => {
   ];
   const [day, setDay] = useState(dayArr);
 
-  const [modaltest, setModaltest] = useState(false);
-  const ModalTest = () => {
-    setModaltest((modaltest) => !modaltest);
+  //  exit 모달
+  const [modal, setModal] = useState(false);
+  const ModalHandler = () => {
+    setModal((modal) => !modal);
+  };
+
+  // regist 모달
+  const [showModal, setShowModal] = useState(false);
+
+  const RegistModalHandler = () => {
+    setShowModal((showModal) => !showModal);
   };
 
   useEffect(() => {
@@ -32,19 +43,25 @@ const ScheduleMain = () => {
   const movepage = (num) => {
     window.location.href = `http://localhost:3000/scheduleMain/${num}`;
   };
+
+  // useEffect({
+  //   if(modal)
+
+  // }, [modal,showModal]);
+  console.log(modal);
   return (
     <div>
       <S.BackGround>
         <S.BackGroundFilter />
       </S.BackGround>
-
+      {/* {showModal && <ModalRegist></ModalRegist>} */}
       <div>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
-          onClick={ModalTest}
+          onClick={ModalHandler}
         />
-        {modaltest && (
+        {modal && (
           <Modal
             name="정말 일정 등록을 그만하시겠습니까?"
             name2="(작성중인 일정은 저장되지 않습니다.)"
@@ -66,6 +83,8 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
+      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      {showModal && <ModalRegist></ModalRegist>}
       <Outlet />
     </div>
   );

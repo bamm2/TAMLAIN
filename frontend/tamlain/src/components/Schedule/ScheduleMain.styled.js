@@ -65,11 +65,29 @@ export const DayBtn = styled.div`
 
 export const BackBtn = styled.img`
   position: absolute;
-  z-index: 5;
-  top: 23%;
+  z-index: 4;
+  top: 19%;
   left: 25%;
   width: 20px;
   height: 30px;
   margin-top: 7.5%;
   margin-left: 25px;
+  cursor: pointer;
+`;
+
+export const RegistBtn = styled.button`
+  position: absolute;
+  z-index: 10;
+  margin-top: 6.4%;
+  margin-left: 65%;
+  top: 30%;
+  width: 140px;
+  height: 40px;
+  background-color: #32b64f;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 10px;
+  cursor: pointer;
 `;

@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const Modal = styled.div`
   display: block;
-  position: absolute;
-  z-index: 999;
+  position: fixed;
+  z-index: 15;
   width: 300px;
   height: 530px;
   border-radius: 15px;
@@ -13,7 +13,7 @@ export const Modal = styled.div`
   transition: color 0s 0.1s;
   text-align: center;
   color: #fc872a;
-  top: 20%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 `;
@@ -66,6 +66,7 @@ export const Img = styled.img`
   height: 100%;
   background-color: red;
   border-radius: 50px;
+  z-index: 15;
 `;
 
 export const Text = styled.div`
@@ -73,6 +74,7 @@ export const Text = styled.div`
   height: 20px;
   margin-top: 3%;
   text-align: center;
+  z-index: 15;
 `;
 
 export const InputBox = styled.input`
@@ -82,6 +84,7 @@ export const InputBox = styled.input`
   width: 80%;
   padding: 0.6em 0.6em;
   box-shadow: 0 0 0 1px #fc872a;
+  z-index: 15;
 
   :focus {
     outline: 1px solid #fc872a;
@@ -95,4 +98,5 @@ export const InputTextCount = styled.div`
   margin-top: 5px;
   height: 2%;
   font-size: 12px;
+  z-index: 15;
 `;

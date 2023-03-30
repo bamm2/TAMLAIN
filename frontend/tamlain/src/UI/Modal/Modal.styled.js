@@ -1,12 +1,20 @@
 import styled from "styled-components";
 
+export const Contatiner = styled.div`
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+  background-color: gray;
+`;
+
 export const Modal = styled.div`
   display: block;
-  position: absolute;
+  position: fixed;
   z-index: 15;
   width: 300px;
   height: 200px;
-  // border: 2px solid #d8a3ff;
   border-radius: 15px;
   color: #000000;
   overflow: hidden;
@@ -18,6 +26,7 @@ export const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+
 export const ModalInfo = styled.div`
   padding-top: 15%;
   // font-weight: bold;
@@ -38,8 +47,8 @@ export const ModalButton = styled.button`
 
 export const CloseButton = styled.div`
   float: right;
-  margin-right: 5px;
-  margin-top: 3px;
+  margin-right: 7px;
+  margin-top: 5px;
   color: gray;
   cursor: pointer;
 `;

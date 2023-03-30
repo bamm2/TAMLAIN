@@ -30,18 +30,18 @@ export const BackBtn = styled.img`
   margin-left: 25px;
 `;
 
-export const RegistBtn = styled.button`
-  margin-top: 10px;
-  margin-left: 81%;
-  width: 130px;
-  height: 40px;
-  background-color: #32b64f;
-  border: none;
-  color: #fff;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 10px;
-`;
+// export const RegistBtn = styled.button`
+//   margin-top: 10px;
+//   margin-left: 81%;
+//   width: 130px;
+//   height: 40px;
+//   background-color: #32b64f;
+//   border: none;
+//   color: #fff;
+//   font-weight: bold;
+//   font-size: 15px;
+//   border-radius: 10px;
+// `;
 
 export const Div = styled.div`
   float: left;
@@ -50,6 +50,7 @@ export const Div = styled.div`
   background-color: #f9f9f9;
   overflow: auto;
   position: relative;
+  margin-top: 5%;
   &::-webkit-scrollbar {
     display: none;
   }

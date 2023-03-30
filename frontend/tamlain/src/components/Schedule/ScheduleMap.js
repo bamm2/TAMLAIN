@@ -219,20 +219,17 @@ const ScheduleMap = () => {
     }
     return true;
   };
-  const [modaltest2, setModaltest2] = useState(false);
-  const registSchedule = () => {
-    setModaltest2((modaltest2) => !modaltest2);
-  };
 
   return (
     <div style={{ marginTop: "15%" }}>
-      <div style={{ marginBottom: "20px", left: "95%" }}>
-        <S.RegistBtn onClick={registSchedule}>등록하기</S.RegistBtn>
-        {modaltest2 && <ModalRegist></ModalRegist>}
-      </div>
       <div
         id="map"
-        style={{ float: "left", width: "80%", height: "350px" }}
+        style={{
+          float: "left",
+          width: "80%",
+          height: "350px",
+          marginTop: "5%",
+        }}
       ></div>
       <S.Div>
         <div
@@ -240,6 +237,7 @@ const ScheduleMap = () => {
             width: "3px",
             height: "100vh",
             marginLeft: "15%",
+            marginTop: "5%",
             backgroundColor: "#fc872a",
           }}
         ></div>

@@ -26,6 +26,11 @@ import ScheduleSearch from "./components/Schedule/Search/ScheduleSearch";
 
 import MyPageMain from "./components/MyPage/MyPageMain";
 
+import MyPageHistory from "./components/MyPage/History/MyPageHistory";
+
+import MyPageEmpty from "./components/MyPage/MyPageEmpty";
+import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
+
 const App = () => {
   return (
     <>
@@ -60,12 +65,6 @@ const App = () => {
                   element={<SurveyExhibition />}
                 />
                 <Route path="/surveyRest" element={<SurveyRest />} />
-
-                {/* 일정 작성 페이지 */}
-                <Route path="/schedule" element={<ScheduleMain />} />
-
-                {/* 마이 페이지 */}
-                <Route path="/mypage" element={<MyPageMain />} />
               </Route>
             </Route>
             {/**일정페이지 */}
@@ -73,6 +72,15 @@ const App = () => {
               <Route element={<Frame />}>
                 <Route path=":id" element={<ScheduleMap />}></Route>
                 <Route path="search/:searchId" element={<ScheduleSearch />} />
+              </Route>
+            </Route>
+            {/* 마이 페이지 */}
+            <Route element={<MyPageMain />}>
+              <Route element={<Frame />}>
+                <Route path="history" element={<MyPageHistory />} />
+
+                <Route path="/myPageEmpty" element={<MyPageEmpty />} />
+                <Route path="/myPageStarInfo" element={<MyPageStarInfo />} />
               </Route>
             </Route>
           </Route>
