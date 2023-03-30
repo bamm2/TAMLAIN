@@ -10,17 +10,21 @@ const Modal = (props) => {
     flag = false;
   }
 
-  const [modal, setModal] = useState(false);
-
-  const modalHandler = () => {
-    setModal((modal) => !modal);
+  const closeModal = () => {
+    props.setExitModalOpen(false);
   };
+
+  // const [modal, setModal] = useState(false);
+
+  // const modalHandler = () => {
+  //   setModal((modal) => !modal);
+  // };
 
   return (
     <>
       <S.Contatiner>
         <S.Modal>
-          <S.CloseButton onClick={modalHandler}>
+          <S.CloseButton onClick={closeModal}>
             <FontAwesomeIcon icon={faXmark} onClick={props.close} />
           </S.CloseButton>
           <S.ModalInfo>
@@ -32,10 +36,7 @@ const Modal = (props) => {
             <S.ModalButton style={{ marginRight: "10px" }} onClick={props.yes}>
               예
             </S.ModalButton>
-            <S.ModalButton
-              style={{ marginLeft: "10px" }}
-              onClick={modalHandler}
-            >
+            <S.ModalButton style={{ marginLeft: "10px" }} onClick={closeModal}>
               아니오
             </S.ModalButton>
           </S.ModalInfo>

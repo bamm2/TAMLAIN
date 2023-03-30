@@ -9,15 +9,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
+    private int id;
     @Column(length = 50)
-    private String name;
-
+    private String categoryName;
+    @Column(length = 50)
+    private String categoryDetailName;
 }

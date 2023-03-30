@@ -23,9 +23,9 @@ const MainCarouselItem = (props) => {
       <S.Filter />
       <S.Wrap>
         <S.Img src={props.image}></S.Img>
-        <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
+        {/* <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
         <S.Text2> 탐라:인</S.Text2>
-        <S.MainBtn> 여행하기 </S.MainBtn>
+        <S.MainBtn> 여행하기 </S.MainBtn> */}
       </S.Wrap>
     </S.Container>
   );

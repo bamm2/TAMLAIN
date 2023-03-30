@@ -11,14 +11,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -27,9 +25,12 @@ public class Survey {
     private LocalDate startDate;
     private LocalDate endDate;
     private char gender;
-    @Column(length = 5)
-    private String ageRange;
+    private int ageRange;
+    private int travelMemberCode;
+    private boolean isCar;
+    private int travelThemeCode;
+    @Column(length = 4)
+    private String season;
     private boolean isDelete;
     private LocalDateTime createdDate;
-
 }

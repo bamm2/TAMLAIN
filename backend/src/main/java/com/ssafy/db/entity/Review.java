@@ -14,24 +14,16 @@ import java.time.LocalDateTime;
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
-
+    private int id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
-    private ScheduleList scheduleList;
-
+    @JoinColumn(name = "schedule_item_id")
+    private ScheduleItem scheduleItem;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "jeju_data_id")
-    private JejuData jejuData;
-
-    @Column(columnDefinition = "INT UNSIGNED")
-    private Long rating;
-
+    @JoinColumn(name = "jeju_place_id")
+    private JejuPlace jejuPlace;
+    private int score;
     private LocalDateTime createdDate;
-
 }

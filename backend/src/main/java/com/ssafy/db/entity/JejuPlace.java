@@ -1,5 +1,6 @@
 package com.ssafy.db.entity;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +11,14 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class JejuData {
+public class JejuPlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
+    private int id;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Column(length = 150)
     private String name;
     private Double latitude;
@@ -24,17 +28,6 @@ public class JejuData {
     private String imgUrl;
     @Column(length = 13)
     private String phoneNumber;
-    @Column(columnDefinition = "INT UNSIGNED")
-    private Long sumRating;
-    @Column(columnDefinition = "INT UNSIGNED")
-    private Long totalRating;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_items_id")
-    private CategoryItems categoryItems;
-
+    private int reviewScoreSum;
+    private int reviewCount;
 }

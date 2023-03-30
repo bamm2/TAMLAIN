@@ -11,9 +11,9 @@ const Login = () => {
   return (
     <S.Container>
       <S.Filter />
-      {/* <S.goBack>
-        <Link to="/">메인페이지</Link>
-      </S.goBack> */}
+      <S.Img src="assets/mainLogo.png">
+        <Link to="/main"></Link>
+      </S.Img>
       <S.KakaoBtnContainer onClick={kakaoLogin}>
         <S.KakaoImg src="./assets/Icon/kakao_login_medium_wide.png" />
       </S.KakaoBtnContainer>

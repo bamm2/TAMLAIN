@@ -3,27 +3,23 @@ package com.ssafy.db.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleList {
+public class SurveyFavorCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    @JoinColumn(name = "survey_id")
+    private Survey survey;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "jeju_data_id")
-    private JejuData jejuData;
-
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

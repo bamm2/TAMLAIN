@@ -3,20 +3,18 @@ package com.ssafy.db.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleProfile {
+public class TravelMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
-    private Long id;
-    private String imageUrl;
+    private int id;
 
+    @Column(length = 50)
+    private String type;
 }
