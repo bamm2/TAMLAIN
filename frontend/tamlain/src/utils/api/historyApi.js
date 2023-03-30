@@ -5,7 +5,7 @@ export const getScheduleHistory = async (
   accessToken,
   userId
 ) => {
-  const response = await client.get(`/history/userId?`, {
+  const response = await client.get(`/history/${userId}`, {
     headers: {
       "X-AUTH-TOKEN": accessToken,
     },
@@ -20,7 +20,7 @@ export const deleteScheduleHistory = async (
   scheduleId
 ) => {
   const response = await client.patch(
-    `/history/delete/scheduleId?scheduleId=${scheduleId}`,
+    `/history/delete/${scheduleId}`,
     {},
     {
       headers: {
@@ -36,13 +36,11 @@ export const deleteScheduleHistory = async (
 // 일정 내역에서 원하는 일정명 수정하기
 export const modifyScheduleName = async (
   accessToken,
-  name,
-  scheduleId
+  data
 ) => {
   const response = await client.patch(
     `/history/modify`,
-    name,
-    scheduleId,
+    data,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,
@@ -55,9 +53,12 @@ export const modifyScheduleName = async (
 };
 
 // 세부 일정 내역 조회하기
-export const getScheduleDetail = async (accessToken) => {
+export const getScheduleDetail = async (
+  accessToken,
+  scheduleId
+) => {
   const response = await client.get(
-    `/history/scheduleDetail/scheduleId?`,
+    `/history/scheduleDetail/${scheduleId}`,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,
