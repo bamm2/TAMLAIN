@@ -109,3 +109,9 @@
 - Spring에서 Flask 통신
 - 추천 API 구현
 ```
+
+# 23.03.31
+```
+- Flask 프로젝트 생성
+- ResponseEntity 제거 및 구조 정리
+```
