@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
 export const Contatiner = styled.div`
-  position: fixed;
+  position: absolute;
   z-index: 100;
-  width: 100%;
-  height: 100%;
-  opacity: 0.9;
+  top: 29%;
+  left: 25%;
+  right: 25%;
+  width: 50%;
+  height: 200%;
+  opacity: 0.96;
   background-color: gray;
+  border-radius: 20px 20px 0 0;
 `;
 
 export const Modal = styled.div`

@@ -22,16 +22,18 @@ const ScheduleMain = () => {
   const [day, setDay] = useState(dayArr);
 
   //  exit 모달
-  const [modal, setModal] = useState(false);
+  const [exitModalOpen, setExitModalOpen] = useState(false);
+  const [exitDesign, setExitDesign] = useState(false);
   const ModalHandler = () => {
-    setModal((modal) => !modal);
+    setExitModalOpen(true);
+    document.body.style = `overflow:hidden`;
   };
 
   // regist 모달
-  const [showModal, setShowModal] = useState(false);
-
+  const [registModalOpen, setRegistModalOpen] = useState(false);
   const RegistModalHandler = () => {
-    setShowModal((showModal) => !showModal);
+    setRegistModalOpen(true);
+    document.body.style = `overflow:hidden`;
   };
 
   useEffect(() => {
@@ -44,28 +46,22 @@ const ScheduleMain = () => {
     window.location.href = `http://localhost:3000/scheduleMain/${num}`;
   };
 
-  // useEffect({
-  //   if(modal)
-
-  // }, [modal,showModal]);
-  // console.log(modal);
   return (
-    <div>
+    <S.Container>
       <S.BackGround>
         <S.BackGroundFilter />
       </S.BackGround>
-      {/* {showModal && <ModalRegist></ModalRegist>} */}
       <div>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
-          className="backBtn"
           alt="뒤로가기"
           onClick={ModalHandler}
         />
-        {modal && (
+        {exitModalOpen && (
           <Modal
             name="정말 일정 등록을 그만하시겠습니까?"
             name2="(작성중인 일정은 저장되지 않습니다.)"
+            setExitModalOpen={setExitModalOpen}
           ></Modal>
         )}
       </div>
@@ -84,12 +80,12 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
-      <S.RegistBtn onClick={RegistModalHandler} className="registBtn">
-        등록하기
-      </S.RegistBtn>
-      {showModal && <ModalRegist></ModalRegist>}
+      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      {registModalOpen && (
+        <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
+      )}
       <Outlet />
-    </div>
+    </S.Container>
   );
 };
 export default ScheduleMain;

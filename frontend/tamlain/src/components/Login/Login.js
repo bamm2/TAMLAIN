@@ -15,7 +15,9 @@ const Login = () => {
         <Link to="/">메인페이지</Link>
       </S.goBack> */}
       <S.KakaoBtnContainer onClick={kakaoLogin}>
-        <S.KakaoImg src="./assets/Icon/kakao_login_medium_wide.png" />
+        <S.KakaoImg
+          src={`${process.env.PUBLIC_URL}/assets/Icon/kakao_login_medium_wide.png`}
+        />
       </S.KakaoBtnContainer>
     </S.Container>
   );
