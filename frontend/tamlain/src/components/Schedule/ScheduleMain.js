@@ -56,6 +56,7 @@ const ScheduleMain = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
           onClick={ModalHandler}
+          className="backBtn"
         />
         {exitModalOpen && (
           <Modal
