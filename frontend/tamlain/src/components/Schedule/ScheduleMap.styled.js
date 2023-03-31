@@ -2,24 +2,33 @@ import styled from "styled-components";
 
 export const SearchBtn = styled.div`
   float: left;
-  width: 77%;
-  height: 100%;
-  margin-left: 10px;
-  margin-top: 10px;
+  position: relative;
+  width: 80%;
+  height: 60px;
+  background-color: #f5f5f5;
+  margin-top: 1%;
   border: 1px solid #eae7e7;
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #dadce0;
+  display: flex;
 `;
 
 export const SearchIcon = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
+  margin-left: 93%;
+  margin-top: 3%;
 `;
 
-export const RecommBtn = styled.div`
+export const RecommBtn = styled.span`
+  position: relative;
   float: left;
-  width: 20%;
-  height: 100%;
+  width: 15%;
+  height: 60px;
+  font-size: 17px;
+  color: #fc872a;
+  margin-left: 3%;
+  margin-top: 3%;
 `;
 
 export const BackBtn = styled.img`

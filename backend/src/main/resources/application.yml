@@ -1,0 +1,71 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+spring:
+  datasource:
+    # server
+    url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
+    username: ENC(F301hhYYYd0rvHquA7NOgA==)
+    # local
+    #    url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
+    #    username: ENC(AQbYc5mkFpX5qHZRhIxc0w==)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ENC(2Ct99Ez3n1dAOA8dnCYfXA==)
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        globally_quoted_identifiers: true
+        format_sql: true
+        check_nullability: true
+  redis:
+    host: ENC(72rWrF8HmrugEKQq0n/iAOJ7NCEH+F3Bn6Vtsg5Q+1Q=)
+    port: 8379
+    password: ENC(GpfgLaeX95xC7pXQX66+gs+5yI039VI7)
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ENC(pspsCp49iwIKXZSfdz59qYd1AWOrsKMbrPKjLEtPp3FjTKLSC5sdLSAS0fOLgi9/)
+#            redirect-uri: http://localhost:8080/oauth/callback/kakao
+#            redirect-uri: http://localhost:3000/oauth/callback/kakao
+            redirect-uri: ENC(gR5YHZ7AwDZ13S8Sl/pfv+Fa7r9xtdwnzaaFZr3m9ZxNkEv4PkRl5rZQkRwPHBcBZ0cVE6/4ulk=)
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+            client_name: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+jwt:
+  token:
+    secret-key: ENC(kaKqOrrX5YmcpNoH4rOlq4BIhQobzfPfpHLB4SlHnnR68EuLOxCBZ888oMXgeCH8wFuf/Z6uP/4aA/YAMUKc7fqNG99RdBxcOIqYuaHvXGNDaQDCxsuN/Hng8djDZ44wFjcnpf8JYztW1dZSpzuQkRHeoGV45359RVR6PKy0bL6oun3O+eDBKmMRQyEP+y0w)
+  access-token:
+    expire-length: 1800000
+  refresh-token:
+    expire-length: 1209600000

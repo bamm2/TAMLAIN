@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ScheduleThumbnail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

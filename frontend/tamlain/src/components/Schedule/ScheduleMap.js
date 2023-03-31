@@ -263,8 +263,7 @@ const ScheduleMap = () => {
           alt="검색아이콘"
         />
       </S.SearchBtn>
-
-      <S.RecommBtn />
+      <S.RecommBtn> ↺ 전체 재추천 </S.RecommBtn>
       {pick.map((item, index) => (
         <div key={index}>
           <p>{item.title}</p>
@@ -281,6 +280,7 @@ const ScheduleMap = () => {
           </button>
         </div>
       ))}
+
       <ScheduleCarousel />
     </div>
   );

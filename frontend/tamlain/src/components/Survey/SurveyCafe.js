@@ -4,23 +4,9 @@ import { Link } from "react-router-dom";
 const SurveyCafe = () => {
   const checkSelectAll = (e) => {
     const selectall = document.querySelector('input[name="selectall"]');
-    selectall.checked = true;
+
     if (e.target.checked === false) {
       selectall.checked = false;
-      return;
-    }
-    const checkboxes = document.getElementsByName("cafe");
-    console.log(checkboxes);
-
-    checkboxes.forEach((checkbox) => {
-      console.log(checkbox.checked);
-      if (checkbox.checked === false) {
-        selectall.checked = false;
-        return;
-      }
-    });
-    if (!selectall.checked) {
-      return;
     }
   };
 
@@ -31,16 +17,6 @@ const SurveyCafe = () => {
       checkbox.checked = e.target.checked;
     });
   };
-
-  const registForm = () => {
-    const selectedEls = document.querySelectorAll('input[name="cafe"]:checked');
-    const arr = [];
-    selectedEls.forEach((el) => {
-      arr.push(el.value);
-    });
-    localStorage.setItem("Cafe", JSON.stringify(arr));
-  };
-
   return (
     <div>
       <Link to="/surveyFood">
@@ -55,7 +31,6 @@ const SurveyCafe = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
           style={{ marginLeft: "190px" }}
-          onClick={registForm}
         />
       </Link>
       <S.Cafe>

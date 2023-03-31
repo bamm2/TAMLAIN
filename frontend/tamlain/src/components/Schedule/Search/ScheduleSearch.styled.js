@@ -8,21 +8,28 @@ export const BackBtn = styled.img`
   margin-left: 25px;
 `;
 
-export const SearchBtn = styled.input`
+export const SearchInput = styled.input`
   float: left;
-  width: 85%;
-  height: 45px;
+  width: 83%;
+  height: 50px;
   margin-left: 25px;
   margin-top: 7%;
   border: 1px solid #eae7e7;
   border-radius: 5px;
+  padding-left: 10px;
   box-shadow: 1px 1px 3px 1px #dadce0;
+
+  :focus {
+    border-color: #fc872a;
+    outline: none;
+  }
 `;
 
 export const SearchIcon = styled.img`
   position: absolute;
   width: 30px;
   height: 30px;
-  top: 13%;
-  right: 7%;
+  top: 12.5%;
+  right: 8%;
+  cursor: pointer;
 `;

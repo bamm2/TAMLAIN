@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { searchPlace } from "../../../utils/api/scheduleApi";
+import SchduleSearchItem from "./SchduleSearchItem";
 
 const ScheduleSearch = () => {
   var idx = window.location.href.substring(
@@ -62,29 +63,27 @@ const ScheduleSearch = () => {
     setArr(products);
     console.log(arr);
   }, [mount]);
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleInputChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
-  const filteredProducts = arr.filter((product) => {
-    return product.title.includes(searchValue);
-  });
-
-  const Submit = (product) => {
-    const arr = JSON.parse(localStorage.getItem(`marker${idx}`));
-    arr.push(product);
-    console.log(arr);
-    localStorage.setItem(`marker${idx}`, JSON.stringify(arr));
-  };
 
   const goBack = () => {
     window.location.href = `http://localhost:3000/scheduleMain/${idx}`;
   };
 
+  // 검색
+  const [text, setText] = useState("");
+
+  const onChangeKeyword = (e) => {
+    setText(e.target.value);
+  };
+
+  const submitKeyword = (e) => {
+    e.preventDefault();
+    console.log(text);
+  };
+
+  console.log(text);
+
   return (
-    <div>
+    <>
       <Link to={`/scheduleMain/${idx}`}>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
@@ -92,39 +91,15 @@ const ScheduleSearch = () => {
           onClick={goBack}
         />
       </Link>
-      <S.SearchBtn
-        type="text"
-        value={searchValue}
-        onChange={handleInputChange}
-      />
+      <S.SearchInput type="text" value={text} onChange={onChangeKeyword} />
       <S.SearchIcon
         src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
         alt="검색아이콘"
+        onClick={submitKeyword}
       />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      {filteredProducts.map((product, index) => (
-        <div
-          key={index}
-          style={{ textAlign: "left", marginTop: "20px", marginLeft: "10%" }}
-        >
-          <span>{product.title}</span>
-          <Link to={`/scheduleMain/${idx}`}>
-            <button
-              onClick={() => {
-                Submit(product);
-              }}
-            >
-              선택
-            </button>
-          </Link>
-        </div>
-      ))}
-    </div>
+      <SchduleSearchItem></SchduleSearchItem>
+      <SchduleSearchItem></SchduleSearchItem>
+    </>
   );
 };
 export default ScheduleSearch;

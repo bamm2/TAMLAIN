@@ -1,10 +1,12 @@
 import Rating from "./Rating";
+import * as S from "./MyPageStarInfo.styled";
+import MyPageStarMain from "./MyPageStarMain";
 
 const MyPageStarInfo = () => {
   return (
-    <div style={{ marginTop: "20%" }}>
-      <Rating />
-    </div>
+    <S.Container>
+      <MyPageStarMain />
+    </S.Container>
   );
 };
 export default MyPageStarInfo;

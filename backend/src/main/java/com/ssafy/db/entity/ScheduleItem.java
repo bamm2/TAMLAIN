@@ -1,16 +1,12 @@
 package com.ssafy.db.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ScheduleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +21,11 @@ public class ScheduleItem {
     private JejuPlace jejuPlace;
 
     private int day;
+
+    @Builder
+    public ScheduleItem(Schedule schedule, JejuPlace jejuPlace, int day) {
+        this.schedule = schedule;
+        this.jejuPlace = jejuPlace;
+        this.day = day;
+    }
 }
