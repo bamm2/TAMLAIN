@@ -3,12 +3,24 @@ import { Link } from "react-router-dom";
 
 const SurveyFood = () => {
   const checkSelectAll = (e) => {
-    const selectall = document.querySelector(
-      'input[name="selectall"]'
-    );
-
+    const selectall = document.querySelector('input[name="selectall"]');
+    selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
+      return;
+    }
+    const checkboxes = document.getElementsByName("food");
+    console.log(checkboxes);
+
+    checkboxes.forEach((checkbox) => {
+      console.log(checkbox.checked);
+      if (checkbox.checked === false) {
+        selectall.checked = false;
+        return;
+      }
+    });
+    if (!selectall.checked) {
+      return;
     }
   };
 
@@ -19,6 +31,16 @@ const SurveyFood = () => {
       checkbox.checked = e.target.checked;
     });
   };
+
+  const registForm = () => {
+    const selectedEls = document.querySelectorAll('input[name="food"]:checked');
+    const arr = [];
+    selectedEls.forEach((el) => {
+      arr.push(el.value);
+    });
+    localStorage.setItem("Food", JSON.stringify(arr));
+  };
+
   return (
     <div>
       <Link to="/surveyTheme">
@@ -33,6 +55,7 @@ const SurveyFood = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
           style={{ marginLeft: "190px" }}
+          onClick={registForm}
         />
       </Link>
       <S.Food>

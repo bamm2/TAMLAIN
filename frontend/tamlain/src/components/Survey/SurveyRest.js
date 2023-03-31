@@ -1,12 +1,28 @@
 import * as S from "./SurveyRest.styled";
 import { Link } from "react-router-dom";
+import { surveyApi } from "../../utils/api/surveyApi";
+import moment from "moment/moment";
 
 const SurveyRest = () => {
   const checkSelectAll = (e) => {
     const selectall = document.querySelector('input[name="selectall"]');
-
+    selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
+      return;
+    }
+    const checkboxes = document.getElementsByName("rest");
+    console.log(checkboxes);
+
+    checkboxes.forEach((checkbox) => {
+      console.log(checkbox.checked);
+      if (checkbox.checked === false) {
+        selectall.checked = false;
+        return;
+      }
+    });
+    if (!selectall.checked) {
+      return;
     }
   };
 
@@ -17,6 +33,94 @@ const SurveyRest = () => {
       checkbox.checked = e.target.checked;
     });
   };
+
+  const registSurvey = () => {
+    registForm();
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+
+    const dateController = new Date();
+    let year = dateController.getFullYear(); // 년도
+    let month = dateController.getMonth() + 1; // 월
+    if (parseInt(month) < 10) {
+      month = "0" + month;
+    }
+    let date = dateController.getDate();
+    if (parseInt(date) < 10) {
+      date = "0" + date;
+    }
+
+    const EndDateController = new Date(
+      moment(new Date().setDate(new Date().getDate() + 4)).format("YYYY-MM-DD")
+    );
+    console.log(EndDateController);
+    let Eyear = EndDateController.getFullYear(); // 년도
+    let Emonth = EndDateController.getMonth() + 1; // 월
+    if (parseInt(Emonth) < 10) {
+      Emonth = "0" + Emonth;
+    }
+    let Edate = EndDateController.getDate();
+    if (parseInt(Edate) < 10) {
+      Edate = "0" + Edate;
+    }
+
+    //2007-12-03 10:15
+    const startDate = `${year}-${month}-${date}`;
+    const endDate = `${Eyear}-${Emonth}-${Edate}`;
+
+    const theme = JSON.parse(localStorage.getItem("Theme"));
+
+    const arr = {
+      1: JSON.parse(localStorage.getItem("Food")),
+      2: JSON.parse(localStorage.getItem("Cafe")),
+      3: JSON.parse(localStorage.getItem("Activity")),
+      4: JSON.parse(localStorage.getItem("Sport")),
+      5: JSON.parse(localStorage.getItem("Exhibition")),
+      6: JSON.parse(localStorage.getItem("Rest")),
+    };
+    console.log(userId);
+    console.log(startDate);
+    console.log(endDate);
+    console.log(theme);
+    console.log(arr);
+
+    const data = {
+      userId: parseInt(userId),
+      startDate: startDate,
+      endDate: endDate,
+      travelTheme: theme,
+      surveyFavorCategoryMap: arr,
+    };
+    // const data = {
+    //   userId: 1,
+    //   startDate: "2023-03-01",
+    //   endDate: "2023-03-04",
+    //   travelTheme: "history",
+    //   surveyFavorCategoryMap: {
+    //     1: ["양식", "한식"],
+    //     2: ["카페"],
+    //     3: [],
+    //     4: [],
+    //     5: [],
+    //     6: ["공원", "도보"],
+    //   },
+    // };
+    console.log(data);
+    console.log(token);
+    surveyApi(token, data).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const registForm = () => {
+    const selectedEls = document.querySelectorAll('input[name="rest"]:checked');
+    const arr = [];
+    selectedEls.forEach((el) => {
+      arr.push(el.value);
+    });
+    localStorage.setItem("Rest", JSON.stringify(arr));
+  };
+
   return (
     <div>
       <Link to="/surveyExhibition">
@@ -26,13 +130,14 @@ const SurveyRest = () => {
           style={{ float: "Left", marginLeft: "50px" }}
         />
       </Link>
-      <Link to="/loading">
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
-          alt="다음으로"
-          style={{ marginLeft: "190px" }}
-        />
-      </Link>
+      {/* <Link to="/loading"> */}
+      <img
+        src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
+        alt="다음으로"
+        style={{ marginLeft: "190px" }}
+        onClick={registSurvey}
+      />
+      {/* </Link> */}
       <S.Rest>
         <S.FormAllBtn>
           <input
@@ -78,7 +183,7 @@ const SurveyRest = () => {
             value="site"
             onClick={checkSelectAll}
           />
-          <label htmlFor="radio-3">🍊 문화유적</label>
+          <label htmlFor="radio-3">🍊 올레길</label>
         </S.FormBtn>
         <br />
         <br />
