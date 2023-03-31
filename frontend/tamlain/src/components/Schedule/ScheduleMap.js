@@ -40,7 +40,6 @@ const ScheduleMap = () => {
   var count;
   var divnum;
   var divtitle;
-
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -221,6 +220,10 @@ const ScheduleMap = () => {
     return true;
   };
 
+  const goSearch = () => {
+    window.location.href = `http://localhost:3000/scheduleMain/search/${idx}`;
+  };
+
   return (
     <div style={{ marginTop: "15%" }}>
       <div
@@ -253,14 +256,14 @@ const ScheduleMap = () => {
           }}
         ></div>
       </S.Div>
-      <Link to={`/scheduleMain/search/${idx}`}>
-        <S.SearchBtn>
-          <S.SearchIcon
-            src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
-            alt="검색아이콘"
-          />
-        </S.SearchBtn>
-      </Link>
+
+      <S.SearchBtn onClick={goSearch}>
+        <S.SearchIcon
+          src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
+          alt="검색아이콘"
+        />
+      </S.SearchBtn>
+
       <S.RecommBtn />
       {pick.map((item, index) => (
         <div key={index}>

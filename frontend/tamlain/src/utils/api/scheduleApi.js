@@ -52,16 +52,16 @@ export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
 //   return response;
 // };
 
-// // 장소 입력 시 검색하기
-// export const searchPlace = async (accessToken) => {
-//   const response = await client.get(`/schedule/search/keyword?`, {
-//     headers: {
-//       "X-AUTH-TOKEN": accessToken,
-//     },
-//   });
+// 장소 입력 시 검색하기
+export const searchPlace = async (accessToken) => {
+  const response = await client.get(`/schedule/search`, {
+    headers: {
+      "X-AUTH-TOKEN": accessToken,
+    },
+  });
 
-//   return response;
-// };
+  return response;
+};
 
 // // 일정 등록할 썸네일 사진 조회하기
 // export const getScheduleThumbnail = async (accessToken) => {

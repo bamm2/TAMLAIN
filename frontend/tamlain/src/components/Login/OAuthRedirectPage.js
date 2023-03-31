@@ -5,17 +5,18 @@ import { useNavigate } from "react-router-dom";
 const OAuthRedirectPage = () => {
   const navigate = useNavigate();
   const backUri = process.env.REACT_APP_SERVER_URI;
-
+  console.log(backUri);
   const code = new URL(window.location.href).searchParams.get("code");
   console.log(code);
   useEffect(() => {
     const loadData = async () => {
       await axios({
         method: "GET",
-        // url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
-        url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
+        url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
+        // url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
       })
         .then((res) => {
+          console.log(backUri);
           console.log(res); // 토큰이 넘어올 것임
 
           const ACCESS_TOKEN = res.data.accessToken;
