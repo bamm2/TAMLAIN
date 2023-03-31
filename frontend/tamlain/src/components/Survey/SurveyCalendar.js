@@ -15,7 +15,7 @@ const SurveyCalendar = () => {
         alt="뒤로가기"
         style={{ float: "Left", marginLeft: "50px" }}
       />
-      <Link to="/surveyGenderAndAge">
+      <Link to="/surveyTheme">
         <img
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
@@ -29,9 +29,9 @@ const SurveyCalendar = () => {
           minDate={new Date()}
           maxDate={
             new Date(
-              moment(new Date().setDate(new Date().getDate() + 4)).format(
-                "YYYY-MM-DD"
-              )
+              moment(
+                new Date().setDate(new Date().getDate() + 4)
+              ).format("YYYY-MM-DD")
             )
           }
           selectRange={true}

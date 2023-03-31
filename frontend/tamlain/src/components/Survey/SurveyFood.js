@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 
 const SurveyFood = () => {
   const checkSelectAll = (e) => {
-    const selectall = document.querySelector('input[name="selectall"]');
+    const selectall = document.querySelector(
+      'input[name="selectall"]'
+    );
 
     if (e.target.checked === false) {
       selectall.checked = false;
@@ -45,7 +47,11 @@ const SurveyFood = () => {
           <label id="labelAll" htmlFor="selectAll"></label>
         </S.FormAllBtn>
         <div
-          style={{ marginRight: "550px", marginTop: "2.5px", color: "#666" }}
+          style={{
+            marginRight: "550px",
+            marginTop: "2.5px",
+            color: "#666",
+          }}
         >
           전체선택
         </div>
