@@ -81,7 +81,9 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
-      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      <S.RegistBtn onClick={RegistModalHandler} className="registBtn">
+        등록하기
+      </S.RegistBtn>
       {registModalOpen && (
         <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
       )}
