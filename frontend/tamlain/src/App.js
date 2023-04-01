@@ -30,6 +30,7 @@ import MyPageHistory from "./components/MyPage/History/MyPageHistory";
 
 import MyPageEmpty from "./components/MyPage/MyPageEmpty";
 import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
+import MyPageRedirect from "./components/MyPage/MyPageRedirect";
 
 const App = () => {
   return (
@@ -77,8 +78,8 @@ const App = () => {
             {/* 마이 페이지 */}
             <Route element={<MyPageMain />}>
               <Route element={<Frame />}>
+                <Route path="/redirectMyPage" element={<MyPageRedirect/>}/> 
                 <Route path="history" element={<MyPageHistory />} />
-
                 <Route path="/myPageEmpty" element={<MyPageEmpty />} />
                 <Route path="/myPageStarInfo" element={<MyPageStarInfo />} />
               </Route>

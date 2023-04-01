@@ -21,7 +21,6 @@ export const deleteScheduleHistory = async (
 ) => {
   const response = await client.patch(
     `/history/delete/${scheduleId}`,
-    {},
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,

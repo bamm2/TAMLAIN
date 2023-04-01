@@ -2,34 +2,47 @@ import * as S from "./Navbar.styled";
 import { Outlet, useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loginActions } from "../../store/KakaoLogin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { logout } from "../../utils/api/oauthApi";
 
 const Navbar = (props) => {
   const key = localStorage.getItem("token");
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isAuth = useSelector((state) => state.login.isAuthenticated);
+  const [isAuth, setIsAuth] = useState(false);
 
-  // useEffect({
-  //   if()
-  // }, []);
+  //  키 값 확인 후 로그인 , 로그아웃 처리 
+  useEffect(() => {
+    if (key !== null) {
+      setIsAuth(true);
+    } else {
+      setIsAuth(false);
+    }
+  }, []);
 
+  //  메인 페이지로 이동 
   const mainpageHandler = () => {
     navigate("/main");
   };
 
+  //  로그인 페이지로 이동 
   const loginHandler = () => {
-    dispatch(loginActions.toggleLogin);
     navigate("/login");
   };
 
+  //  로그아웃 
   const logoutHandler = () => {
+    console.log("로그아웃 버튼 클릭");
+    navigate("/main")
+    logout(key).then((res) => {
+      console.log(res);
+    });
     window.localStorage.clear();
-    dispatch(loginActions.toggleLogin);
-    navigate("/main");
+    // navigate("/main");
   };
+
+  //  마이페이지로 이동 
   const mypageHandler = () => {
-    navigate("/mypage");
+    navigate("/redirectMyPage");
   };
 
   return (
@@ -47,16 +60,24 @@ const Navbar = (props) => {
                 <S.RightItem onClick={mypageHandler}>마이페이지</S.RightItem>
                 <S.RightItem> | </S.RightItem>
                 <S.RightItem onClick={logoutHandler}>로그아웃</S.RightItem>
+                <S.ExitLogoImg
+                    src={`${process.env.PUBLIC_URL}/assets/Icon/ExitLogo.png`}
+                    alt="logIn/Out 로고"
+                    onClick={logoutHandler}
+                  ></S.ExitLogoImg>
               </>
             )}
             {!isAuth && (
-              <S.RightItem onClick={loginHandler}>로그인</S.RightItem>
+              <>
+                <S.RightItem onClick={loginHandler}>로그인</S.RightItem>
+                
+                <S.ExitLogoImg
+                  src={`${process.env.PUBLIC_URL}/assets/Icon/ExitLogo.png`}
+                  alt="logIn/Out 로고"
+                  onClick={loginHandler}
+                    ></S.ExitLogoImg>
+                </>
             )}
-            <S.ExitLogoImg
-              src={`${process.env.PUBLIC_URL}/assets/Icon/ExitLogo.png`}
-              alt="logIn/Out 로고"
-              onClick={loginHandler}
-            ></S.ExitLogoImg>
           </S.RightContainer>
         </S.NavContainer>
       </S.NavFrame>

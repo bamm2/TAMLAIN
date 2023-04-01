@@ -3,10 +3,9 @@ import client from "../client";
 // 로그인
 
 // 로그아웃
-export const logout = async (accessToken, data) => {
+export const logout = async (accessToken) => {
   const response = await client.post(
     `/oauth/logout`,
-    data,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,

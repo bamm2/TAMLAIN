@@ -25,6 +25,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+**/JasyptConfigTest.java
 
 ### application-properties ###
 **/application.properties

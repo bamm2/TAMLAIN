@@ -1,8 +1,7 @@
 package com.ssafy.db.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,8 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,5 +23,12 @@ public class Review {
     @JoinColumn(name = "jeju_place_id")
     private JejuPlace jejuPlace;
     private int score;
-    private LocalDateTime createdDate;
+
+    @Builder
+    public Review(User user, ScheduleItem scheduleItem, JejuPlace jejuPlace, int score) {
+        this.user = user;
+        this.scheduleItem = scheduleItem;
+        this.jejuPlace = jejuPlace;
+        this.score = score;
+    }
 }
