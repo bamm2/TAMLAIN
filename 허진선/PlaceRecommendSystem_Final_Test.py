@@ -108,49 +108,27 @@ def read_data():
     # course_list.extend(100 * [course_list[1]])
     print(review)
     merge_df = pd.merge(review, schedule, on="일정id")
-    merge_df['c'] = [max(len(a), len(b)) for a, b in zip(merge_df["계절id"], merge_df["테마id")]
-    merge_df["new"] = merge_df.apply(lambda x: max([len(x) for x in [merge_df["계절id"], merge_df["테마id"]]]))
-    merge_df["new"] = set(merge_df[["계절id", "테마id"]]))
-
-    return schedule, place, course, review
+    merge_df['아이템id'] = merge_df["계절id"] + "_" + merge_df["테마id"] + "_" + merge_df["장소id"]
+    return {"schedule": schedule, "place": place, "course": course, "review": review, "rating": merge_df}
 
 
 def calc_support(course_list):
     my_transactionencoder = TransactionEncoder()  # One-Hot Encoding 된 DataFrame
-
-    # fit the transaction encoder using the list of transaction tuples
     my_transactionencoder.fit(course_list)
-
-    # transform the list of transaction tuples into an array of encoded transactions
     encoded_transactions = my_transactionencoder.transform(course_list)
 
-    # convert the array of encoded transactions into a dataframe
     encoded_transactions_df = pd.DataFrame(encoded_transactions, columns=my_transactionencoder.columns_)
     print(encoded_transactions_df)
 
-    # our min support is 5, but it has to be expressed as a percentage for mlxtend
     min_support = 1 / len(course_list)  # 아이템 조합의 최소 지지도를 설정(0~1), 어떤 아이템 A의 지지도를 아이템A의 등장횟수 / 전체 횟수로 생각하면 됩니다.
     frequent_itemsets = fpgrowth(encoded_transactions_df, min_support=min_support, use_colnames=True, max_len=2)
 
-    # print the frequent itemsets
     print(frequent_itemsets)
 
-    # Compute the association rules based on the frequent itemsets
-    # compute and print the association rules
     # result = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1)
     result = association_rules(frequent_itemsets, support_only=True, min_threshold=0.01)
     print(tabulate(result, headers='keys', tablefmt='psql'))
     return result
-
-
-def cosine_similarity(v1, v2):
-    dot_product = np.dot(v1, v2.T)  # v2는 (1, len(place_set))이므로 전치해야 함
-    norm_v1 = np.linalg.norm(v1)
-    norm_v2 = np.linalg.norm(v2)
-    if norm_v1 == 0 or norm_v2 == 0:
-        return 0
-    else:
-        return dot_product / (norm_v1 * norm_v2)
 
 
 def CBF(place):
@@ -170,13 +148,15 @@ def CBF(place):
 
 def CF(df):
     reader = Reader(rating_scale=(0, 5))
-    data_folds = DatasetAutoFolds(df=df[['일정id', '장소id', '평점']], reader=reader)  # set (계절 id, 테마 id), 장소 id, 평점
+    data_folds = DatasetAutoFolds(df=df[['일정id', '아이템id', '평점']], reader=reader)  # set (계절 id, 테마 id), 장소 id, 평점
     trainset = data_folds.build_full_trainset()
     sim_options = {'name': 'cosine', 'user_based': True}
     algo = KNNBaseline(sim_options=sim_options)
     algo.fit(trainset)
 
-    predictions = [algo.predict(200, i) for i in range(1, 21)]  # uid, iid, r_ui(실제 평점) ,est(예측평점)
+    user_id = 200
+    num_items = 15
+    predictions = [algo.predict(user_id, i) for i in range(num_items)]  # uid, iid, r_ui(실제 평점) ,est(예측평점)
 
     def sortkey_est(pred):
         return pred.est
@@ -190,11 +170,10 @@ def CF(df):
     print(tabulate(top_place_pred, headers='keys', tablefmt='psql'))
     return top_place_pred
 
+
 # make_data()
 read_data()
 # place, course, course_list = read_data()
 # support_df = calc_support(course_list)
 # CBF(place)
 # CF(course)
-
-
