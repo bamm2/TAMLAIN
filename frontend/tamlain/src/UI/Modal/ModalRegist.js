@@ -85,8 +85,8 @@ const ModalRegist = (props) => {
     const day5 = JSON.parse(localStorage.getItem("marker5"));
 
     const data = {
-      userId: userId,
-      surveyId: surveyId,
+      userId: 2,
+      surveyId: 52,
       scheduleThumbnailId: thumbnailId,
       name: name,
       scheduleRegistItemList: arr,
