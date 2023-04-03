@@ -76,9 +76,9 @@ const SurveyRest = () => {
     };
 
     const data = {
-      userId: 1,
-      startDate: startDate,
-      endDate: endDate,
+      userId: 2,
+      startDate: "2022-02-03",
+      endDate: "2022-02-05",
       travelTheme: theme,
       surveyFavorCategoryMap: arr,
     };
