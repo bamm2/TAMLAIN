@@ -5,12 +5,11 @@ import Modal from "../../UI/Modal/Modal";
 import ModalRegist from "../../UI/Modal/ModalRegist";
 import ScheduleMap from "./ScheduleMap";
 import { useCallback } from "react";
-
+import client from "../../utils/client";
 const ScheduleMain = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  console.log(idx);
   const navigate = useNavigate();
   var dayArr = [
     { id: 1, name: "1일차" },
@@ -42,7 +41,7 @@ const ScheduleMain = () => {
     radioBtns[idx - 1].style.color = "#fff";
   }, []);
   const movepage = (num) => {
-    window.location.href = `http://localhost:3000/scheduleMain/${num}`;
+    window.location.href = `${client.defaults.url}/scheduleMain/${num}`;
   };
 
   return (

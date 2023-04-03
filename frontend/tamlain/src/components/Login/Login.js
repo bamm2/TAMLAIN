@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./Login.styled";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { KAKAO_AUTH_URL } from "./OAuth";
 
 const Login = () => {
@@ -8,12 +8,16 @@ const Login = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
+  const navigate = useNavigate();
+  const reDirectMain = () => {
+    navigate('/main');
+  }
+
   return (
     <S.Container>
       <S.Filter />
-      {/* <S.goBack>
-        <Link to="/">메인페이지</Link>
-      </S.goBack> */}
+      <S.Img src={`${process.env.PUBLIC_URL}/assets/mainLogo.png`} onClick={reDirectMain}>
+      </S.Img>
       <S.KakaoBtnContainer onClick={kakaoLogin}>
         <S.KakaoImg
           src={`${process.env.PUBLIC_URL}/assets/Icon/kakao_login_medium_wide.png`}

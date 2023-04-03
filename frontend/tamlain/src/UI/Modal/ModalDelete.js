@@ -1,22 +1,23 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as S from "./Modal.styled";
-import { useOutlet } from 'react-router-dom';
-  
-const Modal = (props) => {
-  const value = props.name2;
-  const flag = true;
-  if (value === null) {
-    flag = false;
-  }
+import * as S from "./ModalDelete.styled";
+import { deleteScheduleHistory } from "../../utils/api/historyApi";
 
+const ModalDelete = (props) => {
+
+//  axios 요청에 넣어줄 변수
+const scheduleId = props.idx;
+  const key = localStorage.getItem("token");
+  
+  const deleteSchedule = () => {
+    deleteScheduleHistory(key, scheduleId).then(res => console.log(res));
+  }
   
   const closeModal = () => {
     props.setExitModalOpen(false);
     document.body.style = `overflow:auto`;
   };
-
 
   return (
     <>
@@ -28,10 +29,8 @@ const Modal = (props) => {
           <S.ModalInfo>
             <span>{props.name}</span>
             <br />
-            {flag && <span>{value}</span>}
-            {flag && <br />}
-
-            <S.ModalButton style={{ marginRight: "10px" }} onClick={props.yes}>
+            
+            <S.ModalButton style={{ marginRight: "10px" }} onClick={deleteSchedule}>
               예
             </S.ModalButton>
             <S.ModalButton style={{ marginLeft: "10px" }} onClick={closeModal}>
@@ -44,4 +43,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default ModalDelete;

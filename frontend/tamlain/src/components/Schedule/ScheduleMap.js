@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
+import client from "../../utils/client";
 
 /*global kakao*/
 
@@ -47,7 +48,6 @@ const ScheduleMap = () => {
     for (let i = 0; i < radioBtns.length; i++) {
       radioBtns[i].style.display = "block";
     }
-    console.log(`marker${idx}`);
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
       mapOption = {
         center: new kakao.maps.LatLng(33.374301889561444, 126.56642690880963), // 지도의 중심좌표
@@ -81,8 +81,8 @@ const ScheduleMap = () => {
 
     if (isMounted.current) {
       // localStorage.setItem("marker", JSON.stringify(select2));
-      console.log(select);
-      console.log(select2);
+      // console.log(select);
+      // console.log(select2);
       $("#tagArea").empty();
       //for문 끝나고 선 표시하기 위해 저장할 좌표배열
       var linePath = [];
@@ -221,7 +221,7 @@ const ScheduleMap = () => {
   };
 
   const goSearch = () => {
-    window.location.href = `http://localhost:3000/scheduleMain/search/${idx}`;
+    window.location.href = `${client.defaults.url}/scheduleMain/search/${idx}`;
   };
 
   return (

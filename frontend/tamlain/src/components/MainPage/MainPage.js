@@ -1,7 +1,3 @@
-import { Link } from "react-router-dom";
-import { loginActions } from "../../store/KakaoLogin";
-import { useEffect } from "react";
-import Navbar from "../../UI/Navbar/Navbar";
 import MainCarousel from "./MainCarousel";
 import MainSectionOne from "./MainSectionOne";
 import MainSectionTwo from "./MainSectionTwo";

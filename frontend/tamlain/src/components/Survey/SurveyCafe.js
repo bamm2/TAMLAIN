@@ -4,10 +4,19 @@ import { Link } from "react-router-dom";
 const SurveyCafe = () => {
   const checkSelectAll = (e) => {
     const selectall = document.querySelector('input[name="selectall"]');
-
+    selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
+      return;
     }
+    const checkboxes = document.getElementsByName("cafe");
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked === false) {
+        selectall.checked = false;
+        return;
+      }
+    });
   };
 
   const selectAll = (e) => {
@@ -16,6 +25,14 @@ const SurveyCafe = () => {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = e.target.checked;
     });
+  };
+  const registForm = () => {
+    const selectedEls = document.querySelectorAll('input[name="cafe"]:checked');
+    const arr = [];
+    selectedEls.forEach((el) => {
+      arr.push(el.value);
+    });
+    localStorage.setItem("Cafe", JSON.stringify(arr));
   };
   return (
     <div>
@@ -31,6 +48,7 @@ const SurveyCafe = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
           style={{ marginLeft: "190px" }}
+          onClick={registForm}
         />
       </Link>
       <S.Cafe>
@@ -55,7 +73,7 @@ const SurveyCafe = () => {
             id="radio-1"
             type="checkbox"
             name="cafe"
-            value="cafe"
+            value="카페"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 카페</label>
@@ -65,7 +83,7 @@ const SurveyCafe = () => {
             id="radio-2"
             type="checkbox"
             name="cafe"
-            value="specialcafe"
+            value="이색카페"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 이색카페</label>
@@ -75,7 +93,7 @@ const SurveyCafe = () => {
             id="radio-3"
             type="checkbox"
             name="cafe"
-            value="dessert"
+            value="디저트"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 디저트</label>

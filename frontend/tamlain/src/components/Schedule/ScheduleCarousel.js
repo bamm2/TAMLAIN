@@ -74,7 +74,6 @@ const ScheduleCarousel = () => {
   ];
 
   const size = CarouselItems.length;
-  console.log(size);
 
   // 버튼 클릭 시 재추천 axios 요청 보내기
 

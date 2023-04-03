@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import MainCarouselItem from "./MainCarouselItem";
 import * as S from "./MainCarousel.styled";
+import { useNavigate } from "react-router-dom";
+import { refreshAccessToken } from "../../utils/api/oauthApi";
 
 const MainCarousel = () => {
   const settings = {
@@ -39,6 +41,20 @@ const MainCarousel = () => {
     },
   ];
 
+  // 여행하기 버튼 클릭시 스케줄 페이지로 이동 
+  // 로그인 체크 후 , 로그인 페이지로 이동 또는 일정 등록 페이지로 이동 
+  const navigate = useNavigate();
+  const key = localStorage.getItem("token");
+
+  const reDirectSchedule = () => {
+    refreshAccessToken(key).then((res) => console.log(res));
+    if (key === null) {
+      navigate("/login");
+    } else {
+      navigate("/surveyCalendar");
+    }
+  };
+
   // Slider가 filter 컴포넌트도 요소로 인식해서 따로 컴포넌트로 img컴포넌트 빼줌
   return (
     <>
@@ -51,7 +67,7 @@ const MainCarousel = () => {
       </Slider>
       <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
       <S.Text2> 탐라:인</S.Text2>
-      <S.MainBtn> 여행하기 </S.MainBtn>
+      <S.MainBtn onClick={reDirectSchedule} > 여행하기 </S.MainBtn>
     </>
   );
 };

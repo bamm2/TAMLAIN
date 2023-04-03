@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -23,11 +22,17 @@ export const Filter = styled.div`
 `;
 
 // 뒤로가기 버튼 ***
-export const goBack = styled(Link)`
-  font-size: 8px;
-  margin: 10px 10px;
-`;
+export const Img = styled.img`
+position:absolute;
+width: 70px;
+height: 30px;
+margin-top:5px;
+margin-left:5px;
+object-fit: contain;
+cursor: pointer;
 
+z-index: 10;
+`;
 // **********
 
 // 카카오 버튼 ***

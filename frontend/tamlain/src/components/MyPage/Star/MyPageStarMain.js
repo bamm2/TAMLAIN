@@ -1,65 +1,52 @@
+import { Outlet, useNavigate,useLocation } from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
-import Rating from "./Rating";
+import { useEffect } from "react";
+import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
+
 
 const MyPageStarMain = () => {
-  const DummyData = [
-    {
-      id: 0,
-      image: "assets/Background/mainCarousel_0.jpg",
-      tag: "#태그명 #태그명 #태그명",
-      name: "장소1",
-    },
-    {
-      id: 1,
-      image: "assets/Background/mainCarousel_1.jpg",
-      tag: "#태그명 #태그명 #태그명",
-      name: "장소2",
-    },
-    {
-      id: 2,
-      image: "assets/Background/mainCarousel_2.jpg",
-      tag: "#태그명 #태그명 #태그명",
-      name: "장소3",
-    },
-    {
-      id: 3,
-      image: "assets/Background/mainCarousel_3.jpg",
-      tag: "#태그명 #태그명 #태그명",
-      name: "장소4",
-    },
-    {
-      id: 4,
-      image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`,
-      tag: "#태그명 #태그명 #태그명",
-      name: "장소5",
-    },
-  ];
+
+  const key = localStorage.getItem("token");
+  const location = useLocation();
+  const scheduleId = location.state;
+  console.log(scheduleId);
+  // axios 로  데이터 받아와서 상단에 일정 타이틀들 뿌려주고
+  //  props로 장소 이미지랑 이름 뿌려주기 
+  useEffect(() => {
+    getReviewScheduleHistory(key, scheduleId).then(res => console.log(res));
+    return;
+  }, []);
+  
+  const navigate = useNavigate();
+
+  const reDirectMyPage = () => {
+    navigate("/history");
+  }
 
   return (
     <>
-      {DummyData.map((el, idx) => {
-        <S.Container key={idx}>
-          <S.Img src={el.image} />
-          <S.PlaceName>{el.name}</S.PlaceName>
-          <S.Wrap>
-            {/* <S.Stars>
-              {ARRAY.map((el2, idx2) => {
-                return (
-                  <FaStar
-                    key={idx2}
-                    size="50"
-                    onClick={() => handleStarClick(el2)}
-                    className={clicked[el2] && "yellowStar"}
-                  />
-                );
-              })}
-            </S.Stars> */}
-            <Rating />
-          </S.Wrap>
-        </S.Container>;
-      })}
-    </>
-  );
+      <S.BackGround>
+          <S.BackGroundFilter />
+      </S.BackGround>
+      
+     <S.Container> 
+      <S.BackBtn
+        src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
+        alt="뒤로가기"
+        onClick={reDirectMyPage}
+        />
+      <S.Img src={`${process.env.PUBLIC_URL}/assets/Background/mainCarousel_2.jpg`}></S.Img>
+        <S.TextContainer>
+          <S.TextOne>제주 먹방 다뿌셔</S.TextOne>
+          <S.TextTwo>20200202 ~ 20200303</S.TextTwo>
+          <S.TextThree>4박 5일</S.TextThree>
+        </S.TextContainer>
+    </S.Container>  
+    
+    <S.Hr />
+      
+    <Outlet />
+  </>);
 };
 
 export default MyPageStarMain;

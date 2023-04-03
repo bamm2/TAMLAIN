@@ -37,13 +37,6 @@ export const TextTwo = styled.div`
   text-align: left;
   color: #727272;
 `;
-export const TextThree = styled.div`
-  margin-left: 30px;
-  margin-bottom: 20%;
-  font-size: 15px;
-  text-align: left;
-  color: #727272;
-`;
 
 export const SelectBtn = styled.button`
   position: relative;
@@ -63,10 +56,4 @@ export const SelectBtn = styled.button`
     transition: 0.5s;
     color: wheat;
   }
-`;
-
-export const DeleteBtn = styled.img`
-  margin: 55px;
-  height: 30px;
-  cursor: pointer;
 `;

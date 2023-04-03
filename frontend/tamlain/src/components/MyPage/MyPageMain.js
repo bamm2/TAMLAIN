@@ -1,7 +1,11 @@
+import { useState } from "react";
 import * as S from "./MyPageMain.styled";
 import { Outlet, Link } from "react-router-dom";
 
 const MyPageMain = () => {
+
+  const name = localStorage.getItem("name");
+
   return (
     <div>
       <S.BackGround>
@@ -9,9 +13,9 @@ const MyPageMain = () => {
       </S.BackGround>
       <div>
         <S.TitleDiv>
-          🍊 김승완<span style={{ color: "#fc872a" }}>님의 제주여행</span>
+          🍊 {name}<span style={{ color: "#fc872a" }}>님의 제주여행</span>
         </S.TitleDiv>
-        <S.UnderBar />
+        <S.Hr />
         <Link to="/main">
           <S.BackBtn
             src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
@@ -19,7 +23,6 @@ const MyPageMain = () => {
           />
         </Link>
       </div>
-      {/* <hr style={{ position: "absolute" }} /> */}
       <Outlet />
     </div>
   );

@@ -70,14 +70,36 @@ export const ImgCircle = styled.div`
   width: 90px;
   height: 90px;
   border-line: none;
+  position: relative;
+`;
+
+export const ImgCircleFilter = styled.div`
+  opacity: 0.3;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 13;
+  top: 0%;
+  display: none;
+`;
+
+export const ImgCircleCheck = styled.img`
+  width: 50%;
+  height: 50%;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 15;
+  top: 28%;
+  left: 28%;
+  display: none;
 `;
 
 export const Img = styled.img`
   flex-grow: 1;
-  // object-fit: cover;
   width: 100%;
   height: 100%;
-  // background-color: red;
   border-radius: 50px;
   z-index: 15;
 `;

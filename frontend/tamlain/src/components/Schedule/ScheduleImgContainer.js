@@ -7,14 +7,9 @@ const ScheduleImgContainer = (props) => {
   const [size, setSize] = useState(props.size);
   const [click, setClick] = useState(false);
   const [flagToggle, setFlagToggle] = useState(false);
-  console.log(click);
-  useEffect(() => {
-    console.log(click);
-  }, []);
 
   useEffect(() => {
     setImgUrl(props.ImgUrl);
-    console.log(size);
   }, [size]);
 
   // useEffect(() => {
@@ -27,7 +22,6 @@ const ScheduleImgContainer = (props) => {
 
   const OnClickHandler = () => {
     const token = localStorage.getItem("token");
-    console.log(props.index);
     getPlaceDetail(token, props.index).then((res) => {
       console.log(res);
     });

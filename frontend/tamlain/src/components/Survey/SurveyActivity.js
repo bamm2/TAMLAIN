@@ -4,10 +4,19 @@ import { Link } from "react-router-dom";
 const SurveyActivity = () => {
   const checkSelectAll = (e) => {
     const selectall = document.querySelector('input[name="selectall"]');
-
+    selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
+      return;
     }
+    const checkboxes = document.getElementsByName("activity");
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked === false) {
+        selectall.checked = false;
+        return;
+      }
+    });
   };
 
   const selectAll = (e) => {
@@ -16,6 +25,16 @@ const SurveyActivity = () => {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = e.target.checked;
     });
+  };
+  const registForm = () => {
+    const selectedEls = document.querySelectorAll(
+      'input[name="activity"]:checked'
+    );
+    const arr = [];
+    selectedEls.forEach((el) => {
+      arr.push(el.value);
+    });
+    localStorage.setItem("Activity", JSON.stringify(arr));
   };
   return (
     <div>
@@ -31,6 +50,7 @@ const SurveyActivity = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
           alt="다음으로"
           style={{ marginLeft: "190px" }}
+          onClick={registForm}
         />
       </Link>
       <S.Activity>
@@ -59,7 +79,7 @@ const SurveyActivity = () => {
             id="radio-1"
             type="checkbox"
             name="activity"
-            value="theme"
+            value="테마체험"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 테마체험</label>
@@ -69,7 +89,7 @@ const SurveyActivity = () => {
             id="radio-2"
             type="checkbox"
             name="activity"
-            value="local"
+            value="유원지/민속촌"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 민속촌</label>
@@ -79,7 +99,7 @@ const SurveyActivity = () => {
             id="radio-3"
             type="checkbox"
             name="activity"
-            value="horse"
+            value="승마"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 승마</label>
@@ -92,7 +112,7 @@ const SurveyActivity = () => {
             id="radio-4"
             type="checkbox"
             name="activity"
-            value="zoo"
+            value="동물원"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-4">🍊 동물원</label>
@@ -102,7 +122,7 @@ const SurveyActivity = () => {
             id="radio-5"
             type="checkbox"
             name="activity"
-            value="farm"
+            value="관광농원"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-5">🍊 관광농원</label>
@@ -112,7 +132,7 @@ const SurveyActivity = () => {
             id="radio-6"
             type="checkbox"
             name="activity"
-            value="science"
+            value="과학"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-6">🍊 과학</label>
