@@ -1,7 +1,5 @@
 import * as S from "./Navbar.styled";
-import { Outlet, useNavigate, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { loginActions } from "../../store/KakaoLogin";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logout } from "../../utils/api/oauthApi";
 
@@ -17,7 +15,7 @@ const Navbar = (props) => {
     } else {
       setIsAuth(false);
     }
-  }, []);
+  }, [key]);
 
   //  메인 페이지로 이동 
   const mainpageHandler = () => {
@@ -37,6 +35,7 @@ const Navbar = (props) => {
       console.log(res);
     });
     window.localStorage.clear();
+    window.location.reload();
   };
 
   //  마이페이지로 이동 

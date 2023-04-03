@@ -66,7 +66,7 @@ export const TextTwo = styled.div`
 `;
 export const TextThree = styled.div`
   margin-left: 30px;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
   font-size: 21px;
   text-align: left;
   color: #727272;
@@ -76,4 +76,27 @@ export const TextThree = styled.div`
 export const FlexBox = styled.div`
 display:flex;
 justify-content: flex-start;
+background-color:blue;
+`;
+
+
+export const MapContainer = styled.div`
+    width:100%;
+    height:300px;
+    background-color:pink;
+    display:flex;
+`;
+
+
+export const Div = styled.div`
+  float: left;
+  width: 20%;
+  height: 350px;
+  background-color: #f9f9f9;
+  overflow: auto;
+  position: relative;
+  margin-top: 5%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
