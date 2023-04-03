@@ -6,6 +6,8 @@ import ModalRegist from "../../UI/Modal/ModalRegist";
 import ScheduleMap from "./ScheduleMap";
 import { useCallback } from "react";
 import client from "../../utils/client";
+import { motion } from "framer-motion";
+
 const ScheduleMain = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
@@ -64,6 +66,7 @@ const ScheduleMain = () => {
           ></Modal>
         )}
       </div>
+
       {day.map((item) => (
         <div key={item.id} style={{ float: "left" }}>
           <S.DayBtn className="radio-btn" style={{ left: `${item.id * 90}px` }}>

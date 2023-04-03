@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const SearchBtn = styled.div`
   float: left;
   position: relative;
-  width: 80%;
+  width: 79.5%;
   height: 60px;
   background-color: #f5f5f5;
   margin-top: 1%;
@@ -23,12 +23,12 @@ export const SearchIcon = styled.img`
 export const RecommBtn = styled.span`
   position: relative;
   float: left;
-  width: 15%;
+  width: 16.5%;
   height: 60px;
-  font-size: 17px;
+  font-size: 20px;
   color: #fc872a;
-  margin-left: 3%;
-  margin-top: 3%;
+  margin-left: 2.5%;
+  margin-top: 4%;
 `;
 
 export const BackBtn = styled.img`
@@ -63,4 +63,11 @@ export const Div = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const EmptySpace = styled.div`
+  color: #fc872a;
+  text-align: center;
+  position: relative;
+  transform: translateY(450%);
 `;

@@ -5,26 +5,21 @@ import client from "../../../utils/client";
 const SchduleSearchItem = (props) => {
   var idx = props.page;
   const [product, setProduct] = useState([]);
-  const [select, setSelect] = useState(() => {
-    return JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
-  });
   useEffect(() => {
     const data = props.name;
     setProduct(data);
   }, []);
   const addPlace = () => {
-    const arr = [];
     const obj = {
       title: product.title,
       latlng: product.latlng,
     };
+    const arr = JSON.parse(localStorage.getItem(`marker${idx}`));
     arr.push(obj);
-    setSelect((product) => [...product, arr]);
-    console.log(arr);
-    console.log(select);
-    localStorage.setItem(`marker${idx}`, JSON.stringify(select));
+    localStorage.setItem(`marker${idx}`, JSON.stringify(arr));
     window.location.href = `${client.defaults.url}/scheduleMain/${idx}`;
   };
+
   return (
     <S.Container>
       {product.imgUrl !== "" && (

@@ -4,10 +4,28 @@ import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
 import client from "../../utils/client";
+import { motion } from "framer-motion";
 
 /*global kakao*/
 
 const { kakao } = window;
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
+
 const ScheduleMap = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
@@ -38,6 +56,7 @@ const ScheduleMap = () => {
   });
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
+  const [flag, setFlag] = useState(false);
   var count;
   var divnum;
   var divtitle;
@@ -171,6 +190,9 @@ const ScheduleMap = () => {
 
   //동적으로 div 생성
   const createDiv = (title) => {
+    if (title.length > 6) {
+      title = title.substring(0, 7);
+    }
     let tagArea = document.getElementById("tagArea");
     divnum = document.createElement("div");
     divtitle = document.createElement("div");
@@ -193,6 +215,7 @@ const ScheduleMap = () => {
     divnum.style.backgroundColor = "#fc872a";
     divnum.style.float = "left";
 
+    divtitle.setAttribute("id", `divTitle${count}`);
     divtitle.setAttribute("class", "divTitle");
     divtitle.innerHTML = title;
     tagArea.appendChild(divtitle);
@@ -209,6 +232,23 @@ const ScheduleMap = () => {
     divtitle.style.marginBottom = "12px";
 
     count++;
+    const element = document.querySelectorAll(".divTitle");
+
+    for (let i = 0; i < element.length; i++) {
+      console.log(element[i]);
+      element[i].addEventListener(
+        "click",
+        function (e) {
+          removePlace(e);
+        },
+        false
+      );
+    }
+  };
+
+  //일정표에서 직접 누르면 삭제하는 기능
+  const removePlace = (e) => {
+    setSelect(select.filter((button) => button.title != e.target.innerText));
   };
 
   const checkSelect = (t) => {
@@ -225,7 +265,12 @@ const ScheduleMap = () => {
   };
 
   return (
-    <div style={{ marginTop: "15%" }}>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{ marginTop: "15%" }}
+    >
       <div
         id="map"
         style={{
@@ -235,27 +280,33 @@ const ScheduleMap = () => {
           marginTop: "5%",
         }}
       ></div>
-      <S.Div>
-        <div
-          style={{
-            width: "3px",
-            height: "100vh",
-            marginLeft: "15%",
-            marginTop: "5%",
-            backgroundColor: "#fc872a",
-          }}
-        ></div>
-        <div
-          id="tagArea"
-          style={{
-            position: "absolute",
-            zIndex: "10",
-            top: "5%",
-            right: "5%",
-            marginBottom: "5px",
-          }}
-        ></div>
-      </S.Div>
+      {JSON.parse(localStorage.getItem(`marker${idx}`)).length === 0 && (
+        <S.Div>
+          <S.EmptySpace>아직 등록된 장소가 없습니다.</S.EmptySpace>
+        </S.Div>
+      )}
+      {JSON.parse(localStorage.getItem(`marker${idx}`)).length !== 0 && (
+        <S.Div>
+          <div
+            style={{
+              width: "3px",
+              height: "100vh",
+              marginLeft: "15%",
+              backgroundColor: "#fc872a",
+            }}
+          ></div>
+          <div
+            id="tagArea"
+            style={{
+              position: "absolute",
+              zIndex: "10",
+              top: "5%",
+              right: "5%",
+              marginBottom: "5px",
+            }}
+          ></div>
+        </S.Div>
+      )}
 
       <S.SearchBtn onClick={goSearch}>
         <S.SearchIcon
@@ -280,9 +331,31 @@ const ScheduleMap = () => {
           </button>
         </div>
       ))}
-
-      <ScheduleCarousel />
-    </div>
+      {/* {pick.map((item, index) => (
+        <div key={index}>
+          <p>{item.title}</p>
+          <button
+            onClick={() => {
+              flag && !select.includes(item)
+                ? setSelect((select) => [...select, item])
+                : setSelect(
+                    select.filter((button) => button.title != item.title)
+                  );
+            }}
+          >
+            선택
+          </button>
+        </div>
+      ))} */}
+      {/**렌더링되면 위의 map중 버튼에 해당하는 checkSelect가 true/false만을 반환하므로
+       * 자식컴포넌트에 있는 하트버튼이 true false만을 반환하면 됨
+       */}
+      <ScheduleCarousel setFlag={setFlag} />
+      <ScheduleCarousel setFlag={setFlag} />
+      <ScheduleCarousel setFlag={setFlag} />
+      <ScheduleCarousel setFlag={setFlag} />
+      <ScheduleCarousel setFlag={setFlag} />
+    </motion.div>
   );
 };
 export default ScheduleMap;

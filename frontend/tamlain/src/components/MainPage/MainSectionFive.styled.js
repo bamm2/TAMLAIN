@@ -24,8 +24,8 @@ export const Button = styled.button`
   cursor: pointer;
 
   :hover {
-    background-color: #e3dede;
+    background-color: #fff;
     transition: 0.5s;
-    color: #727272;
+    color: #fc872a;
   }
 `;

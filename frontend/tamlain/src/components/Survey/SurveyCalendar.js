@@ -5,7 +5,23 @@ import "react-dates/lib/css/_datepicker.css";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import * as S from "./SurveyCalendar.styled";
-
+import { motion } from "framer-motion";
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const SurveyCalendar = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -13,14 +29,9 @@ const SurveyCalendar = () => {
   const [isConfirm, setIsConfirm] = useState(false);
 
   useEffect(() => {
-    // console.log("useEffect 실행");
-    const storedStartDate =
-      localStorage.getItem("startDate");
+    const storedStartDate = localStorage.getItem("startDate");
     const storedEndDate = localStorage.getItem("endDate");
-    // console.log("storedStartDate");
-    // console.log(storedStartDate);
-    // console.log("storedEndDate");
-    // console.log(storedEndDate);
+
     if (storedStartDate && storedEndDate) {
       setStartDate(moment(storedStartDate));
       setEndDate(moment(storedEndDate));
@@ -34,23 +45,14 @@ const SurveyCalendar = () => {
     } else {
       setIsConfirm((cur) => !cur);
 
-      localStorage.setItem(
-        "startDate",
-        startDate.format("YYYY-MM-DD")
-      );
-      localStorage.setItem(
-        "endDate",
-        endDate.format("YYYY-MM-DD")
-      );
+      localStorage.setItem("startDate", startDate.format("YYYY-MM-DD"));
+      localStorage.setItem("endDate", endDate.format("YYYY-MM-DD"));
     }
   };
 
   const handleDatesChange = ({ startDate, endDate }) => {
     if (startDate && endDate) {
-      const diffDays = moment(endDate).diff(
-        startDate,
-        "days"
-      );
+      const diffDays = moment(endDate).diff(startDate, "days");
 
       if (diffDays > 5) {
         alert("선택 가능일은 최대 5일 입니다.");
@@ -76,13 +78,21 @@ const SurveyCalendar = () => {
     localStorage.removeItem("endDate");
   };
 
+  const resetData = () => {
+    localStorage.removeItem("startDate");
+    localStorage.removeItem("endDate");
+  };
+
   return (
     <div>
-      <img
-        src={`${process.env.PUBLIC_URL}/assets/Icon/goback.png`}
-        alt="뒤로가기"
-        style={{ float: "Left", marginLeft: "50px" }}
-      />
+      <Link to="/main">
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/Icon/goback.png`}
+          alt="뒤로가기"
+          style={{ float: "Left", marginLeft: "50px" }}
+          onClick={resetData}
+        />
+      </Link>
       <Link to="/surveyTheme">
         <img
           src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
@@ -90,33 +100,36 @@ const SurveyCalendar = () => {
           style={{ marginLeft: "190px" }}
         />
       </Link>
-      <S.DatePickerWrapper>
-        <D.DateRangePicker
-          startDate={startDate}
-          endDate={endDate}
-          startDatePlaceholderText="출발일"
-          endDatePlaceholderText="도착일"
-          onDatesChange={handleDatesChange}
-          focusedInput={focusedInput}
-          onFocusChange={handleFocusChange}
-          minimumNights={0}
-          numberOfMonths={2}
-          displayFormat="YYYY / MM / DD"
-          disabled={isConfirm}
-        />
-        {!isConfirm ? (
-          <S.ConfirmButton onClick={onClickIsConfirm}>
-            확정 하기
-          </S.ConfirmButton>
-        ) : (
-          <S.Confirmed>
-            <S.ConfirmedButton>확정 완료</S.ConfirmedButton>
-            <S.CancelButton onClick={onClickCancelBtn}>
-              취소
-            </S.CancelButton>
-          </S.Confirmed>
-        )}
-      </S.DatePickerWrapper>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{ marginTop: "15%" }}
+      >
+        <S.DatePickerWrapper>
+          <D.DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            startDatePlaceholderText="출발일"
+            endDatePlaceholderText="도착일"
+            onDatesChange={handleDatesChange}
+            focusedInput={focusedInput}
+            onFocusChange={handleFocusChange}
+            minimumNights={0}
+            numberOfMonths={2}
+            displayFormat="YYYY / MM / DD"
+            disabled={isConfirm}
+          />
+          {!isConfirm ? (
+            <S.ConfirmButton onClick={onClickIsConfirm}>확정</S.ConfirmButton>
+          ) : (
+            <S.Confirmed>
+              <S.ConfirmedButton>확정</S.ConfirmedButton>
+              <S.CancelButton onClick={onClickCancelBtn}>취소</S.CancelButton>
+            </S.Confirmed>
+          )}
+        </S.DatePickerWrapper>
+      </motion.div>
     </div>
   );
 };

@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const Contatiner = styled.div`
   position: absolute;
   z-index: 100;
-  top: 29%;
+  top: 27.5%;
   left: 25%;
   right: 25%;
   width: 50%;
   height: 200%;
   opacity: 0.96;
   background-color: gray;
-  border-radius: 20px 20px 0 0;
+  border-radius: 30px 30px 0 0;
 `;
 
 export const Modal = styled.div`

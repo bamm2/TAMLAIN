@@ -4,13 +4,11 @@ import MainSectionTwo from "./MainSectionTwo";
 import MainSectionThree from "./MainSectionThree";
 import MainSectionFour from "./MainSectionFour";
 import MainSectionFive from "./MainSectionFive";
-import MainTopButton from "./MainTopButton";
 import * as S from "./MainPage.styled";
 
 const MainPage = () => {
   return (
     <S.Container>
-      <MainTopButton />
       <S.CarouselContainer>
         <MainCarousel></MainCarousel>
       </S.CarouselContainer>

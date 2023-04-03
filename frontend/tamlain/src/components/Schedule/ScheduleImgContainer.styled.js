@@ -56,6 +56,14 @@ export const ReDirectText = styled.div`
   cursor: pointer;
 `;
 
+export const LinkKakao = styled.a`
+  text-decoration-line: none;
+  color: #fff;
+  &:hover {
+    color: #fc872a;
+  }
+`;
+
 export const StarImg = styled.img`
   position: absolute;
   top: 45%;

@@ -5,7 +5,24 @@ import { useState } from "react";
 import * as S from "./ModalRegist.styled";
 import { getScheduleThumbnail } from "../../utils/api/scheduleApi";
 import { registSchedule } from "../../utils/api/scheduleApi";
+import { motion } from "framer-motion";
 
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const ModalRegist = (props) => {
   const value = props.name2;
   const flag = true;
@@ -99,51 +116,57 @@ const ModalRegist = (props) => {
 
   return (
     <S.Contatiner>
-      <S.Modal>
-        <S.CloseButton onClick={closeModal}>
-          <FontAwesomeIcon icon={faXmark} onClick={props.close} />
-        </S.CloseButton>
-        <S.ModalInfo>
-          <div>이번 여행을 가장 잘 나타낼 수 있는</div>
-          <span>이미지를 선택해주세요:) </span>
-          <br />
-          {flag && <span>{value}</span>}
-          {flag && <br />}
-          <S.ImgContainer>
-            {urlList.map((url) => (
-              <S.ImgCircle
-                key={url.scheduleThumbnailId}
-                id={`check${url.scheduleThumbnailId}`}
-                className="checkBtn"
-              >
-                <S.ImgCircleFilter className="divfilter" />
-                <S.ImgCircleCheck
-                  src={`${process.env.PUBLIC_URL}/assets/Icon/checkIcon.png`}
-                  className="divCheck"
-                />
-                <S.Img
-                  src={url.thumbnailImageUrl}
-                  id={`thunbnail${url.scheduleThumbnailId}`}
-                  className="thumbnailBtn"
-                  onClick={() => {
-                    checkThumbnail(url.scheduleThumbnailId);
-                  }}
-                />
-              </S.ImgCircle>
-            ))}
-          </S.ImgContainer>
-          <S.Text>이번 여행의 일정명을 정해주세요:) </S.Text>
-          <S.InputBox
-            id="courseTitle"
-            type="text"
-            maxLength={20}
-            value={text}
-            onChange={textHandler}
-          ></S.InputBox>
-          <S.InputTextCount>{textLen} / 20</S.InputTextCount>
-          <S.ModalButton onClick={registDB}> 등록하기 </S.ModalButton>
-        </S.ModalInfo>
-      </S.Modal>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <S.Modal>
+          <S.CloseButton onClick={closeModal}>
+            <FontAwesomeIcon icon={faXmark} onClick={props.close} />
+          </S.CloseButton>
+          <S.ModalInfo>
+            <div>이번 여행을 가장 잘 나타낼 수 있는</div>
+            <span>이미지를 선택해주세요:) </span>
+            <br />
+            {flag && <span>{value}</span>}
+            {flag && <br />}
+            <S.ImgContainer>
+              {urlList.map((url) => (
+                <S.ImgCircle
+                  key={url.scheduleThumbnailId}
+                  id={`check${url.scheduleThumbnailId}`}
+                  className="checkBtn"
+                >
+                  <S.ImgCircleFilter className="divfilter" />
+                  <S.ImgCircleCheck
+                    src={`${process.env.PUBLIC_URL}/assets/Icon/checkIcon.png`}
+                    className="divCheck"
+                  />
+                  <S.Img
+                    src={url.thumbnailImageUrl}
+                    id={`thunbnail${url.scheduleThumbnailId}`}
+                    className="thumbnailBtn"
+                    onClick={() => {
+                      checkThumbnail(url.scheduleThumbnailId);
+                    }}
+                  />
+                </S.ImgCircle>
+              ))}
+            </S.ImgContainer>
+            <S.Text>이번 여행의 일정명을 정해주세요:) </S.Text>
+            <S.InputBox
+              id="courseTitle"
+              type="text"
+              maxLength={20}
+              value={text}
+              onChange={textHandler}
+            ></S.InputBox>
+            <S.InputTextCount>{textLen} / 20</S.InputTextCount>
+            <S.ModalButton onClick={registDB}> 등록하기 </S.ModalButton>
+          </S.ModalInfo>
+        </S.Modal>
+      </motion.div>
     </S.Contatiner>
   );
 };

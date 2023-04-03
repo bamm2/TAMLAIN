@@ -4,7 +4,7 @@ export const DatePickerWrapper = styled.div`
   display: flex;
   position: absolute;
   top: 150px;
-  left: 20px;
+  left: 80px;
   padding-bottom: 500px;
   z-index: 9999;
 
@@ -21,13 +21,12 @@ export const DatePickerWrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 150px;
-    height: 60px;
+    height: 50px;
     border-radius: 4px;
     margin: 8px 8px;
     font-size: 16px;
     text-align: center;
-    transition: border-color 0.15s ease-in-out,
-      box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
 
   .DateInput__small {
@@ -40,6 +39,9 @@ export const DatePickerWrapper = styled.div`
     margin-right: 8px;
     text-align: center;
     cursor: pointer;
+  }
+  .DateRangePicker_picker {
+    margin-top: 11px;
   }
 
   .DateRangePickerInput_arrow {
@@ -132,10 +134,10 @@ export const ConfirmButton = styled.button`
   border: none;
   font-weight: bolder;
   border-radius: 5px;
-  width: 130px;
-  height: 50px;
+  width: 80px;
+  height: 75px;
   font-size: 20px;
-  margin: 20px;
+  margin-left: 20px;
   cursor: pointer;
 
   :hover {
@@ -159,10 +161,10 @@ export const ConfirmedButton = styled.button`
   border: none;
   font-weight: bolder;
   border-radius: 5px;
-  width: 130px;
-  height: 50px;
+  width: 80px;
+  height: 75px;
   font-size: 20px;
-  margin: 20px;
+  margin-left: 20px;
 `;
 
 export const CancelButton = styled.button`
@@ -174,10 +176,10 @@ export const CancelButton = styled.button`
   border: none;
   font-weight: bolder;
   border-radius: 5px;
-  width: 130px;
-  height: 50px;
+  width: 80px;
+  height: 75px;
   font-size: 20px;
-  margin: 0 10px 0 0;
+  margin-left: 20px;
   cursor: pointer;
 
   :hover {

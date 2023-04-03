@@ -4,9 +4,24 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { searchPlace } from "../../../utils/api/scheduleApi";
 import SchduleSearchItem from "./SchduleSearchItem";
-
+import { motion } from "framer-motion";
 import client from "../../../utils/client";
-
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const ScheduleSearch = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
@@ -67,7 +82,12 @@ const ScheduleSearch = () => {
   };
 
   return (
-    <>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{ marginTop: "15%" }}
+    >
       <Link to={`/scheduleMain/${idx}`}>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
@@ -93,7 +113,7 @@ const ScheduleSearch = () => {
       ) : (
         <S.SearchEmpty>검색결과가 없습니다.</S.SearchEmpty>
       )}
-    </>
+    </motion.div>
   );
 };
 export default ScheduleSearch;

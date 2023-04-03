@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import store from "./store/index";
 import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./UI/ScrollToTop/ScrollToTop";
-
+import MainTopButton from "./components/MainPage/MainTopButton";
 //리액트 버전 18이상 부터는 이렇게 써야함!
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +21,7 @@ root.render(
     {/**Routes, Route는 사용하기 위해서 Router로 감싸는데, 18이상은 BrowserRouter로 최상단 컴포넌트인 App을 감싼다. */}
     <BrowserRouter>
       <ScrollToTop />
+      <MainTopButton />
       <App />
     </BrowserRouter>
   </Provider>

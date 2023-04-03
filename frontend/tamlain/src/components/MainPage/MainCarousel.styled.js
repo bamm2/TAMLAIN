@@ -42,15 +42,16 @@ export const MainBtn = styled.button`
   box-shadow: 0 0 0 2px #ffffff;
   border-radius: 20px;
   border: none;
-  background-color: #ffffff;
   background-color: rgba(255, 255, 255, 0);
   padding: 10px;
   z-index: 3;
   cursor: pointer;
 
   :hover {
-    background-color: #e3dede;
+    background-color: #fc872a;
     transition: 0.5s;
-    color: #727272;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 0 0 2px #fc872a;
   }
 `;
