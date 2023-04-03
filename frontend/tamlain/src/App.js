@@ -81,21 +81,16 @@ const App = () => {
             {/* 마이 페이지 */}
             <Route element={<MyPageMain />}>
               <Route element={<Frame />}>
-                <Route path="/redirectMyPage" element={<MyPageRedirect/>}/> 
+                <Route path="/redirectMyPage" element={<MyPageRedirect />} />
                 <Route path="history" element={<MyPageHistory />} />
                 <Route path="/myPageEmpty" element={<MyPageEmpty />} />
               </Route>
             </Route>
             {/* 마이페이지 별점 페이지  */}
-            <Route path="/myPageStarInfo/" element={<MyPageStarMain />}>           
-              <Route element={<Frame />} >
-                <Route path=":scheduleId" element={<MyPageStarInfo />} />  
-              </Route>
-            </Route>
-            
+            <Route path="/myPageStarInfo/:id" element={<MyPageStarMain />} />
+
             {/* 마이페이지 일정 세부 */}
-            <Route path="/detail/:scheduleId" element={<MyPageDetail/>}/>
-            
+            <Route path="/detail/:scheduleId" element={<MyPageDetail />} />
           </Route>
         </Routes>
       </AnimatePresence>

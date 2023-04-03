@@ -3,7 +3,7 @@ import * as S from "./MyPageStarInfo.styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const MyPageStarInfo = () => {
+const MyPageStarInfo = (props) => {
   // const DummyData = [
   //   {
   //     id: 0,
@@ -82,13 +82,16 @@ const MyPageStarInfo = () => {
     ],
   });
 
+  console.log(props.schedulePlaceInfo);
+
   const navigate = useNavigate();
   // 등록 버튼 누르면 별점등록 axios 쏘고 마이페이지 메인으로 이동
   const registStar = () => {
     // registReview(key,).then((res) => "데이터 담기" );
     navigate("/history");
   };
-
+  const size = props.schedulePlaceInfo.length;
+  console.log(size);
   return (
     <>
       <S.Wrap>
