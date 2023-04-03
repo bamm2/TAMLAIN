@@ -5,6 +5,7 @@ export const Container = styled.div`
   height: 20%;
   // background-color: blue;
   display: flex;
+  margin-left: 15px;
 `;
 
 export const Img = styled.img`
@@ -13,6 +14,7 @@ export const Img = styled.img`
   border-radius: 50px;
   margin: 20px;
   margin-left: 60px;
+  object-fit: cover;
 `;
 
 export const TextContainer = styled.div`

@@ -14,6 +14,7 @@ export const SearchInput = styled.input`
   height: 50px;
   margin-left: 25px;
   margin-top: 7%;
+  margin-bottom: 20px;
   border: 1px solid #eae7e7;
   border-radius: 5px;
   padding-left: 10px;
@@ -32,4 +33,14 @@ export const SearchIcon = styled.img`
   top: 12.5%;
   right: 8%;
   cursor: pointer;
+`;
+
+export const SearchEmpty = styled.div`
+  width: 100%;
+  height: 20%;
+  display: flex;
+  margin-left: 33%;
+  margin-top: 40%;
+  font-size: 30px;
+  font-weight: 300;
 `;

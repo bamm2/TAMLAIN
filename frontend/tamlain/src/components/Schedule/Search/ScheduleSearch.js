@@ -11,36 +11,10 @@ const ScheduleSearch = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  // const products = [
-  //   {
-  //     title: "카카오",
-  //     latlng: { La: 33.450705, Ma: 126.570677 },
-  //   },
-  //   {
-  //     title: "제주공항",
-  //     latlng: { La: 33.5066211, Ma: 126.49281 },
-  //   },
-  //   {
-  //     title: "테마파크",
-  //     latlng: { La: 33.2906595, Ma: 126.322529 },
-  //   },
-  //   {
-  //     title: "수목원",
-  //     latlng: { La: 33.4696849, Ma: 126.493305 },
-  //   },
-  // ];
+
   const [mount, setMount] = useState(false);
   const [arr, setArr] = useState([]);
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const token = "token";
-    searchPlace(token).then((res) => {
-      console.log(res);
-      setProducts(res.data);
-      setMount(true);
-    });
-  }, []);
 
   useEffect(() => {
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -64,23 +38,33 @@ const ScheduleSearch = () => {
     setArr(products);
   }, [mount]);
 
+  const [searchValue, setSearchValue] = useState("");
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+  const activeEnter = (e) => {
+    if (e.key === "Enter") {
+      searchResult();
+    }
+  };
+  const [flag, setFlag] = useState(true);
+  const searchResult = () => {
+    setProducts([]);
+    const token = localStorage.getItem("token");
+    searchPlace(token, searchValue).then((res) => {
+      console.log(res);
+      if (res.data.data.length === 0) {
+        setFlag(false);
+        return;
+      }
+      setProducts(res.data.data);
+      setFlag(true);
+      setSearchValue("");
+    });
+  };
   const goBack = () => {
     window.location.href = `${client.defaults.url}/scheduleMain/${idx}`;
   };
-
-  // 검색
-  const [text, setText] = useState("");
-
-  const onChangeKeyword = (e) => {
-    setText(e.target.value);
-  };
-
-  const submitKeyword = (e) => {
-    e.preventDefault();
-    console.log(text);
-  };
-
-  console.log(text);
 
   return (
     <>
@@ -91,14 +75,24 @@ const ScheduleSearch = () => {
           onClick={goBack}
         />
       </Link>
-      <S.SearchInput type="text" value={text} onChange={onChangeKeyword} />
+      <S.SearchInput
+        type="text"
+        value={searchValue}
+        onChange={handleInputChange}
+        onKeyDown={(e) => activeEnter(e)}
+      />
       <S.SearchIcon
         src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
         alt="검색아이콘"
-        onClick={submitKeyword}
+        onClick={searchResult}
       />
-      <SchduleSearchItem></SchduleSearchItem>
-      <SchduleSearchItem></SchduleSearchItem>
+      {flag ? (
+        products.map((product, index) => {
+          return <SchduleSearchItem name={product} key={index} page={idx} />;
+        })
+      ) : (
+        <S.SearchEmpty>검색결과가 없습니다.</S.SearchEmpty>
+      )}
     </>
   );
 };

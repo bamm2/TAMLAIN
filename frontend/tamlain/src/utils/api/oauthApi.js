@@ -6,7 +6,7 @@ import client from "../client";
 export const logout = async (accessToken) => {
   const response = await client.post(`/oauth/logout`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -17,7 +17,7 @@ export const logout = async (accessToken) => {
 export const refreshAccessToken = async (accessToken) => {
   const response = await client.post(`/oauth/token`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 

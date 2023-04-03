@@ -4,7 +4,7 @@ import client from "../client";
 export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
   const response = await client.get(`/schedule/${jejuPlaceId}`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -15,7 +15,7 @@ export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
 // export const getRecommendJejuPlace = async (accessToken) => {
 //   const response = await client.get(`/schedule/recommend/survey`, {
 //     headers: {
-//       "X-AUTH-TOKEN": accessToken,
+//       'Authorization': `Bearer ${accessToken}`,
 //     },
 //   });
 
@@ -26,7 +26,7 @@ export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
 export const registSchedule = async (accessToken, data) => {
   const response = await client.post(`/schedule/regist`, data, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -34,10 +34,10 @@ export const registSchedule = async (accessToken, data) => {
 };
 
 // 장소 입력 시 검색하기
-export const searchPlace = async (accessToken) => {
-  const response = await client.get(`/schedule/search`, {
+export const searchPlace = async (accessToken, keyword) => {
+  const response = await client.get(`/schedule/search/${keyword}`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -48,7 +48,7 @@ export const searchPlace = async (accessToken) => {
 export const getScheduleThumbnail = async (accessToken) => {
   const response = await client.get(`/schedule/thumbnail`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
