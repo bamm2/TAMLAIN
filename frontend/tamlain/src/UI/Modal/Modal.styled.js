@@ -48,6 +48,13 @@ export const ModalButton = styled.button`
   margin-top: 30px;
   box-shadow: 0 6px 10px -2px gray;
   cursor: pointer;
+
+  :hover {
+    width: 75px;
+    height: 40px;
+    background-color: #fc872a;
+    color: white;
+  }
 `;
 
 export const CloseButton = styled.div`
