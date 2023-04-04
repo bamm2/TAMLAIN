@@ -14,15 +14,17 @@ import java.util.Map;
 public class ScheduleReloadReq {
     @ApiModelProperty(value = "설문조사 id")
     private int surveyId;
-    // 카테고리는?
+    @ApiModelProperty(value = "설문조사 id")
+    private String userId;
     @ApiModelProperty(value = "제주 장소 삭제된 id 리스트")
-    private Map<String, List<Integer>> placeDeleteId;
+    private List<String> placeDeleteId;
     @ApiModelProperty(value = "제주 장소 id 리스트")
     private List<Integer> selectJejuPlaceList;
 
     @Builder
-    public ScheduleReloadReq(int surveyId, Map<String, List<Integer>> placeDeleteId, List<Integer> selectJejuPlaceList) {
+    public ScheduleReloadReq(int surveyId, String userId, List<String> placeDeleteId, List<Integer> selectJejuPlaceList) {
         this.surveyId = surveyId;
+        this.userId = userId;
         this.placeDeleteId = placeDeleteId;
         this.selectJejuPlaceList = selectJejuPlaceList;
     }
