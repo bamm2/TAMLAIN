@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Period;
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 
 @Service("scheduleService")
@@ -27,7 +27,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final SurveyFavorCategoryRepository surveyFavorCategoryRepository;
     private final JejuPlaceRepository jejuPlaceRepository;
     private final ReviewRepository reviewRepository;
-    private final RedisTemplate<String, RedisPlace> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final String REDIS_KEY_PREFIX = "DELETE_PLACE:";
 
     @Override
     public SuccessRes<List<SearchPlaceRes>> getsearchPlace(String keyword) {
@@ -156,8 +157,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
 
-        //redis있는 내용 전체 삭제
-        redisTemplate.delete(redisTemplate.keys("*"));
+        //redis있는 특정 유저의 내용만 삭제
+        redisTemplate.delete(redisTemplate.keys(REDIS_KEY_PREFIX+scheduleRegistReq.getUserId()));
 
         return new CommonRes(true, "일정 등록을 완료했습니다.");
     }
@@ -199,15 +200,17 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         }
 
+        System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
         // 삭제
         System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
             System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
             for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
                 System.out.println(jejuPlace.getId());
+                jejuPlaceList.remove(jejuPlace.getId());
             }
-            jejuPlaceList.removeAll(jejuPlaceDeleteList);
         }
+        System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
 
 //        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
@@ -272,28 +275,25 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq) {
         List<JejuPlace> jejuPlaceDeleteList = new ArrayList<>();
-        for(List<Integer> list : scheduleReloadReq.getPlaceDeleteId().values()){
-            for(int id : list) {
-                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(id);
-                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-                jejuPlaceDeleteList.add(jejuPlace);
-            }
+
+        // 삭제된 것들 레디스에 추가
+        saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
+
+        // 삭제된 것들이 있으면 redis에서 꺼내와서 추가하는 코드
+        // Redis에서 해당 유저의 삭제한 장소 목록을 가져와서 jejuPlaceDeleteList에 추가
+        String userId = scheduleReloadReq.getUserId(); // 사용자 아이디
+        Set<Object> deletePlaceIds = redisTemplate.opsForSet().members(REDIS_KEY_PREFIX + userId);
+        for(Object id : deletePlaceIds) {
+            Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
+            JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
+            jejuPlaceDeleteList.add(jejuPlace);
         }
 
-        // redis 값이 있다면 추가해서 보내주는 것
-        if(redisTemplate.keys("*").size() != 0){
-            for (String key : redisTemplate.keys("*")){
-                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt(key));
-                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-                jejuPlaceDeleteList.add(jejuPlace);
-            }
-        }
-
-        //redis 값 추가
-        saveJejuPlace(scheduleReloadReq);
+        System.out.println("레디스 크기 : " + redisTemplate.opsForSet().size(REDIS_KEY_PREFIX + scheduleReloadReq.getUserId()));
 
         List<Integer> categoryList = getCategoryList(scheduleReloadReq.getSurveyId());
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = getFlaskJejuItemList(categoryList, jejuPlaceDeleteList);
+
 
         // Flask로 Req
         FlaskRecommendReq flaskRecommendReq = FlaskRecommendReq.builder()
@@ -370,192 +370,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         return resultMap;
     }
 
-//    @Override
-//    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq)  {
-//        Optional<Survey> oSurvey = surveyRepository.findById(scheduleReloadReq.getSurveyId());
-//        Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
-//
-//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-//        List<JejuPlace> jejuPlaceDeleteList = new ArrayList<>();
-//        System.out.println("----------------" + scheduleReloadReq.getSurveyId());
-//        System.out.println(scheduleReloadReq.getPlaceDeleteId().keySet());
-//        for(List<Integer> In : scheduleReloadReq.getPlaceDeleteId().values()){
-//            for(int i : In) {
-//                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
-//                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-//                jejuPlaceDeleteList.add(jejuPlace);
-//            }
-//        }
-//
-//        // redis 값이 있다면 추가해서 보내주는 것
-//        if(redisTemplate.keys("*").size() != 0){
-//            for (String key : redisTemplate.keys("*")){
-//                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt(key));
-//                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-//                jejuPlaceDeleteList.add(jejuPlace);
-//
-//            }
-//        }
-//        //redis 값 추가
-//        saveJejuPlace(scheduleReloadReq);
-//
-//        // 삭제된 값들 저장 완료
-//        jejuPlaceList.removeAll (jejuPlaceDeleteList);
-//        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
-//
-//        // 선택된 값들 저장
-//        HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap = new HashMap<>();
-//        for(String key : scheduleReloadReq.getPlaceSelectId().keySet()){
-//            List<JejuPlace> jejuPlaceSelectList = new ArrayList<>();
-//            List<FlaskJejuPlaceItem> flaskJejuPlaceSelectItemList = new ArrayList<>();
-//            for(int i : scheduleReloadReq.getPlaceSelectId().get(key)) {
-//                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
-//                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-//                jejuPlaceSelectList.add(jejuPlace);
-//                // 보내는 형식에 맞게 변환
-//                getFlaskJejuItem(jejuPlaceSelectList, flaskJejuPlaceSelectItemList);
-//            }
-//            scheduleItemMap.put(Integer.parseInt(key), flaskJejuPlaceSelectItemList);
-//        }
-//
-//
-//        List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(scheduleReloadReq.getSurveyId());
-//        List<Integer> categoryList = new ArrayList<>();
-//        for(SurveyFavorCategory surveyFavorCategory : surveyFavorCategoryList) {
-//            categoryList.add(surveyFavorCategory.getCategory().getId());
-//        }
-//
-//        FlaskSurveyItem flaskSurveyReq = FlaskSurveyItem.builder()
-//                .userId(survey.getUser().getId())
-////                .startDate(survey.getStartDate())
-////                .endDate(survey.getEndDate())
-//                .travelThemeCode(survey.getTravelThemeCode())
-//                .season(survey.getSeason())
-//                .surveyFavorCategoryList(categoryList)
-//                .build();
-//
-//        getFlaskJejuItem(jejuPlaceList, flaskJejuPlaceItemList);
-//
-//        // 리뷰 확인
-//        List<Review> reviewList = reviewRepository.findAll();
-//        List<ReviewItem> reviewItems = new ArrayList<>();
-//        for (Review review : reviewList){
-//            ReviewItem reviewItem = ReviewItem.builder()
-//                    .jejuPlaceImgUrl(review.getJejuPlace().getPlaceUrl())
-//                    .jejuPlaceName(review.getJejuPlace().getName())
-//                    .score(review.getScore())
-//                    .build();
-//            reviewItems.add(reviewItem);
-//        }
-////        List<SurveyFavorCategory> surveyFavorCategoryList = s.findAllBySurveyId(scheduleReloadReq.getSurveyId());
-////        List<Integer> categoryList = new ArrayList<>();
-////        for(SurveyFavorCategory surveyFavorCategory : surveyFavorCategoryList) {
-////            categoryList.add(surveyFavorCategory.getCategory().getId());
-////        }
-//
-//        ReloadRecommendReq recommendReq = ReloadRecommendReq.builder()
-//                .flaskSurveyReq(flaskSurveyReq)
-//                .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
-//                .scheduleItemMap(scheduleItemMap)
-//                .reviewItem(reviewItems)
-//                .build();
-//
-//        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
-//                .header("Content-Type", "application/json")
-//                .body(recommendReq)
-//                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
-//
-//        LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
-//        LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
-//        List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
-//
-//        for(String str : recommendMap.keySet()) {
-//            List<Integer> list = recommendMap.get(str);
-//            for(Integer i : list) {
-//                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
-//                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-//
-//                JejuPlaceRes jejuPlaceRes = JejuPlaceRes.builder()
-//                        .name(jejuPlace.getName())
-//                        .categoryId(jejuPlace.getCategory().getId())
-//                        .mapInfo(MapInfo.builder()
-//                                .jejuPlaceId(jejuPlace.getId())
-//                                .title(jejuPlace.getName())
-//                                .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
-//                                .build())
-//                        .roadAddress(jejuPlace.getRoadAddress())
-//                        .placeUrl(jejuPlace.getPlaceUrl())
-//                        .imgUrl(jejuPlace.getImgUrl())
-//                        .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
-//                        .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
-//                        .build();
-//
-//                jejuPlaceResList.add(jejuPlaceRes);
-//            }
-//
-//            String categoryDescription = "";
-//            switch(str) {
-//                case "맛집" :
-//                    categoryDescription = "탐나's RESTAURANT PICK";
-//                    break;
-//                case "카페/간식" :
-//                    categoryDescription = "아직";
-//                    break;
-//                case "액티비티/체험" :
-//                    categoryDescription = "다";
-//                    break;
-//                case "스포츠/레저" :
-//                    categoryDescription = "안정함";
-//                    break;
-//                case "전시" :
-//                    categoryDescription = "ㅠ";
-//                    break;
-//                case "휴양" :
-//                    categoryDescription = "ㅠ";
-//                    break;
-//                default:
-//                    break;
-//            }
-//
-//            resultMap.put(categoryDescription, jejuPlaceResList);
-//        }
-//
-//        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
-//    }
-
-    public void saveJejuPlace(ScheduleReloadReq scheduleReloadReq) {
-        for(Map.Entry<String, List<Integer>> entry : scheduleReloadReq.getPlaceDeleteId().entrySet()){
-            RedisPlace redisPlace = new RedisPlace(entry.getKey(), Collections.singletonMap(entry.getKey(), entry.getValue()));
-            redisTemplate.opsForHash().putAll(entry.getKey(), redisPlace.getJejuPlaceId());
-        }
+    public void saveFilteredPlaces(String userId, List<String> filteredPlaces) {
+        String redisKey = REDIS_KEY_PREFIX + userId;
+        Set<String> uniqueIds = new HashSet<>(filteredPlaces);
+        redisTemplate.opsForSet().add(redisKey, uniqueIds.toArray());
     }
 
-//    public Map<String, List<Integer>> getJejuPlace(String id) {
-//        Map<Object, Object> result = redisTemplate.opsForHash().entries(id);
-//        Map<String, List<Integer>> data = new HashMap<>();
-//        for (Map.Entry<Object, Object> entry : result.entrySet()) {
-//            String key = entry.getKey().toString();
-//            data.put(key, (List<Integer>) entry.getValue());
-//        }
-//        return data;
-//    }
-//
-//    public void getFlaskJejuItem(List<JejuPlace> jejuPlaceList, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList) {
-//        for(JejuPlace jejuPlace : jejuPlaceList) {
-//            FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
-//                    .jejuPlaceId(jejuPlace.getId())
-////                    .name(jejuPlace.getName())
-//                    .categoryId(jejuPlace.getCategory().getId())
-//                    .categoryName(jejuPlace.getCategory().getCategoryName())
-////                    .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
-////                    .latitude(jejuPlace.getLatitude())
-////                    .longitude(jejuPlace.getLongitude())
-////                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
-//                    .build();
-//
-//            flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
-//        }
-//    }
 
 
 }

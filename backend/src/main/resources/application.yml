@@ -12,23 +12,23 @@ jasypt:
 spring:
   datasource:
     # server
-#    url: ENC(ndX6gKk1CNkKXk4CEltuU2IrQ3cWIl5hcVL0KMAr5vi7b5fQQZuckU45z9c8385QnJh+FD7+d0+x4Q7Y7cGW2F87lWHdquUS69Xo8hWDeHpTdH0oQvI8gt8koGqKRGkIk6idPhgzIaKoN5o/Pmu2bFd58Xfrcxln4rtSw5iBLCa3pBrNK9+v4W9U9y5alxEHxoH8evmYzyeCDnpkkor8QT47i1zAe+kb2INo+4I42BXi5Uw7cGXPxA==)
-#    username: ENC(bZUHmnyJmvPH7dWd/KJ7oA==)
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    password: ENC(yZuHUcux2JSILMny9iv5Pg==)
+    url: ENC(ndX6gKk1CNkKXk4CEltuU2IrQ3cWIl5hcVL0KMAr5vi7b5fQQZuckU45z9c8385QnJh+FD7+d0+x4Q7Y7cGW2F87lWHdquUS69Xo8hWDeHpTdH0oQvI8gt8koGqKRGkIk6idPhgzIaKoN5o/Pmu2bFd58Xfrcxln4rtSw5iBLCa3pBrNK9+v4W9U9y5alxEHxoH8evmYzyeCDnpkkor8QT47i1zAe+kb2INo+4I42BXi5Uw7cGXPxA==)
+    username: ENC(bZUHmnyJmvPH7dWd/KJ7oA==)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ENC(yZuHUcux2JSILMny9iv5Pg==)
 
     # local
 #        url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
-        url: jdbc:mysql://localhost:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-        username: root
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        password: root
+#        url: jdbc:mysql://localhost:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+#        username: root
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        password: root
   jpa:
     open-in-view: false
     generate-ddl: true
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
@@ -70,8 +70,6 @@ jwt:
   token:
     secret-key: ENC(pDBdQXPGdYSFejryUIJuDCnmD0hnyzEwjbUPyYShvqJHD+azAZ9B7TUjFWi6YtbqhA9cvRn63LNRJ3WTr64NiuSyBsLVgRv2IqzJF9DQHeJVOALhraQqFGsnXGsLRlMeO+FOSXNUTTtFvXTG6+xHTCDYXCKqmf+wcJ1uZ7rd3o25le7bFQoaYQ7WwGwmfcp8)
   access-token:
-#    expire-length: 1800000
-    expire-length: 120
+    expire-length: 1800000
   refresh-token:
-    expire-length: 240
-#    expire-length: 1209600000
+    expire-length: 1209600000

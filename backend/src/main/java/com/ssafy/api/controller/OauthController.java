@@ -49,7 +49,7 @@ public class OauthController {
      * @title 로그아웃
      */
     @ApiOperation(value = "로그아웃", notes = "로그아웃")
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         String accessToken = AuthorizationExtractor.extract(request);
         authService.logout(accessToken);
