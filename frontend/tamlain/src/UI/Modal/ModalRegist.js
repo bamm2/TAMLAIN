@@ -6,6 +6,7 @@ import * as S from "./ModalRegist.styled";
 import { getScheduleThumbnail } from "../../utils/api/scheduleApi";
 import { registSchedule } from "../../utils/api/scheduleApi";
 import { motion } from "framer-motion";
+import client from "../../utils/client";
 
 const containerVariants = {
   hidden: {
@@ -80,7 +81,15 @@ const ModalRegist = (props) => {
     const userId = 1;
     const surveyId = localStorage.getItem("surveyId");
     const thumbnailId = localStorage.getItem("thumbnailId");
+    if (thumbnailId === null) {
+      alert("사진을 등록해주세요!");
+      return;
+    }
     const name = document.getElementById("courseTitle").value;
+    if (name === "") {
+      alert("일정명을 등록해주세요!");
+      return;
+    }
     const arr = [
       {
         jejuPlaceId: 1,
@@ -112,8 +121,17 @@ const ModalRegist = (props) => {
     registSchedule(token, data).then((res) => {
       console.log(res);
     });
+    localStorage.removeItem("marker1");
+    localStorage.removeItem("marker2");
+    localStorage.removeItem("marker3");
+    localStorage.removeItem("marker4");
+    localStorage.removeItem("marker5");
+    localStorage.removeItem("surveyId");
+    localStorage.removeItem("thumbnailId");
+    localStorage.removeItem("DayCnt");
     alert("등록이 완료되었습니다.");
     closeModal();
+    window.location.href = `${client.defaults.url}/history`;
   };
 
   return (

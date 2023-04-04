@@ -41,6 +41,8 @@ const ScheduleMain = () => {
     if (radioBtns === undefined) return;
     radioBtns[idx - 1].style.backgroundColor = "#fc872a";
     radioBtns[idx - 1].style.color = "#fff";
+    const arr = day;
+    setDay(arr.slice(0, parseInt(JSON.parse(localStorage.getItem("DayCnt")))));
   }, []);
   const movepage = (num) => {
     window.location.href = `${client.defaults.url}/scheduleMain/${num}`;

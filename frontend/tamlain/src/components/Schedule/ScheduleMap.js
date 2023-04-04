@@ -191,7 +191,7 @@ const ScheduleMap = () => {
   //동적으로 div 생성
   const createDiv = (title) => {
     if (title.length > 6) {
-      title = title.substring(0, 7);
+      title = title.substring(0, 6);
     }
     let tagArea = document.getElementById("tagArea");
     divnum = document.createElement("div");

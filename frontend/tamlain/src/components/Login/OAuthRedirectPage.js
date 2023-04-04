@@ -23,7 +23,7 @@ const OAuthRedirectPage = () => {
           // const USER_ID = res.data.id;
           const USER_NAME = res.data.name;
 
-          const USER_ID = 1;
+          const USER_ID = res.data.id;
 
           localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
           localStorage.setItem("id", USER_ID);

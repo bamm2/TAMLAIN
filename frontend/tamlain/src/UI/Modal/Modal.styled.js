@@ -54,6 +54,7 @@ export const ModalButton = styled.button`
     height: 40px;
     background-color: #fc872a;
     color: white;
+    transition: 0.3s;
   }
 `;
 

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import * as S from "./SurveyCalendar.styled";
 import { motion } from "framer-motion";
+import client from "../../utils/client";
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -27,6 +28,9 @@ const SurveyCalendar = () => {
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(null);
   const [isConfirm, setIsConfirm] = useState(false);
+  const [dayCnt, setDayCnt] = useState(() => {
+    return JSON.parse(localStorage.getItem(`DayCnt`)) || 0;
+  });
 
   useEffect(() => {
     const storedStartDate = localStorage.getItem("startDate");
@@ -48,6 +52,7 @@ const SurveyCalendar = () => {
     } else {
       setIsConfirm((cur) => !cur);
 
+      localStorage.setItem("DayCnt", dayCnt);
       localStorage.setItem("startDate", startDate.format("YYYY-MM-DD"));
       localStorage.setItem("endDate", endDate.format("YYYY-MM-DD"));
     }
@@ -56,7 +61,7 @@ const SurveyCalendar = () => {
   const handleDatesChange = ({ startDate, endDate }) => {
     if (startDate && endDate) {
       const diffDays = moment(endDate).diff(startDate, "days");
-
+      setDayCnt(parseInt(diffDays) + 1);
       if (diffDays > 5) {
         alert("선택 가능일은 최대 5일 입니다.");
         endDate = moment(startDate).add(4, "days");
@@ -85,7 +90,14 @@ const SurveyCalendar = () => {
     localStorage.removeItem("startDate");
     localStorage.removeItem("endDate");
   };
-
+  //확정 안누르고 못넘어가게 하기
+  const checkCalendar = () => {
+    if (!isConfirm) {
+      alert("일정 등록을 확정해주세요!");
+      return;
+    }
+    window.location.href = `${client.defaults.url}/surveyTheme`;
+  };
   return (
     <div>
       <Link to="/main">
@@ -96,13 +108,14 @@ const SurveyCalendar = () => {
           onClick={resetData}
         />
       </Link>
-      <Link to="/surveyTheme">
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
-          alt="다음으로"
-          style={{ marginLeft: "190px" }}
-        />
-      </Link>
+
+      <img
+        src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
+        alt="다음으로"
+        style={{ marginLeft: "190px" }}
+        onClick={checkCalendar}
+      />
+
       <motion.div
         variants={containerVariants}
         initial="hidden"

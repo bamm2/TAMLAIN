@@ -40,6 +40,7 @@ export const FormBtn = styled.div`
     &:hover {
       background: #fc872a;
       color: #fff;
+      transition: 0.3s;
     }
   }
 `;

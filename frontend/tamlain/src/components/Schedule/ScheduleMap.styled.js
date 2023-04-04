@@ -25,13 +25,22 @@ export const SearchIcon = styled.img`
 export const RecommBtn = styled.span`
   position: relative;
   float: left;
-  width: 16.5%;
-  height: 60px;
-  font-size: 20px;
+  width: 15%;
+  height: 25px;
+  padding: 22px 6px 17px 6px;
+  font-size: 17px;
+  text-align: center;
   color: #fc872a;
   margin-left: 2.5%;
-  margin-top: 4%;
+  margin-top: 1%;
   cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    font-size: 18px;
+    transition: 0.3s;
+    background-color: #fc872a;
+    color: #fff;
+  }
 `;
 
 export const BackBtn = styled.img`

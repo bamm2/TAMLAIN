@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as S from "./Modal.styled";
 import { motion } from "framer-motion";
 import client from "../../utils/client";
+import { surveyDelete } from "../../utils/api/surveyApi";
 
 const containerVariants = {
   hidden: {
@@ -34,11 +35,23 @@ const Modal = (props) => {
   };
 
   const goMain = () => {
+    const token = localStorage.getItem("token");
+    const surveyId = localStorage.getItem("surveyId");
+    surveyDelete(token, surveyId)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     localStorage.removeItem("marker1");
     localStorage.removeItem("marker2");
     localStorage.removeItem("marker3");
     localStorage.removeItem("marker4");
     localStorage.removeItem("marker5");
+    localStorage.removeItem("DayCnt");
+    localStorage.removeItem("surveyId");
+    localStorage.removeItem("thumbnailId");
     window.location.href = `${client.defaults.url}/main`;
   };
 

@@ -9,3 +9,13 @@ export const surveyApi = async (accessToken, data) => {
 
   return response;
 };
+
+export const surveyDelete = async (accessToken, surveyId) => {
+  const response = await client.patch(`/survey/delete/${surveyId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};

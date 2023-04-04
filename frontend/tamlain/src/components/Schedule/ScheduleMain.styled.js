@@ -92,4 +92,10 @@ export const RegistBtn = styled.button`
   font-size: 15px;
   border-radius: 10px;
   cursor: pointer;
+  &:hover {
+    border: 3px solid #32b64f;
+    background-color: #fff;
+    color: #32b64f;
+    transition: 0.3s;
+  }
 `;

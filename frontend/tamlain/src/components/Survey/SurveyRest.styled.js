@@ -38,6 +38,7 @@ export const FormBtn = styled.div`
     background: #f9fafc;
     color: #666;
     &:hover {
+      transition: 0.3s;
       background: #fc872a;
       color: #fff;
     }

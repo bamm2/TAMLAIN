@@ -142,6 +142,7 @@ export const ConfirmButton = styled.button`
 
   :hover {
     background-color: #9c795e;
+    transition: 0.3s;
   }
 `;
 
@@ -184,5 +185,6 @@ export const CancelButton = styled.button`
 
   :hover {
     background-color: #9e6b6b;
+    transition: 0.3s;
   }
 `;

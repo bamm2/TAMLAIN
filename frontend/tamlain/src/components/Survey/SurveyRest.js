@@ -152,6 +152,7 @@ const SurveyRest = () => {
       localStorage.removeItem("Theme");
       localStorage.removeItem("startDate");
       localStorage.removeItem("endDate");
+      window.location.href = `${client.defaults.url}/loading`;
     });
   };
 
