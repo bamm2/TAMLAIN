@@ -29,7 +29,7 @@ const Loading = () => {
   setInterval(randomTipData, 3000);
 
   setTimeout(function () {
-    window.location.href = `${client.defaults.url}/login`;
+    window.location.href = `${client.defaults.url}/scheduleMain/1`;
   }, 10000);
 
   return (

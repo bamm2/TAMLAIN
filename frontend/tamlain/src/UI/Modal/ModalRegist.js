@@ -112,6 +112,8 @@ const ModalRegist = (props) => {
     registSchedule(token, data).then((res) => {
       console.log(res);
     });
+    alert("등록이 완료되었습니다.");
+    closeModal();
   };
 
   return (

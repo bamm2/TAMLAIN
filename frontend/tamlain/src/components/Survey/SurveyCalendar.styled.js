@@ -4,7 +4,7 @@ export const DatePickerWrapper = styled.div`
   display: flex;
   position: absolute;
   top: 150px;
-  left: 80px;
+  left: 118px;
   padding-bottom: 500px;
   z-index: 9999;
 

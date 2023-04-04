@@ -48,7 +48,9 @@ const ScheduleImgContainer = (props) => {
       {click && (
         <>
           <S.ReDirectText>
-            <S.LinkKakao href={info.placeUrl}>상세정보</S.LinkKakao>
+            <S.LinkKakao href={info.placeUrl} target="_blank">
+              상세정보
+            </S.LinkKakao>
           </S.ReDirectText>
           <S.StarImg
             src={`${process.env.PUBLIC_URL}/assets/Icon/starImg.png`}

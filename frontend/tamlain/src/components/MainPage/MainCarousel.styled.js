@@ -25,7 +25,7 @@ export const Text1 = styled.div`
 export const Text2 = styled.div`
   position: absolute;
   top: 21%;
-  left: 85.5%;
+  left: 84.5%;
   width: 70%;
   color: #ffffff;
   font-size: 50px;

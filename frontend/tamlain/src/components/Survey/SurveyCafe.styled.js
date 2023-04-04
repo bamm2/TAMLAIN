@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Cafe = styled.div`
-  top: 55%;
-  left: 60%;
+  top: 53%;
+  left: 60.5%;
   transform: translate3d(-50%, -50%, 0);
   width: 100%;
   position: absolute;

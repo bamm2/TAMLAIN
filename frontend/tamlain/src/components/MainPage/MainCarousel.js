@@ -6,7 +6,39 @@ import MainCarouselItem from "./MainCarouselItem";
 import * as S from "./MainCarousel.styled";
 import { useNavigate } from "react-router-dom";
 import { refreshAccessToken } from "../../utils/api/oauthApi";
-
+import { motion } from "framer-motion";
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
+const containerVariants2 = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.8,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const MainCarousel = () => {
   const settings = {
     arrows: false, // 양 끝 화살표 안보이게
@@ -41,8 +73,8 @@ const MainCarousel = () => {
     },
   ];
 
-  // 여행하기 버튼 클릭시 스케줄 페이지로 이동 
-  // 로그인 체크 후 , 로그인 페이지로 이동 또는 일정 등록 페이지로 이동 
+  // 여행하기 버튼 클릭시 스케줄 페이지로 이동
+  // 로그인 체크 후 , 로그인 페이지로 이동 또는 일정 등록 페이지로 이동
   const navigate = useNavigate();
   const key = localStorage.getItem("token");
 
@@ -65,9 +97,21 @@ const MainCarousel = () => {
           </S.Container>
         ))}
       </Slider>
-      <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
-      <S.Text2> 탐라:인</S.Text2>
-      <S.MainBtn onClick={reDirectSchedule} > 여행하기 </S.MainBtn>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
+        <S.Text2> 탐라:IN</S.Text2>
+      </motion.div>
+      <motion.div
+        variants={containerVariants2}
+        initial="hidden"
+        animate="visible"
+      >
+        <S.MainBtn onClick={reDirectSchedule}> 여행하기 </S.MainBtn>
+      </motion.div>
     </>
   );
 };

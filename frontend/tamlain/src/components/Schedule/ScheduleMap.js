@@ -230,6 +230,7 @@ const ScheduleMap = () => {
     divtitle.style.borderRadius = "5px";
     divtitle.style.backgroundColor = "#fc872a";
     divtitle.style.marginBottom = "12px";
+    divtitle.style.cursor = "pointer";
 
     count++;
     const element = document.querySelectorAll(".divTitle");
@@ -280,33 +281,35 @@ const ScheduleMap = () => {
           marginTop: "5%",
         }}
       ></div>
-      {JSON.parse(localStorage.getItem(`marker${idx}`)).length === 0 && (
+      {(JSON.parse(localStorage.getItem(`marker${idx}`)) === null ||
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length === 0) && (
         <S.Div>
           <S.EmptySpace>아직 등록된 장소가 없습니다.</S.EmptySpace>
         </S.Div>
       )}
-      {JSON.parse(localStorage.getItem(`marker${idx}`)).length !== 0 && (
-        <S.Div>
-          <div
-            style={{
-              width: "3px",
-              height: "100vh",
-              marginLeft: "15%",
-              backgroundColor: "#fc872a",
-            }}
-          ></div>
-          <div
-            id="tagArea"
-            style={{
-              position: "absolute",
-              zIndex: "10",
-              top: "5%",
-              right: "5%",
-              marginBottom: "5px",
-            }}
-          ></div>
-        </S.Div>
-      )}
+      {JSON.parse(localStorage.getItem(`marker${idx}`)) !== null &&
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length !== 0 && (
+          <S.Div>
+            <div
+              style={{
+                width: "3px",
+                height: "100vh",
+                marginLeft: "15%",
+                backgroundColor: "#fc872a",
+              }}
+            ></div>
+            <div
+              id="tagArea"
+              style={{
+                position: "absolute",
+                zIndex: "10",
+                top: "5%",
+                right: "5%",
+                marginBottom: "5px",
+              }}
+            ></div>
+          </S.Div>
+        )}
 
       <S.SearchBtn onClick={goSearch}>
         <S.SearchIcon

@@ -3,6 +3,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as S from "./Modal.styled";
 import { motion } from "framer-motion";
+import client from "../../utils/client";
 
 const containerVariants = {
   hidden: {
@@ -32,6 +33,15 @@ const Modal = (props) => {
     document.body.style = `overflow:auto`;
   };
 
+  const goMain = () => {
+    localStorage.removeItem("marker1");
+    localStorage.removeItem("marker2");
+    localStorage.removeItem("marker3");
+    localStorage.removeItem("marker4");
+    localStorage.removeItem("marker5");
+    window.location.href = `${client.defaults.url}/main`;
+  };
+
   return (
     <>
       <S.Contatiner>
@@ -50,10 +60,7 @@ const Modal = (props) => {
               {flag && <span>{value}</span>}
               {flag && <br />}
 
-              <S.ModalButton
-                style={{ marginRight: "10px" }}
-                onClick={props.yes}
-              >
+              <S.ModalButton style={{ marginRight: "10px" }} onClick={goMain}>
                 예
               </S.ModalButton>
               <S.ModalButton

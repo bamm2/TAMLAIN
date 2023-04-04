@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Food = styled.div`
-  top: 55%;
+  top: 53%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   width: 100%;

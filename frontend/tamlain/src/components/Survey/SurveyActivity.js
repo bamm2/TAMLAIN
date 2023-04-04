@@ -89,7 +89,6 @@ const SurveyActivity = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.Activity>
           <S.FormAllBtn>

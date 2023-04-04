@@ -57,7 +57,6 @@ const SurveyTheme = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.Theme>
           <S.FormBtn style={{ marginLeft: "100px" }}>

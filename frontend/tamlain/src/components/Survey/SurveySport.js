@@ -90,7 +90,6 @@ const SurveySport = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.Sport>
           <S.FormAllBtn>

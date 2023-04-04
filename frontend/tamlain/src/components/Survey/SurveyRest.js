@@ -141,6 +141,7 @@ const SurveyRest = () => {
         } else if (page === 8) {
           window.location.href = `${client.defaults.url}/surveyRest`;
         }
+        return;
       }
       localStorage.removeItem("Rest");
       localStorage.removeItem("Food");
@@ -182,7 +183,6 @@ const SurveyRest = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.Rest>
           <S.FormAllBtn>

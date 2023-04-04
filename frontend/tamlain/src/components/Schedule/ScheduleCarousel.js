@@ -81,7 +81,7 @@ const ScheduleCarousel = (props) => {
     <S.Container>
       {/* 여기에서 카테고리수만큼 반복문 돌려주기 */}
       <S.CategoryName> axios 받아와서 넣어줄 카테고리 ! </S.CategoryName>
-      <S.ReRecommendBtn> ↺ </S.ReRecommendBtn>
+      {/* <S.ReRecommendBtn> ↺ </S.ReRecommendBtn> */}
 
       <Slider {...settings}>
         {CarouselItems.map((items) => (

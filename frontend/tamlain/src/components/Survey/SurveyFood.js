@@ -87,7 +87,6 @@ const SurveyFood = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.Food>
           <S.FormAllBtn>

@@ -11,6 +11,7 @@ export const SearchBtn = styled.div`
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #dadce0;
   display: flex;
+  cursor: pointer;
 `;
 
 export const SearchIcon = styled.img`
@@ -18,6 +19,7 @@ export const SearchIcon = styled.img`
   height: 25px;
   margin-left: 93%;
   margin-top: 3%;
+  cursor: pointer;
 `;
 
 export const RecommBtn = styled.span`
@@ -29,6 +31,7 @@ export const RecommBtn = styled.span`
   color: #fc872a;
   margin-left: 2.5%;
   margin-top: 4%;
+  cursor: pointer;
 `;
 
 export const BackBtn = styled.img`

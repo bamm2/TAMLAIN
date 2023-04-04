@@ -20,7 +20,7 @@ export const Button = styled.button`
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-  margin: 70px 0 0 220px;
+  margin: 85px 0 0 230px;
   cursor: pointer;
 
   :hover {

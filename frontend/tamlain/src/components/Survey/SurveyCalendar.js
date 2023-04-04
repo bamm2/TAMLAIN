@@ -36,6 +36,9 @@ const SurveyCalendar = () => {
       setStartDate(moment(storedStartDate));
       setEndDate(moment(storedEndDate));
     }
+    if (localStorage.getItem("endDate")) {
+      setIsConfirm(true);
+    }
   }, []);
 
   // 확정하기 버튼 클릭 시
@@ -104,7 +107,6 @@ const SurveyCalendar = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ marginTop: "15%" }}
       >
         <S.DatePickerWrapper>
           <D.DateRangePicker
@@ -124,7 +126,6 @@ const SurveyCalendar = () => {
             <S.ConfirmButton onClick={onClickIsConfirm}>확정</S.ConfirmButton>
           ) : (
             <S.Confirmed>
-              <S.ConfirmedButton>확정</S.ConfirmedButton>
               <S.CancelButton onClick={onClickCancelBtn}>취소</S.CancelButton>
             </S.Confirmed>
           )}
