@@ -89,3 +89,8 @@
 ```
 - SpringBoot-Flask API 서버 연결
 ```
+# 23.04.04.
+```
+- 추천 알고리즘 완성
+- SpringBoot-Flask API 서버 연결
+```
