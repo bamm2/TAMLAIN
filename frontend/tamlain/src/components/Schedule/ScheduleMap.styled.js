@@ -2,24 +2,45 @@ import styled from "styled-components";
 
 export const SearchBtn = styled.div`
   float: left;
-  width: 77%;
-  height: 100%;
-  margin-left: 10px;
-  margin-top: 10px;
+  position: relative;
+  width: 79.5%;
+  height: 60px;
+  background-color: #f5f5f5;
+  margin-top: 1%;
   border: 1px solid #eae7e7;
   border-radius: 5px;
   box-shadow: 1px 1px 3px 1px #dadce0;
+  display: flex;
+  cursor: pointer;
 `;
 
 export const SearchIcon = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
+  margin-left: 93%;
+  margin-top: 3%;
+  cursor: pointer;
 `;
 
-export const RecommBtn = styled.div`
+export const RecommBtn = styled.span`
+  position: relative;
   float: left;
-  width: 20%;
-  height: 100%;
+  width: 15%;
+  height: 25px;
+  padding: 22px 6px 17px 6px;
+  font-size: 17px;
+  text-align: center;
+  color: #fc872a;
+  margin-left: 2.5%;
+  margin-top: 1%;
+  cursor: pointer;
+  border-radius: 5px;
+  &:hover {
+    font-size: 18px;
+    transition: 0.3s;
+    background-color: #fc872a;
+    color: #fff;
+  }
 `;
 
 export const BackBtn = styled.img`
@@ -54,4 +75,11 @@ export const Div = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const EmptySpace = styled.div`
+  color: #fc872a;
+  text-align: center;
+  position: relative;
+  transform: translateY(450%);
 `;

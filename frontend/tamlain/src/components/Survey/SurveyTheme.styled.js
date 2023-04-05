@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Theme = styled.div`
-  top: 60%;
-  left: 45%;
+  top: 55%;
+  left: 44%;
   transform: translate3d(-50%, -50%, 0);
   width: 100%;
   position: absolute;
@@ -40,6 +40,7 @@ export const FormBtn = styled.div`
     &:hover {
       background: #fc872a;
       color: #fff;
+      transition: 0.3s;
     }
     &:checked {
       background: #fc872a;

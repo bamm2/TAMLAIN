@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Activity = styled.div`
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   width: 100%;
@@ -41,6 +41,7 @@ export const FormBtn = styled.div`
     &:hover {
       background: #fc872a;
       color: #fff;
+      transition: 0.3s;
     }
   }
 `;

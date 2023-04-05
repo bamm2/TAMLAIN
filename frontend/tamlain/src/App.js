@@ -9,9 +9,9 @@ import Frame from "./UI/Frame/Frame";
 
 import SurveyMain from "./components/Survey/SurveyMain";
 import SurveyCalendar from "./components/Survey/SurveyCalendar";
-import SurveyGenderAndAge from "./components/Survey/SurveyGenderAndAge";
-import SurveyWithWho from "./components/Survey/SurveyWithWho";
-import SurveyCar from "./components/Survey/SurveyCar";
+// import SurveyGenderAndAge from "./components/Survey/SurveyGenderAndAge";
+// import SurveyWithWho from "./components/Survey/SurveyWithWho";
+// import SurveyCar from "./components/Survey/SurveyCar";
 import SurveyTheme from "./components/Survey/SurveyTheme";
 import SurveyFood from "./components/Survey/SurveyFood";
 import SurveyCafe from "./components/Survey/SurveyCafe";
@@ -30,6 +30,10 @@ import MyPageHistory from "./components/MyPage/History/MyPageHistory";
 
 import MyPageEmpty from "./components/MyPage/MyPageEmpty";
 import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
+import MyPageRedirect from "./components/MyPage/MyPageRedirect";
+import MyPageStarMain from "./components/MyPage/Star/MyPageStarMain";
+
+import MyPageDetail from "./components/MyPage/MyPageDetail";
 
 const App = () => {
   return (
@@ -49,12 +53,12 @@ const App = () => {
             <Route element={<SurveyMain />}>
               <Route element={<Frame />}>
                 <Route path="/surveyCalendar" element={<SurveyCalendar />} />
-                <Route
+                {/* <Route
                   path="/surveyGenderAndAge"
                   element={<SurveyGenderAndAge />}
                 />
                 <Route path="/surveyWithWho" element={<SurveyWithWho />} />
-                <Route path="/surveyCar" element={<SurveyCar />} />
+                <Route path="/surveyCar" element={<SurveyCar />} /> */}
                 <Route path="/surveyTheme" element={<SurveyTheme />} />
                 <Route path="/surveyFood" element={<SurveyFood />} />
                 <Route path="/surveyCafe" element={<SurveyCafe />} />
@@ -77,12 +81,16 @@ const App = () => {
             {/* 마이 페이지 */}
             <Route element={<MyPageMain />}>
               <Route element={<Frame />}>
+                <Route path="/redirectMyPage" element={<MyPageRedirect />} />
                 <Route path="history" element={<MyPageHistory />} />
-
                 <Route path="/myPageEmpty" element={<MyPageEmpty />} />
-                <Route path="/myPageStarInfo" element={<MyPageStarInfo />} />
               </Route>
             </Route>
+            {/* 마이페이지 별점 페이지  */}
+            <Route path="/myPageStarInfo/:id" element={<MyPageStarMain />} />
+
+            {/* 마이페이지 일정 세부 */}
+            <Route path="/detail/:scheduleId" element={<MyPageDetail />} />
           </Route>
         </Routes>
       </AnimatePresence>

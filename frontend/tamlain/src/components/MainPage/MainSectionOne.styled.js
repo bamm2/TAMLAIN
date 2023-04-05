@@ -8,6 +8,7 @@ export const Container = styled.div`
 export const LogoImg = styled.img`
   object-fit: contain;
   margin: auto;
+  padding-top: 22px;
   display: block;
 `;
 
