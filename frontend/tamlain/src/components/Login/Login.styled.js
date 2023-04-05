@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -22,19 +21,18 @@ export const Filter = styled.div`
   z-index: 2;
 `;
 
-// 메인로고
-export const Logo = styled.img`
-  position: absolute;
-  width: 70px;
-  height: 30px;
-  object-fit: contain;
-  cursor: pointer;
-  left: 0.9%;
-  top: 0.9%;
+// 뒤로가기 버튼 ***
+export const Img = styled.img`
+position:absolute;
+width: 70px;
+height: 30px;
+margin-top:5px;
+margin-left:5px;
+object-fit: contain;
+cursor: pointer;
 
-  z-index: 12;
+z-index: 10;
 `;
-
 // **********
 
 // 카카오 버튼 ***

@@ -4,72 +4,53 @@ import client from "../client";
 export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
   const response = await client.get(`/schedule/${jejuPlaceId}`, {
     headers: {
-      "X-AUTH-TOKEN": accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
   return response;
 };
 
-// // 설문 조사를 통한 추천 장소 불러오기
-// export const getRecommendJejuPlace = async (accessToken) => {
-//   const response = await client.get(`/schedule/recommend/survey`, {
-//     headers: {
-//       "X-AUTH-TOKEN": accessToken,
-//     },
-//   });
+// 설문 조사를 통한 추천 장소 불러오기
+export const getRecommendJejuPlace = async (accessToken, surveyId) => {
+  const response = await client.get(`/schedule/recommend/survey/${surveyId}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-//   return response;
-// };
+  return response;
+};
 
-// // 사용자가 만든 일정 등록하기
-// export const registSchedule = async (
-//   accessToken,
-//   name,
-//   day,
-//   jejuPlaceId,
-//   scheduleThumbnailId,
-//   surveyId,
-//   userId
-// ) => {
-//   const response = await client.post(
-//     `/schedule/regist`,
-//     {
-//       name,
-//       {day,
-//       jejuPlaceId},
-//       scheduleThumbnailId,
-//       surveyId,
-//       userId,
-//     },
-//     {
-//       headers: {
-//         "X-AUTH-TOKEN": accessToken,
-//       },
-//     }
-//   );
+// 사용자가 만든 일정 등록하기
+export const registSchedule = async (accessToken, data) => {
+  const response = await client.post(`/schedule/regist`, data, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-//   return response;
-// };
+  return response;
+};
 
-// // 장소 입력 시 검색하기
-// export const searchPlace = async (accessToken) => {
-//   const response = await client.get(`/schedule/search/keyword?`, {
-//     headers: {
-//       "X-AUTH-TOKEN": accessToken,
-//     },
-//   });
+// 장소 입력 시 검색하기
+export const searchPlace = async (accessToken, keyword) => {
+  const response = await client.get(`/schedule/search/${keyword}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-//   return response;
-// };
+  return response;
+};
 
-// // 일정 등록할 썸네일 사진 조회하기
-// export const getScheduleThumbnail = async (accessToken) => {
-//   const response = await client.get(`/schedule/thumbnail`, {
-//     headers: {
-//       "X-AUTH-TOKEN": accessToken,
-//     },
-//   });
+// 일정 등록할 썸네일 사진 조회하기
+export const getScheduleThumbnail = async (accessToken) => {
+  const response = await client.get(`/schedule/thumbnail`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-//   return response;
-// };
+  return response;
+};

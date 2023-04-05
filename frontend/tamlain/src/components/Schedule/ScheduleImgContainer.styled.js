@@ -13,6 +13,7 @@ export const ImgContainer = styled.img`
   height: 100%;
   background-color: green;
   border-radius: 6px;
+  cursor: pointer;
 `;
 
 export const ExitButton = styled.button`
@@ -41,6 +42,7 @@ export const Filter = styled.div`
   z-index: 3;
   background-color: #3a3a3a;
   // background: rgba (255, 0, 0, 0.5);
+  cursor: pointer;
 `;
 
 export const ReDirectText = styled.div`
@@ -56,10 +58,18 @@ export const ReDirectText = styled.div`
   cursor: pointer;
 `;
 
+export const LinkKakao = styled.a`
+  text-decoration-line: none;
+  color: #fff;
+  &:hover {
+    color: #fc872a;
+  }
+`;
+
 export const StarImg = styled.img`
   position: absolute;
   top: 45%;
-  left: 40%;
+  left: 37%;
   width: 20px;
   height: 20px;
   z-index: 5;
@@ -68,7 +78,7 @@ export const StarImg = styled.img`
 export const StarNum = styled.div`
   position: absolute;
   top: 47%;
-  right: 40%;
+  right: 36%;
   color: #ffffff;
   // font-weight: bold;
   z-index: 5;

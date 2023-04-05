@@ -28,7 +28,7 @@ export const BackGroundFilter = styled.div`
 export const DayBtn = styled.div`
   position: absolute;
   z-index: 4;
-  top: 44%;
+  top: 41%;
   width: 70px;
   height: 30px;
   border-radius: 30px;
@@ -82,7 +82,7 @@ export const RegistBtn = styled.button`
   z-index: 10;
   margin-top: 6.4%;
   margin-left: 65%;
-  top: 30%;
+  top: 28%;
   width: 140px;
   height: 40px;
   background-color: #32b64f;
@@ -92,4 +92,10 @@ export const RegistBtn = styled.button`
   font-size: 15px;
   border-radius: 10px;
   cursor: pointer;
+  &:hover {
+    border: 3px solid #32b64f;
+    background-color: #fff;
+    color: #32b64f;
+    transition: 0.3s;
+  }
 `;

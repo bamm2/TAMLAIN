@@ -5,12 +5,13 @@ import Modal from "../../UI/Modal/Modal";
 import ModalRegist from "../../UI/Modal/ModalRegist";
 import ScheduleMap from "./ScheduleMap";
 import { useCallback } from "react";
+import client from "../../utils/client";
+import { motion } from "framer-motion";
 
 const ScheduleMain = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  console.log(idx);
   const navigate = useNavigate();
   var dayArr = [
     { id: 1, name: "1일차" },
@@ -23,7 +24,6 @@ const ScheduleMain = () => {
 
   //  exit 모달
   const [exitModalOpen, setExitModalOpen] = useState(false);
-  const [exitDesign, setExitDesign] = useState(false);
   const ModalHandler = () => {
     setExitModalOpen(true);
     document.body.style = `overflow:hidden`;
@@ -41,9 +41,11 @@ const ScheduleMain = () => {
     if (radioBtns === undefined) return;
     radioBtns[idx - 1].style.backgroundColor = "#fc872a";
     radioBtns[idx - 1].style.color = "#fff";
+    const arr = day;
+    setDay(arr.slice(0, parseInt(JSON.parse(localStorage.getItem("DayCnt")))));
   }, []);
   const movepage = (num) => {
-    window.location.href = `http://localhost:3000/scheduleMain/${num}`;
+    window.location.href = `${client.defaults.url}/scheduleMain/${num}`;
   };
 
   return (
@@ -56,6 +58,7 @@ const ScheduleMain = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
           onClick={ModalHandler}
+          className="backBtn"
         />
         {exitModalOpen && (
           <Modal
@@ -65,6 +68,7 @@ const ScheduleMain = () => {
           ></Modal>
         )}
       </div>
+
       {day.map((item) => (
         <div key={item.id} style={{ float: "left" }}>
           <S.DayBtn className="radio-btn" style={{ left: `${item.id * 90}px` }}>
@@ -80,7 +84,9 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
-      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      <S.RegistBtn onClick={RegistModalHandler} className="registBtn">
+        등록하기
+      </S.RegistBtn>
       {registModalOpen && (
         <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
       )}

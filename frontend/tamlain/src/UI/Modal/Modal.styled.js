@@ -3,19 +3,20 @@ import styled from "styled-components";
 export const Contatiner = styled.div`
   position: absolute;
   z-index: 100;
-  top: 29%;
+  top: 27.5%;
   left: 25%;
   right: 25%;
   width: 50%;
   height: 200%;
   opacity: 0.96;
   background-color: gray;
-  border-radius: 20px 20px 0 0;
+  border-radius: 30px 30px 0 0;
 `;
 
 export const Modal = styled.div`
-  display: block;
   position: fixed;
+
+  display: block;
   z-index: 15;
   width: 300px;
   height: 200px;
@@ -47,6 +48,14 @@ export const ModalButton = styled.button`
   margin-top: 30px;
   box-shadow: 0 6px 10px -2px gray;
   cursor: pointer;
+
+  :hover {
+    width: 75px;
+    height: 40px;
+    background-color: #fc872a;
+    color: white;
+    transition: 0.3s;
+  }
 `;
 
 export const CloseButton = styled.div`

@@ -2,38 +2,45 @@ import * as S from "./ScheduleSearch.styled";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-
+import { searchPlace } from "../../../utils/api/scheduleApi";
+import SchduleSearchItem from "./SchduleSearchItem";
+import { motion } from "framer-motion";
+import client from "../../../utils/client";
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const ScheduleSearch = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  const products = [
-    {
-      title: "카카오",
-      latlng: { La: 33.450705, Ma: 126.570677 },
-    },
-    {
-      title: "제주공항",
-      latlng: { La: 33.5066211, Ma: 126.49281 },
-    },
-    {
-      title: "테마파크",
-      latlng: { La: 33.2906595, Ma: 126.322529 },
-    },
-    {
-      title: "수목원",
-      latlng: { La: 33.4696849, Ma: 126.493305 },
-    },
-  ];
 
+  const [mount, setMount] = useState(false);
   const [arr, setArr] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const radioBtns = document.querySelectorAll(".radio-btn label");
+    const registBtns = document.querySelectorAll(".registBtn");
+    const backBtns = document.querySelectorAll(".backBtn");
     if (radioBtns === undefined) return;
     for (let i = 0; i < radioBtns.length; i++) {
       radioBtns[i].style.display = "none";
     }
+    registBtns[0].style.display = "none";
+    backBtns[0].style.display = "none";
     const tmp = JSON.parse(localStorage.getItem(`marker${idx}`));
     for (let i = 0; i < tmp.length; i++) {
       for (let j = 0; j < products.length; j++) {
@@ -43,67 +50,70 @@ const ScheduleSearch = () => {
         }
       }
     }
-    console.log(products);
     setArr(products);
-  }, []);
-  const [searchValue, setSearchValue] = useState("");
+  }, [mount]);
 
+  const [searchValue, setSearchValue] = useState("");
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);
   };
-
-  const filteredProducts = arr.filter((product) => {
-    return product.title.includes(searchValue);
-  });
-
-  const Submit = (product) => {
-    const arr = JSON.parse(localStorage.getItem(`marker${idx}`));
-    arr.push(product);
-    console.log(arr);
-    localStorage.setItem(`marker${idx}`, JSON.stringify(arr));
+  const activeEnter = (e) => {
+    if (e.key === "Enter") {
+      searchResult();
+    }
+  };
+  const [flag, setFlag] = useState(true);
+  const searchResult = () => {
+    setProducts([]);
+    const token = localStorage.getItem("token");
+    searchPlace(token, searchValue).then((res) => {
+      console.log(res);
+      if (res.data.data.length === 0) {
+        setFlag(false);
+        return;
+      }
+      setProducts(res.data.data);
+      setFlag(true);
+      setSearchValue("");
+    });
+  };
+  const goBack = () => {
+    window.location.href = `${client.defaults.url}/scheduleMain/${idx}`;
   };
 
   return (
-    <div>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{ marginTop: "15%" }}
+    >
       <Link to={`/scheduleMain/${idx}`}>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
+          onClick={goBack}
         />
       </Link>
-      <S.SearchBtn
+      <S.SearchInput
         type="text"
         value={searchValue}
         onChange={handleInputChange}
+        onKeyDown={(e) => activeEnter(e)}
       />
       <S.SearchIcon
         src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
         alt="검색아이콘"
+        onClick={searchResult}
       />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      {filteredProducts.map((product, index) => (
-        <div
-          key={index}
-          style={{ textAlign: "left", marginTop: "20px", marginLeft: "10%" }}
-        >
-          <span>{product.title}</span>
-          <Link to={`/scheduleMain/${idx}`}>
-            <button
-              onClick={() => {
-                Submit(product);
-              }}
-            >
-              선택
-            </button>
-          </Link>
-        </div>
-      ))}
-    </div>
+      {flag ? (
+        products.map((product, index) => {
+          return <SchduleSearchItem name={product} key={index} page={idx} />;
+        })
+      ) : (
+        <S.SearchEmpty>검색결과가 없습니다.</S.SearchEmpty>
+      )}
+    </motion.div>
   );
 };
 export default ScheduleSearch;

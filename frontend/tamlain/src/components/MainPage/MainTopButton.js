@@ -30,7 +30,7 @@ const MainTopButton = () => {
       {showBtn && (
         <S.Container>
           <S.Button onClick={scrollToTop} type="button">
-            {/* ⬆️  */} ↑
+            Top
           </S.Button>
         </S.Container>
       )}

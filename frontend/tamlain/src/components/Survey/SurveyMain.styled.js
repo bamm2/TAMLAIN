@@ -28,9 +28,9 @@ export const SurveyTitle = styled.div`
   position: absolute;
   font-weight: 400;
   font-size: 23px;
-  top: 55%;
+  top: 50%;
   left: 50%;
-  width: 60%;
+  width: 73%;
   transform: translate3d(-50%, -50%, 0);
   z-index: 3;
 `;
