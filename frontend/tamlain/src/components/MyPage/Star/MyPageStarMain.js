@@ -31,24 +31,17 @@ const MyPageStarMain = () => {
         endDate: res.data.data.mypageCommonInfo.endDate.replaceAll("-", "."),
       };
 
-      let arr = [{}];
       // 장소 배열
       const size = res.data.data.reviewScheduleItemList.length;
 
+      localStorage.setItem("size", size);
       for (let i = 0; i < size; i++) {
         let data = res.data.data.reviewScheduleItemList[i];
-        arr[i] = {
-          jejuPlaceId: data.jejuPlaceId,
-          jejuPlaceImgUrl: data.jejuPlaceImgUrl,
-          jejuPlaceName: data.jejuPlaceName,
-          scheduleItemId: data.scheduleItemId,
-        };
+        localStorage.setItem("placeList" + i, JSON.stringify(data));
       }
 
-      setSchedulPlaceInfo(arr);
       setScheduleInfo(info);
     });
-    // return;
   }, []);
   const navigate = useNavigate();
 
@@ -64,16 +57,6 @@ const MyPageStarMain = () => {
     period: "",
     thumbnailImageUrl: "",
   });
-
-  // 일정 세부 정보 -> props로 넘겨줄 데이터
-  const [schedulePlaceInfo, setSchedulPlaceInfo] = useState({
-    jejuPlaceId: 0,
-    jejuPlaceImgUrl: "",
-    jejuPlaceName: "",
-    scheduleItemId: 0,
-  });
-
-  console.log(schedulePlaceInfo);
 
   return (
     <>
@@ -101,7 +84,7 @@ const MyPageStarMain = () => {
 
       <S.Hr />
 
-      <MyPageStarInfo schedulePlaceInfo={schedulePlaceInfo}></MyPageStarInfo>
+      <MyPageStarInfo></MyPageStarInfo>
     </>
   );
 };

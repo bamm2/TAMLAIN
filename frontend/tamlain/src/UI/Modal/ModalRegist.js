@@ -43,7 +43,6 @@ const ModalRegist = (props) => {
   const [text, setText] = useState("");
   const textHandler = (event) => {
     if (event.target.value.length > 20) {
-      setText(event.target.value.slice(0, 20));
       return;
     } else {
       setText(event.target.value);
