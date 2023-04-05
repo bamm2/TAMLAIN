@@ -16,6 +16,7 @@ const MyPageStarInfo = () => {
   const size = localStorage.getItem("size");
 
   //  넘겨받은 데이터 꺼내 쓰기
+  //  가끔 데이터 로드 안되는 경우 해결 해야함 ( reload 강제 한번 시키기 ? )
   useEffect(() => {
     let datas = [];
     for (let i = 0; i < size; i++) {
