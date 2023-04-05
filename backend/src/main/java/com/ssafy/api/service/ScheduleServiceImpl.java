@@ -195,19 +195,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
             for(JejuPlace jejuPlace : list) {
                 jejuPlaceList.add(jejuPlace);
+                System.out.print(jejuPlace.getId() + " ");
             }
         }
 
-        System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
         System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
-            System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
-            for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
-                System.out.println(jejuPlace.getId());
-            }
             jejuPlaceDeleteList.forEach(jejuPlaceList::remove);
         }
-        System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
 
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
@@ -260,7 +255,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io:5000/recommend")
+        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
@@ -275,15 +270,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         String userId = scheduleReloadReq.getUserId();
         Set<Object> deletePlaceIds = redisTemplate.opsForSet().members(REDIS_KEY_PREFIX + userId);
-        if(deletePlaceIds != null && deletePlaceIds.isEmpty()) {
+        if(!scheduleReloadReq.getPlaceDeleteId().isEmpty()){
             saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
             for (Object id : deletePlaceIds) {
                 Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
                 jejuPlaceDeleteList.add(jejuPlace);
             }
+            for (Object id : scheduleReloadReq.getPlaceDeleteId()){
+                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
+                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
+                jejuPlaceDeleteList.add(jejuPlace);
+            }
         }
-        System.out.println("레디스 크기 : " + redisTemplate.opsForSet().size(REDIS_KEY_PREFIX + scheduleReloadReq.getUserId()));
 
         List<Integer> categoryList = getCategoryList(scheduleReloadReq.getSurveyId());
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = getFlaskJejuItemList(categoryList, jejuPlaceDeleteList);
