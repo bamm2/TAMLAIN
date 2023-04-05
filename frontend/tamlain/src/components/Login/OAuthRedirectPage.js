@@ -6,7 +6,9 @@ const OAuthRedirectPage = () => {
   const navigate = useNavigate();
   const backUri = process.env.REACT_APP_SERVER_URI;
   console.log(backUri);
-  const code = new URL(window.location.href).searchParams.get("code");
+  const code = new URL(
+    window.location.href
+  ).searchParams.get("code");
   console.log(code);
   useEffect(() => {
     const loadData = async () => {
@@ -24,6 +26,7 @@ const OAuthRedirectPage = () => {
           const USER_NAME = res.data.name;
 
           const USER_ID = res.data.id;
+          console.log(USER_ID);
 
           localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
           localStorage.setItem("id", USER_ID);
