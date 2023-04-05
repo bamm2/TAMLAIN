@@ -1,18 +1,38 @@
 import { useState, useEffect } from "react";
 import * as S from "./ScheduleImgContainer.styled";
+import { getPlaceDetail } from "../../utils/api/scheduleApi";
 
 const ScheduleImgContainer = (props) => {
   const [imgUrl, setImgUrl] = useState(null);
   const [size, setSize] = useState(props.size);
   const [click, setClick] = useState(false);
   const [flagToggle, setFlagToggle] = useState(false);
+  console.log(click);
+  useEffect(() => {
+    console.log(click);
+  }, []);
 
   useEffect(() => {
     setImgUrl(props.ImgUrl);
     console.log(size);
   }, [size]);
 
-  const OnClickHandler = () => setClick((click) => !click);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(props.index);
+  //   getPlaceDetail(token, props.index).then((res) => {
+  //     console.log(res);
+  //   });
+  // }, [click]);
+
+  const OnClickHandler = () => {
+    const token = localStorage.getItem("token");
+    console.log(props.index);
+    getPlaceDetail(token, props.index).then((res) => {
+      console.log(res);
+    });
+    setClick((click) => !click);
+  };
   const FlagHandler = () => setFlagToggle((flagToggle) => !flagToggle);
 
   // x 버튼 누르면 axios로 수정 요청 보내고 , 다시 1개를 제외한 나머지 배열 그대로 가져온다 .

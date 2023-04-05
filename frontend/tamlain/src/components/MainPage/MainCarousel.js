@@ -14,7 +14,7 @@ const MainCarousel = () => {
     slidesToShow: 1, // 1장씩 보이게
     slidesToScroll: 1, // 1장씩 넘기기
     autoplay: true, // 자동으로 넘어가게
-    autoplaySpeed: 5000, // 자동으로 5초마다 넘어가게
+    autoplaySpeed: 4000, // 자동으로 5초마다 넘어가게
     centerMode: true,
     centerPadding: "0px", // 0px하면 슬라이드 끝쪽 이미지가 안 잘린다
     draggable: false, // 드래그 수동으로 넘기기 막기
@@ -41,13 +41,18 @@ const MainCarousel = () => {
 
   // Slider가 filter 컴포넌트도 요소로 인식해서 따로 컴포넌트로 img컴포넌트 빼줌
   return (
-    <Slider {...settings}>
-      {CarouselImg.map((img, index) => (
-        <S.Container key={index}>
-          <MainCarouselItem key={index} image={img.image} />
-        </S.Container>
-      ))}
-    </Slider>
+    <>
+      <Slider {...settings}>
+        {CarouselImg.map((img, index) => (
+          <S.Container key={index}>
+            <MainCarouselItem key={index} image={img.image} />
+          </S.Container>
+        ))}
+      </Slider>
+      <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
+      <S.Text2> 탐라:인</S.Text2>
+      <S.MainBtn> 여행하기 </S.MainBtn>
+    </>
   );
 };
 

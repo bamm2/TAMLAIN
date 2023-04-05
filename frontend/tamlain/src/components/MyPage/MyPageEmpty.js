@@ -25,7 +25,7 @@ const MyPageEmpty = () => {
           <h1>등록한 일정이 없어요😢</h1>
         </div>
 
-        <Link to="/SurveyCalender">
+        <Link to="/surveyCalendar">
           <GoButton value="일정 등록하러 가기" />
         </Link>
       </div>

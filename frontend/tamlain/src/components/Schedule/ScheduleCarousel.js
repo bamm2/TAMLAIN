@@ -20,8 +20,16 @@ const ScheduleCarousel = () => {
     swipeToSlide: true,
     centerMode: true,
     // variableWidth: true, // 사진마다 각자의 width대로 적용
-    prevArrow: <S.BtnPre src="assets/Icon/leftIcon.png"></S.BtnPre>,
-    nextArrow: <S.BtnNext src="assets/Icon/rightIcon.png"></S.BtnNext>,
+    prevArrow: (
+      <S.BtnPre
+        src={`${process.env.PUBLIC_URL}/assets/Icon/leftIcon.png`}
+      ></S.BtnPre>
+    ),
+    nextArrow: (
+      <S.BtnNext
+        src={`${process.env.PUBLIC_URL}/assets/Icon/rightIcon.png`}
+      ></S.BtnNext>
+    ),
   };
 
   // useEffect로 axios 쏘고 카테고리를 useState에 넣어줘서 출력
@@ -35,33 +43,33 @@ const ScheduleCarousel = () => {
   const CarouselItems = [
     {
       id: 0,
-      image: "assets/Background/mainCarousel_0.jpg",
+      image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_0.jpg`,
       tag: "#태그명 #태그명 #태그명",
-      name: "장소명 자리",
+      name: "장소명 자리1",
     },
     {
       id: 1,
-      image: "assets/Background/mainCarousel_1.jpg",
+      image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_1.jpg`,
       tag: "#태그명 #태그명 #태그명",
-      name: "장소명 자리",
+      name: "장소명 자리2",
     },
     {
       id: 2,
-      image: "assets/Background/mainCarousel_2.jpg",
+      image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_2.jpg`,
       tag: "#태그명 #태그명 #태그명",
-      name: "장소명 자리",
+      name: "장소명 자리3",
     },
     {
       id: 3,
-      image: "assets/Background/mainCarousel_3.jpg",
+      image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_3.jpg`,
       tag: "#태그명 #태그명 #태그명",
-      name: "장소명 자리",
+      name: "장소명 자리4",
     },
     {
       id: 4,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`,
       tag: "#태그명 #태그명 #태그명",
-      name: "장소명 자리",
+      name: "장소명 자리5",
     },
   ];
 

@@ -5,14 +5,11 @@ export const getScheduleHistory = async (
   accessToken,
   userId
 ) => {
-  const response = await client.get(
-    `/history/userId?userId=${userId}`,
-    {
-      headers: {
-        "X-AUTH-TOKEN": accessToken,
-      },
-    }
-  );
+  const response = await client.get(`/history/${userId}`, {
+    headers: {
+      "X-AUTH-TOKEN": accessToken,
+    },
+  });
 
   return response;
 };
@@ -23,7 +20,7 @@ export const deleteScheduleHistory = async (
   scheduleId
 ) => {
   const response = await client.patch(
-    `/history/delete/scheduleId?scheduleId=${scheduleId}`,
+    `/history/delete/${scheduleId}`,
     {},
     {
       headers: {
@@ -61,7 +58,7 @@ export const getScheduleDetail = async (
   scheduleId
 ) => {
   const response = await client.get(
-    `/history/scheduleDetail/scheduleId=${scheduleId}`,
+    `/history/scheduleDetail/${scheduleId}`,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,

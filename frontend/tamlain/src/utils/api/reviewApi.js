@@ -6,7 +6,7 @@ export const getReview = async (
   scheduleId
 ) => {
   const response = await client.get(
-    `/review/scheduleId=${scheduleId}`,
+    `/review/${scheduleId}`,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,
@@ -38,7 +38,7 @@ export const getReviewScheduleHistory = async (
   scheduleId
 ) => {
   const response = await client.get(
-    `/review/scheduleItem/scheduleId?scheduleId=${scheduleId}`,
+    `/review/scheduleItem/${scheduleId}`,
     {
       headers: {
         "X-AUTH-TOKEN": accessToken,

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+export const Container = styled.div``;
+
 export const BackGround = styled.div`
   background-image: url(${process.env
     .PUBLIC_URL}/assets/Background/mainBackground.jpg);

@@ -1,21 +1,30 @@
 import React from "react";
 import * as S from "./Login.styled";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { KAKAO_AUTH_URL } from "./OAuth";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
+  };
+
+  const redirectMainPage = () => {
+    navigate("/");
   };
 
   return (
     <S.Container>
       <S.Filter />
-      {/* <S.goBack>
-        <Link to="/">메인페이지</Link>
-      </S.goBack> */}
+      <S.Logo
+        src={`${process.env.PUBLIC_URL}/assets/MainLogo.png`}
+        onClick={redirectMainPage}
+      />
       <S.KakaoBtnContainer onClick={kakaoLogin}>
-        <S.KakaoImg src="./assets/Icon/kakao_login_medium_wide.png" />
+        <S.KakaoImg
+          src={`${process.env.PUBLIC_URL}/assets/Icon/kakao_login_medium_wide.png`}
+        />
       </S.KakaoBtnContainer>
     </S.Container>
   );
