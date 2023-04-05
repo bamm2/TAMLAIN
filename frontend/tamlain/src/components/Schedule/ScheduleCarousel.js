@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./ScheduleCarousel.styled";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ScheduleCarouselItem from "./ScheduleCarouselItem";
 import { useState } from "react";
+import { getRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 const ScheduleCarousel = (props) => {
   const settings = {
@@ -37,6 +38,15 @@ const ScheduleCarousel = (props) => {
 
   // axios로 카테고리 이름 받아오기
   const [categoryName, setCategoryName] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const surveyId = localStorage.getItem("surveyId");
+    getRecommendJejuPlace(token, surveyId).then((res) => {
+      console.log(res);
+      console.log(res.data.data);
+    });
+  }, []);
 
   // axios로 캐러셀에 들어갈 사진,태그명,장소명 받아와서 props 내려주기
   //더미

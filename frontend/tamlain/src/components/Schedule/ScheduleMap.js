@@ -5,6 +5,7 @@ import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
 import client from "../../utils/client";
 import { motion } from "framer-motion";
+import { reloadRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 /*global kakao*/
 
@@ -265,6 +266,14 @@ const ScheduleMap = () => {
     window.location.href = `${client.defaults.url}/scheduleMain/search/${idx}`;
   };
 
+  const reloadRecomm = () => {
+    const token = localStorage.getItem("token");
+    reloadRecommendJejuPlace(token).then((res) => {
+      console.log(res);
+      console.log(res.data.data);
+    });
+  };
+
   return (
     <motion.div
       variants={containerVariants}
@@ -317,7 +326,7 @@ const ScheduleMap = () => {
           alt="검색아이콘"
         />
       </S.SearchBtn>
-      <S.RecommBtn> ↺ 전체 재추천 </S.RecommBtn>
+      <S.RecommBtn onClick={reloadRecomm}> ↺ 전체 재추천 </S.RecommBtn>
       {pick.map((item, index) => (
         <div key={index}>
           <p>{item.title}</p>

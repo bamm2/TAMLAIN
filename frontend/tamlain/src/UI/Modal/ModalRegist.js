@@ -78,7 +78,7 @@ const ModalRegist = (props) => {
 
   const registDB = () => {
     const token = localStorage.getItem("token");
-    const userId = 1;
+    const userId = localStorage.getItem("id");
     const surveyId = localStorage.getItem("surveyId");
     const thumbnailId = localStorage.getItem("thumbnailId");
     if (thumbnailId === null) {
