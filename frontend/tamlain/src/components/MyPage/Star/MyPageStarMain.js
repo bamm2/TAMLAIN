@@ -65,7 +65,7 @@ const MyPageStarMain = () => {
     thumbnailImageUrl: "",
   });
 
-  // 일정 세부 정보 -> outlet에 context로 넘겨주기
+  // 일정 세부 정보 -> props로 넘겨줄 데이터
   const [schedulePlaceInfo, setSchedulPlaceInfo] = useState({
     jejuPlaceId: 0,
     jejuPlaceImgUrl: "",
