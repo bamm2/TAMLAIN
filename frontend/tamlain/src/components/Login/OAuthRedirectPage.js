@@ -14,8 +14,8 @@ const OAuthRedirectPage = () => {
     const loadData = async () => {
       await axios({
         method: "GET",
-        url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
-        // url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
+        // url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
+        url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
       })
         .then((res) => {
           console.log(backUri);
