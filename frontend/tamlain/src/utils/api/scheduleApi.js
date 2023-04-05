@@ -23,8 +23,8 @@ export const getRecommendJejuPlace = async (accessToken, surveyId) => {
 };
 
 // 재추천하기
-export const reloadRecommendJejuPlace = async (accessToken) => {
-  const response = await client.post(`/schedule/recommend/reload`, {
+export const reloadRecommendJejuPlace = async (accessToken, data) => {
+  const response = await client.post(`/schedule/recommend/reload`, data, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

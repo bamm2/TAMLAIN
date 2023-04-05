@@ -2,6 +2,7 @@ import * as S from "./Loading.styled";
 import "./Loading.css";
 import { useEffect, useState } from "react";
 import client from "../../utils/client";
+import { getRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 const Loading = () => {
   const [Tip, setTip] = useState("");
@@ -20,6 +21,16 @@ const Loading = () => {
   ];
   useEffect(() => {
     setTip(tipData[Math.floor(Math.random() * 10)]);
+    const token = localStorage.getItem("token");
+    const surveyId = localStorage.getItem("surveyId");
+    getRecommendJejuPlace(token, surveyId).then((res) => {
+      console.log(res);
+      localStorage.setItem("keys", JSON.stringify(Object.keys(res.data.data)));
+      localStorage.setItem(
+        "values",
+        JSON.stringify(Object.values(res.data.data))
+      );
+    });
   }, []);
 
   const randomTipData = () => {

@@ -24,9 +24,7 @@ const containerVariants = {
 const SurveyRest = () => {
   useEffect(() => {
     const checkboxes = document.getElementsByName("rest");
-    const checkArr = JSON.parse(
-      localStorage.getItem("Rest")
-    );
+    const checkArr = JSON.parse(localStorage.getItem("Rest"));
     if (checkArr === null) {
       return;
     }
@@ -40,9 +38,7 @@ const SurveyRest = () => {
   }, []);
 
   const checkSelectAll = (e) => {
-    const selectall = document.querySelector(
-      'input[name="selectall"]'
-    );
+    const selectall = document.querySelector('input[name="selectall"]');
     selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
@@ -83,9 +79,7 @@ const SurveyRest = () => {
     }
 
     const EndDateController = new Date(
-      moment(
-        new Date().setDate(new Date().getDate() + 4)
-      ).format("YYYY-MM-DD")
+      moment(new Date().setDate(new Date().getDate() + 4)).format("YYYY-MM-DD")
     );
     console.log(EndDateController);
     let Eyear = EndDateController.getFullYear(); // 년도
@@ -126,15 +120,10 @@ const SurveyRest = () => {
       console.log(res);
       if (res.data.success) {
         const surveyId = res.data.data;
-        localStorage.setItem(
-          "surveyId",
-          JSON.stringify(surveyId)
-        );
+        localStorage.setItem("surveyId", JSON.stringify(surveyId));
       } else {
         const page = res.data.data;
-        console.log(
-          `${client.defaults.url}/surveyCalendar`
-        );
+        console.log(`${client.defaults.url}/surveyCalendar`);
         alert(res.data.message);
         if (page === 1) {
           window.location.href = `${client.defaults.url}/surveyCalendar`;
@@ -169,9 +158,7 @@ const SurveyRest = () => {
   };
 
   const registForm = () => {
-    const selectedEls = document.querySelectorAll(
-      'input[name="rest"]:checked'
-    );
+    const selectedEls = document.querySelectorAll('input[name="rest"]:checked');
     const arr = [];
     selectedEls.forEach((el) => {
       arr.push(el.value);
@@ -191,7 +178,7 @@ const SurveyRest = () => {
       <img
         src={`${process.env.PUBLIC_URL}/assets/Icon/recommBtn.png`}
         alt="다음으로"
-        style={{ marginLeft: "190px" }}
+        style={{ marginLeft: "190px", cursor: "pointer" }}
         onClick={registSurvey}
       />
       <motion.div
@@ -208,10 +195,7 @@ const SurveyRest = () => {
               value="selectall"
               onClick={selectAll}
             />
-            <label
-              id="labelAll"
-              htmlFor="selectAll"
-            ></label>
+            <label id="labelAll" htmlFor="selectAll"></label>
           </S.FormAllBtn>
           <div
             style={{

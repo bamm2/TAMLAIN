@@ -112,7 +112,7 @@ const SurveyCalendar = () => {
       <img
         src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
         alt="다음으로"
-        style={{ marginLeft: "190px" }}
+        style={{ marginLeft: "190px", cursor: "pointer" }}
         onClick={checkCalendar}
       />
 

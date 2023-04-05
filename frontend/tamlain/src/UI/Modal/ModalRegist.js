@@ -128,6 +128,8 @@ const ModalRegist = (props) => {
     localStorage.removeItem("surveyId");
     localStorage.removeItem("thumbnailId");
     localStorage.removeItem("DayCnt");
+    localStorage.removeItem("keys");
+    localStorage.removeItem("values");
     alert("등록이 완료되었습니다.");
     closeModal();
     window.location.href = `${client.defaults.url}/history`;

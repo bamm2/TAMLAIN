@@ -2,9 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  top: 50%;
-  // width: 100%;
-  // height: 50%;
+  margin-top: 30px;
   background-color: #f1efef;
 `;
 

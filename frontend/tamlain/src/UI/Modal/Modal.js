@@ -52,6 +52,8 @@ const Modal = (props) => {
     localStorage.removeItem("DayCnt");
     localStorage.removeItem("surveyId");
     localStorage.removeItem("thumbnailId");
+    localStorage.removeItem("keys");
+    localStorage.removeItem("values");
     window.location.href = `${client.defaults.url}/main`;
   };
 
