@@ -18,11 +18,11 @@ const MainSectionTwo = () => {
       <S.ImgContainer>
         <S.ImgOne
           {...animatedItem[2]}
-          src="/assets/Background/mainSection2_1.png"
+          src={`${process.env.PUBLIC_URL}/assets/Background/mainSection2_1.png`}
         ></S.ImgOne>
         <S.ImgTwo
           {...animatedItem[3]}
-          src="/assets/Background/mainSection2_2.png"
+          src={`${process.env.PUBLIC_URL}/assets/Background/mainSection2_2.png`}
         ></S.ImgTwo>
       </S.ImgContainer>
     </S.Container>

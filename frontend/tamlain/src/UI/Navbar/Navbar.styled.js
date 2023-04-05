@@ -10,7 +10,7 @@ export const NavFrame = styled.div`
 `;
 
 export const NavContainer = styled.div`
-  margin: 5px 5px 10px 10px;
+  margin: 0px 5px 10px 20px;
   text-align: center;
   display: flex;
   justify-content: space-between;
@@ -20,7 +20,7 @@ export const NavContainer = styled.div`
 
 export const RightContainer = styled.div`
   font-size: 0.5rem;
-  margin: 5px 20px 10px 10px;
+  margin: 6px 20px 10px 10px;
   display: flex;
   color: white;
 

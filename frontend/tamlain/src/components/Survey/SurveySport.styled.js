@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Sport = styled.div`
-  top: 55%;
+  top: 53%;
   left: 60%;
   transform: translate3d(-50%, -50%, 0);
   width: 100%;
@@ -38,6 +38,7 @@ export const FormBtn = styled.div`
     background: #f9fafc;
     color: #666;
     &:hover {
+      transition: 0.3s;
       background: #fc872a;
       color: #fff;
     }

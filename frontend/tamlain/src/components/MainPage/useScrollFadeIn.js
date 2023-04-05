@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
-const useScrollFadeIn = (direction = "up", duration = 1, delay = 0) => {
+const useScrollFadeIn = (direction = "up", duration = 2, delay = 0) => {
   const element = useRef(); // 외부에서 애니메이션 트리거 이벤트 적용을 위해
 
   const handleDirection = (name) => {

@@ -13,6 +13,7 @@ export const Img = styled.img`
   border-radius: 50px;
   margin: 20px;
   margin-left: 60px;
+  cursor:pointer;
 `;
 
 export const TextContainer = styled.div`
@@ -29,6 +30,7 @@ export const TextOne = styled.div`
   margin-top: 12%;
   margin-left: 30px;
   margin-bottom: 2%;
+  cursor:pointer;
 `;
 
 export const TextTwo = styled.div`

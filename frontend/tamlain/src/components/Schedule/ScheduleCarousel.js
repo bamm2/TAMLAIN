@@ -6,10 +6,10 @@ import "slick-carousel/slick/slick-theme.css";
 import ScheduleCarouselItem from "./ScheduleCarouselItem";
 import { useState } from "react";
 
-const ScheduleCarousel = () => {
+const ScheduleCarousel = (props) => {
   const settings = {
     arrows: true, // 양 끝 화살표 표시여부
-    autoplay: false, // 자동으로 넘어가게
+    autoplay: true, // 자동으로 넘어가게
     autoplaySpeed: 2000, // 자동으로 5초마다 넘어가게
 
     dots: false, // 점을 안보이게
@@ -42,31 +42,31 @@ const ScheduleCarousel = () => {
   //더미
   const CarouselItems = [
     {
-      id: 0,
+      id: 1,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_0.jpg`,
       tag: "#태그명 #태그명 #태그명",
       name: "장소명 자리1",
     },
     {
-      id: 1,
+      id: 2,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_1.jpg`,
       tag: "#태그명 #태그명 #태그명",
       name: "장소명 자리2",
     },
     {
-      id: 2,
+      id: 3,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_2.jpg`,
       tag: "#태그명 #태그명 #태그명",
       name: "장소명 자리3",
     },
     {
-      id: 3,
+      id: 4,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_3.jpg`,
       tag: "#태그명 #태그명 #태그명",
       name: "장소명 자리4",
     },
     {
-      id: 4,
+      id: 5,
       image: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`,
       tag: "#태그명 #태그명 #태그명",
       name: "장소명 자리5",
@@ -74,7 +74,6 @@ const ScheduleCarousel = () => {
   ];
 
   const size = CarouselItems.length;
-  console.log(size);
 
   // 버튼 클릭 시 재추천 axios 요청 보내기
 
@@ -82,7 +81,7 @@ const ScheduleCarousel = () => {
     <S.Container>
       {/* 여기에서 카테고리수만큼 반복문 돌려주기 */}
       <S.CategoryName> axios 받아와서 넣어줄 카테고리 ! </S.CategoryName>
-      <S.ReRecommendBtn> ↺ </S.ReRecommendBtn>
+      {/* <S.ReRecommendBtn> ↺ </S.ReRecommendBtn> */}
 
       <Slider {...settings}>
         {CarouselItems.map((items) => (
@@ -93,6 +92,7 @@ const ScheduleCarousel = () => {
               image={items.image}
               tag={items.tag}
               name={items.name}
+              setFlag={props.setFlag}
             />
           </S.CarouselContainer>
         ))}

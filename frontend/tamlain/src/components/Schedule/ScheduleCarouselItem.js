@@ -8,6 +8,7 @@ const ScheduleCarouselItem = (props) => {
         ImgUrl={props.image}
         size={props.size}
         index={props.id}
+        setFlag={props.setFlag}
       ></ScheduleImgContainer>
       <S.Text1 htmlFor="place"> {props.tag}</S.Text1>
       <S.Text2 htmlFor="place">{props.name}</S.Text2>

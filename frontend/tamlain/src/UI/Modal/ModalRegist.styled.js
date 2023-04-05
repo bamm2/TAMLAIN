@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const Contatiner = styled.div`
   position: absolute;
   z-index: 100;
-  top: 29%;
+  top: 27.5%;
   left: 25%;
   right: 25%;
   width: 50%;
   height: 200%;
   opacity: 0.96;
   background-color: gray;
-  border-radius: 20px 20px 0 0;
+  border-radius: 30px 30px 0 0;
 `;
 
 export const Modal = styled.div`
@@ -35,7 +35,7 @@ export const ModalInfo = styled.div`
 `;
 
 export const ModalButton = styled.button`
-  width: 80%;
+  width: 180px;
   height: 35px;
   border: none;
   border-radius: 15px;
@@ -45,6 +45,15 @@ export const ModalButton = styled.button`
   margin-top: 5%;
   box-shadow: 0 6px 10px -2px gray;
   cursor: pointer;
+
+  :hover {
+    width: 185px;
+    height: 38px;
+    background-color: #fff;
+    color: #fc872a;
+    border: 1px solid #fc872a;
+    transition: 0.3s;
+  }
 `;
 
 export const CloseButton = styled.div`
@@ -70,14 +79,36 @@ export const ImgCircle = styled.div`
   width: 90px;
   height: 90px;
   border-line: none;
+  position: relative;
+`;
+
+export const ImgCircleFilter = styled.div`
+  opacity: 0.3;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 13;
+  top: 0%;
+  display: none;
+`;
+
+export const ImgCircleCheck = styled.img`
+  width: 50%;
+  height: 50%;
+  border-radius: 50px;
+  position: absolute;
+  z-index: 15;
+  top: 28%;
+  left: 28%;
+  display: none;
 `;
 
 export const Img = styled.img`
   flex-grow: 1;
-  // object-fit: cover;
   width: 100%;
   height: 100%;
-  // background-color: red;
   border-radius: 50px;
   z-index: 15;
 `;
