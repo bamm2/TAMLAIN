@@ -32,7 +32,7 @@ const MainSectionOne = () => {
         initial="hidden"
         animate="visible"
       >
-        <S.LogoImg src="/assets/MainLogoBlack.png" />
+        <S.LogoImg src={`${process.env.PUBLIC_URL}/assets/MainLogoBlack.png`} />
         <S.TextOne>다양한 제주 여행지를 </S.TextOne>
         <S.TextTwo> 추천 받아보세요</S.TextTwo>
         <S.TextThree>
