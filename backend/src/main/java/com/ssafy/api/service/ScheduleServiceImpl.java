@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service("scheduleService")
@@ -157,7 +156,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
 
-        //redis있는 특정 유저의 내용만 삭제
         redisTemplate.delete(redisTemplate.keys(REDIS_KEY_PREFIX+scheduleRegistReq.getUserId()));
 
         return new CommonRes(true, "일정 등록을 완료했습니다.");
@@ -201,18 +199,16 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
-        // 삭제
         System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
             System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
             for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
                 System.out.println(jejuPlace.getId());
-                jejuPlaceList.remove(jejuPlace.getId());
             }
+            jejuPlaceDeleteList.forEach(jejuPlaceList::remove);
         }
         System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
 
-//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
@@ -264,7 +260,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io:5000/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
@@ -277,19 +273,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq) {
         List<JejuPlace> jejuPlaceDeleteList = new ArrayList<>();
 
-        // 삭제된 것들 레디스에 추가
-        saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
-
-        // 삭제된 것들이 있으면 redis에서 꺼내와서 추가하는 코드
-        // Redis에서 해당 유저의 삭제한 장소 목록을 가져와서 jejuPlaceDeleteList에 추가
-        String userId = scheduleReloadReq.getUserId(); // 사용자 아이디
+        String userId = scheduleReloadReq.getUserId();
         Set<Object> deletePlaceIds = redisTemplate.opsForSet().members(REDIS_KEY_PREFIX + userId);
-        for(Object id : deletePlaceIds) {
-            Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
-            JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
-            jejuPlaceDeleteList.add(jejuPlace);
+        if(deletePlaceIds != null && deletePlaceIds.isEmpty()) {
+            saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
+            for (Object id : deletePlaceIds) {
+                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
+                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
+                jejuPlaceDeleteList.add(jejuPlace);
+            }
         }
-
         System.out.println("레디스 크기 : " + redisTemplate.opsForSet().size(REDIS_KEY_PREFIX + scheduleReloadReq.getUserId()));
 
         List<Integer> categoryList = getCategoryList(scheduleReloadReq.getSurveyId());
@@ -304,7 +297,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskSceduleList(scheduleReloadReq.getSelectJejuPlaceList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
