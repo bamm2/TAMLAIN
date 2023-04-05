@@ -1,11 +1,20 @@
-FROM python:3.9
+ # base image
+FROM python:3.9.16
 
-WORKDIR /
+# set the working directory
+WORKDIR /app
 
-COPY ./requirements.txt /requirements.txt
-COPY ./main.py /main.py
-COPY ./app /app
+# copy the dependencies file to the working directory
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r /requirements.txt
+# install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000", "--root-path", "/api_da"]
+# copy the content of the local src directory to the working directory
+COPY . .
+
+# expose port 5000
+EXPOSE 5000
+
+# command to run on container start
+CMD [ "python3", "app.py", "run"]
