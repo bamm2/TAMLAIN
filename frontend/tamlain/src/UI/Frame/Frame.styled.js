@@ -7,7 +7,7 @@ export const Frame = styled.div`
 
 export const FrameContainer = styled.div`
   width: 50%;
-  height: 72%;
+  height: 75%;
   position: absolute;
   z-index: 3;
   margin-top: 210px;

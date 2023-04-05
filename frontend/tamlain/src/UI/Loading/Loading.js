@@ -1,6 +1,7 @@
 import * as S from "./Loading.styled";
 import "./Loading.css";
 import { useEffect, useState } from "react";
+import client from "../../utils/client";
 
 const Loading = () => {
   const [Tip, setTip] = useState("");
@@ -28,7 +29,7 @@ const Loading = () => {
   setInterval(randomTipData, 3000);
 
   setTimeout(function () {
-    window.location.href = "http://localhost:3000/login";
+    window.location.href = `${client.defaults.url}/scheduleMain/1`;
   }, 10000);
 
   return (

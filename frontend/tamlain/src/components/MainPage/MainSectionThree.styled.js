@@ -34,7 +34,7 @@ export const ImgOne = styled.img`
   top: 0;
   left: 0;
   margin-left: 180px;
-  margin-top: 5px;
+  margin-top: 12px;
   height: 350px;
 
   z-index: 2;
@@ -43,7 +43,7 @@ export const ImgOne = styled.img`
 export const ImgTwo = styled.img`
   object-fit: contain;
   width: 300px;
-  margin-top: 30px;
+  margin-top: 45px;
 `;
 
 export const ImgContainer = styled.div`

@@ -10,8 +10,8 @@ export const Container = styled.div`
 export const Button = styled.button`
   font-weight: bold;
   font-size: 15px;
-  padding: 5px 10px;
-  background-color: #f5f5f5;
+  padding: 15px 10px;
+  background-color: #white;
   color: #3a3a3a;
   border: 1px solid rgb(210, 204, 193);
   border-radius: 50%;
@@ -20,7 +20,7 @@ export const Button = styled.button`
   cursor: pointer;
 
   :hover {
-    background-color: #3a3a3a;
+    background-color: #fc872a;
     color: #f5f5f5;
   }
 `;
