@@ -391,19 +391,6 @@ const ScheduleMap = () => {
           />
         ))}
       </S.CarouselDiv>
-      <video
-        loop
-        muted
-        autoPlay
-        controls
-        width="500"
-        className="background Img"
-      >
-        <source
-          src={`${process.env.PUBLIC_URL}/assets/trailer_cookisland_mp4.mp4`}
-          type="video/mp4"
-        />
-      </video>
     </motion.div>
   );
 };

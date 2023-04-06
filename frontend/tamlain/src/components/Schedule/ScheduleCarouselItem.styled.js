@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 40px;
+  margin-right: 40px;
   // width: 10px;
   height: 100%;
   background-color: #fafafa;
@@ -20,7 +20,9 @@ export const Text1 = styled.div`
 
 export const Text2 = styled.div`
   color: black;
-  font-size: 6px;
+  margin-top: 10px;
+  font-size: 15px;
   text-align: center;
   text-weight: bold;
+  color: #3a3a3a;
 `;

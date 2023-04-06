@@ -1,7 +1,23 @@
 import { useState, useEffect } from "react";
 import * as S from "./ScheduleImgContainer.styled";
 import { getPlaceDetail } from "../../utils/api/scheduleApi";
-
+import { motion } from "framer-motion";
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
 const ScheduleImgContainer = (props) => {
   const [imgUrl, setImgUrl] = useState("");
   const [size, setSize] = useState(props.size);
@@ -57,6 +73,11 @@ const ScheduleImgContainer = (props) => {
       )}
       {click && (
         <>
+          {/* <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          > */}
           <S.ReDirectText>
             <S.LinkKakao href={info.placeUrl} target="_blank">
               상세정보
@@ -79,8 +100,17 @@ const ScheduleImgContainer = (props) => {
                   );
             }}
           >
-            {flagToggle ? "💖" : "🤍"}
+            {flagToggle ? (
+              <S.FlagImg
+                src={`${process.env.PUBLIC_URL}/assets/Icon/icon_orange_4.svg.png`}
+              />
+            ) : (
+              <S.FlagImg
+                src={`${process.env.PUBLIC_URL}/assets/Icon/icon_whiteFlag.svg.png`}
+              />
+            )}
           </S.Flag>
+          {/* </motion.div> */}
           <S.Filter onClick={OnClickHandler} />
           <S.ImgContainer src={props.ImgUrl} />
         </>

@@ -10,15 +10,6 @@ export const CategoryName = styled.span`
   margin-left: 25px;
 `;
 
-export const ReRecommendBtn = styled.button`
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
-`;
-
 export const CarouselContainer = styled.div`
   // height: 20vh;
   // background-color: red;
@@ -26,8 +17,8 @@ export const CarouselContainer = styled.div`
 
 export const BtnNext = styled.img`
   z-index: 99;
-  width: 8px;
-  height: 8px;
+  width: 15px;
+  height: 15px;
   right: 12px;
   object-fit: cover;
 `;
@@ -35,7 +26,7 @@ export const BtnNext = styled.img`
 export const BtnPre = styled.img`
   z-index: 99;
   left: 6px;
-  width: 8px;
-  height: 8px;
+  width: 15px;
+  height: 15px;
   object-fit: cover;
 `;
