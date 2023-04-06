@@ -46,10 +46,8 @@ const MyPageStarMain = () => {
     });
   }, []);
 
-
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
-
 
   const navigate = useNavigate();
 

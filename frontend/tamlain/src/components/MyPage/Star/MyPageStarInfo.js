@@ -21,13 +21,15 @@ const MyPageStarInfo = () => {
   const size = localStorage.getItem("size");
 
   //  가끔 데이터 로드 안되는 경우 해결 해야함 ( reload 강제 한번 시키기 ? )
-  useEffect(() => {  
+  useEffect(() => {
     //  데이터 가져오기
     let datas = [];
     for (let i = 0; i < size; i++) {
       datas[i] = JSON.parse(localStorage.getItem("placeList" + i));
+      // datas[i] = localStorage.getItem("placeList" + i);
     }
-    setDataList(datas);
+    console.log(datas);
+    localStorage.setItem("tmpData", JSON.stringify(datas));
 
     //  방문 ,비방문 체크용
     let visitedInit = [];
@@ -49,39 +51,38 @@ const MyPageStarInfo = () => {
 
   console.log(dataList);
 
-
   const navigate = useNavigate();
   // 등록 버튼 누르면 별점등록 axios 쏘고 마이페이지 메인으로 이동
   const registStar = () => {
     // 보내줄 데이터 만들어주기
     let tmp = [];
 
-    for (let i = 0; i < size; i++){
-      tmp[i]={
+    for (let i = 0; i < size; i++) {
+      tmp[i] = {
         jejuPlaceId: dataList[i].jejuPlaceId,
         scheduleItemId: dataList[i].scheduleItemId,
         score: starArr[i],
-      }
-    }
-    
-    let sendDatas = {};
-      sendDatas = {
-        userId:id,
-        reviewRegistItemList:tmp
+      };
     }
 
+    let sendDatas = {};
+    sendDatas = {
+      userId: id,
+      reviewRegistItemList: tmp,
+    };
+
     console.log(sendDatas);
-    registReview(key,sendDatas).then((res) => console.log(res) );
+    registReview(key, sendDatas).then((res) => console.log(res));
     navigate("/history");
 
     //  페이지 이동 시 , 로컬 비워주기
-    localStorage.removeItem("size");
-    for (let i = 0; i < size; i++) {
-      localStorage.removeItem("placeList" + i);
-    }
+    // localStorage.removeItem("size");
+    // for (let i = 0; i < size; i++) {
+    //   localStorage.removeItem("placeList" + i);
+    // }
   };
 
-  // 방문 비방문 배열 업데이트  
+  // 방문 비방문 배열 업데이트
   const toggleHandler = (e) => {
     visited[e.target.value] = !visited[e.target.value];
     setVisited([...visited]);
@@ -89,7 +90,7 @@ const MyPageStarInfo = () => {
     setStarArr([...starArr]);
   };
 
-  // 별점 배열 업데이트 
+  // 별점 배열 업데이트
   useEffect(() => {
     starArr[starIdx] = starCount;
     setStarArr([...starArr]);
@@ -114,11 +115,16 @@ const MyPageStarInfo = () => {
             )}
             {items.jejuPlaceImgUrl === "" && (
               <S.Img
-                src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
+                src={`${process.env.PUBLIC_URL}/assets/Icon/SquareEmptyImg.png`}
               />
             )}
             <S.TitleText>{items.jejuPlaceName}</S.TitleText>
-            <Rating index={index} setStarCount={setStarCount} setStarIdx={setStarIdx} chk={visited}></Rating>
+            <Rating
+              index={index}
+              setStarCount={setStarCount}
+              setStarIdx={setStarIdx}
+              chk={visited}
+            ></Rating>
           </S.Container>
         ))}
         <S.RegistBtn onClick={registStar}>등록</S.RegistBtn>
