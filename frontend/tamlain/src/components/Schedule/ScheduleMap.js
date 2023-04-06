@@ -5,6 +5,8 @@ import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
 import client from "../../utils/client";
 import { motion } from "framer-motion";
+import { reloadRecommendJejuPlace } from "../../utils/api/scheduleApi";
+import { getRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 /*global kakao*/
 
@@ -56,7 +58,12 @@ const ScheduleMap = () => {
   });
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
-  const [flag, setFlag] = useState(false);
+  const [flag, setFlag] = useState(true);
+  const [flag2, setFlag2] = useState(false);
+
+  //캐러셀 데이터 props로 내려줄 useState들
+  const [keys, setKeys] = useState([]);
+  const [values, setValues] = useState([]);
   var count;
   var divnum;
   var divtitle;
@@ -75,7 +82,26 @@ const ScheduleMap = () => {
     var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     setMap(map1);
     console.log(select);
+    setKeys(JSON.parse(localStorage.getItem("keys")));
+    setValues(JSON.parse(localStorage.getItem("values")));
   }, []);
+
+  const removeItem = (id) => {
+    const arr = values;
+    const deleteArr = JSON.parse(localStorage.getItem("placeDeleteId")) || [];
+    loop: for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        if (arr[i][j].mapInfo.jejuPlaceId === id) {
+          arr[i].splice(j, 1);
+          deleteArr.push(arr[i][j].mapInfo.jejuPlaceId);
+          break loop;
+        }
+      }
+    }
+    localStorage.setItem("placeDeleteId", JSON.stringify(deleteArr));
+    localStorage.setItem("values", JSON.stringify(arr));
+    setValues(JSON.parse(localStorage.getItem("values")));
+  };
 
   //2. JSX 코드 상에서 최신화된 select 배열이 감지될때 실행되는 useEffect
   useEffect(() => {
@@ -190,8 +216,9 @@ const ScheduleMap = () => {
 
   //동적으로 div 생성
   const createDiv = (title) => {
+    let titleTmp = title;
     if (title.length > 6) {
-      title = title.substring(0, 6);
+      titleTmp = title.substring(0, 6);
     }
     let tagArea = document.getElementById("tagArea");
     divnum = document.createElement("div");
@@ -217,7 +244,8 @@ const ScheduleMap = () => {
 
     divtitle.setAttribute("id", `divTitle${count}`);
     divtitle.setAttribute("class", "divTitle");
-    divtitle.innerHTML = title;
+    divtitle.setAttribute("value", title);
+    divtitle.innerHTML = titleTmp;
     tagArea.appendChild(divtitle);
     divtitle.style.color = "#fff";
     divtitle.style.width = "100px";
@@ -236,21 +264,20 @@ const ScheduleMap = () => {
     const element = document.querySelectorAll(".divTitle");
 
     for (let i = 0; i < element.length; i++) {
-      console.log(element[i]);
-      element[i].addEventListener(
-        "click",
-        function (e) {
-          removePlace(e);
-        },
-        false
-      );
+      element[i].addEventListener("click", function (e) {
+        removePlace(e);
+      });
     }
   };
 
   //일정표에서 직접 누르면 삭제하는 기능
   const removePlace = (e) => {
-    setSelect(select.filter((button) => button.title != e.target.innerText));
+    setSelect(
+      select.filter((button) => button.title != e.target.getAttribute("value"))
+    );
+    setFlag(false);
   };
+  console.log(flag);
 
   const checkSelect = (t) => {
     for (let i = 0; i < select.length; i++) {
@@ -263,6 +290,35 @@ const ScheduleMap = () => {
 
   const goSearch = () => {
     window.location.href = `${client.defaults.url}/scheduleMain/search/${idx}`;
+  };
+
+  const reloadRecomm = () => {
+    const token = localStorage.getItem("token");
+    const surveyId = localStorage.getItem("surveyId");
+    const userId = localStorage.getItem("id");
+    const placeDeleteId =
+      JSON.parse(localStorage.getItem("placeDeleteId")) || [];
+    const localData = JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
+    const arr = [];
+    for (let i = 0; i < localData.length; i++) {
+      arr.push(localData[i].jejuPlaceId);
+    }
+    const data = {
+      surveyId: surveyId,
+      userId: userId,
+      placeDeleteId: placeDeleteId,
+      selectJejuPlaceList: arr,
+    };
+    console.log(data);
+    reloadRecommendJejuPlace(token, data).then((res) => {
+      console.log(res.data.data);
+      localStorage.setItem(
+        "values",
+        JSON.stringify(Object.values(res.data.data))
+      );
+    });
+    localStorage.removeItem("placeDeleteId");
+    window.location.reload();
   };
 
   return (
@@ -317,47 +373,24 @@ const ScheduleMap = () => {
           alt="검색아이콘"
         />
       </S.SearchBtn>
-      <S.RecommBtn> ↺ 전체 재추천 </S.RecommBtn>
-      {pick.map((item, index) => (
-        <div key={index}>
-          <p>{item.title}</p>
-          <button
-            onClick={() => {
-              checkSelect(item.title) && !select.includes(item)
-                ? setSelect((select) => [...select, item])
-                : setSelect(
-                    select.filter((button) => button.title != item.title)
-                  );
-            }}
-          >
-            선택
-          </button>
-        </div>
-      ))}
-      {/* {pick.map((item, index) => (
-        <div key={index}>
-          <p>{item.title}</p>
-          <button
-            onClick={() => {
-              flag && !select.includes(item)
-                ? setSelect((select) => [...select, item])
-                : setSelect(
-                    select.filter((button) => button.title != item.title)
-                  );
-            }}
-          >
-            선택
-          </button>
-        </div>
-      ))} */}
-      {/**렌더링되면 위의 map중 버튼에 해당하는 checkSelect가 true/false만을 반환하므로
-       * 자식컴포넌트에 있는 하트버튼이 true false만을 반환하면 됨
-       */}
-      <ScheduleCarousel setFlag={setFlag} />
-      <ScheduleCarousel setFlag={setFlag} />
-      <ScheduleCarousel setFlag={setFlag} />
-      <ScheduleCarousel setFlag={setFlag} />
-      <ScheduleCarousel setFlag={setFlag} />
+      <S.RecommBtn onClick={reloadRecomm}> ↺ 전체 재추천 </S.RecommBtn>
+      <p>&nbsp;</p>
+
+      <S.CarouselDiv>
+        {values.map((item, index) => (
+          <ScheduleCarousel
+            removeItem={removeItem}
+            setFlag={setFlag}
+            checkSelect={checkSelect}
+            select={select}
+            setSelect={setSelect}
+            keys={keys[index]}
+            values={item}
+            key={index}
+            flag={flag}
+          />
+        ))}
+      </S.CarouselDiv>
     </motion.div>
   );
 };

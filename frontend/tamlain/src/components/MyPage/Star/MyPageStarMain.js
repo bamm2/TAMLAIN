@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
 import MyPageStarInfo from "./MyPageStarInfo";
 import Frame from "../../../UI/Frame/Frame";
@@ -31,25 +31,26 @@ const MyPageStarMain = () => {
         endDate: res.data.data.mypageCommonInfo.endDate.replaceAll("-", "."),
       };
 
-      let arr = [{}];
       // 장소 배열
       const size = res.data.data.reviewScheduleItemList.length;
 
+      localStorage.setItem("size", size);
       for (let i = 0; i < size; i++) {
         let data = res.data.data.reviewScheduleItemList[i];
-        arr[i] = {
-          jejuPlaceId: data.jejuPlaceId,
-          jejuPlaceImgUrl: data.jejuPlaceImgUrl,
-          jejuPlaceName: data.jejuPlaceName,
-          scheduleItemId: data.scheduleItemId,
-        };
+        localStorage.setItem("placeList" + i, JSON.stringify(data));
       }
 
-      setSchedulPlaceInfo(arr);
       setScheduleInfo(info);
+
+      forceUpdate();
     });
-    // return;
   }, []);
+
+
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+
   const navigate = useNavigate();
 
   const reDirectMyPage = () => {
@@ -64,16 +65,6 @@ const MyPageStarMain = () => {
     period: "",
     thumbnailImageUrl: "",
   });
-
-  // 일정 세부 정보 -> outlet에 context로 넘겨주기
-  const [schedulePlaceInfo, setSchedulPlaceInfo] = useState({
-    jejuPlaceId: 0,
-    jejuPlaceImgUrl: "",
-    jejuPlaceName: "",
-    scheduleItemId: 0,
-  });
-
-  console.log(schedulePlaceInfo);
 
   return (
     <>
@@ -101,7 +92,7 @@ const MyPageStarMain = () => {
 
       <S.Hr />
 
-      <MyPageStarInfo schedulePlaceInfo={schedulePlaceInfo}></MyPageStarInfo>
+      <MyPageStarInfo></MyPageStarInfo>
     </>
   );
 };

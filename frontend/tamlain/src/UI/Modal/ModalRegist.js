@@ -43,7 +43,6 @@ const ModalRegist = (props) => {
   const [text, setText] = useState("");
   const textHandler = (event) => {
     if (event.target.value.length > 20) {
-      setText(event.target.value.slice(0, 20));
       return;
     } else {
       setText(event.target.value);
@@ -78,7 +77,7 @@ const ModalRegist = (props) => {
 
   const registDB = () => {
     const token = localStorage.getItem("token");
-    const userId = 1;
+    const userId = localStorage.getItem("id");
     const surveyId = localStorage.getItem("surveyId");
     const thumbnailId = localStorage.getItem("thumbnailId");
     if (thumbnailId === null) {
@@ -129,6 +128,8 @@ const ModalRegist = (props) => {
     localStorage.removeItem("surveyId");
     localStorage.removeItem("thumbnailId");
     localStorage.removeItem("DayCnt");
+    localStorage.removeItem("keys");
+    localStorage.removeItem("values");
     alert("등록이 완료되었습니다.");
     closeModal();
     window.location.href = `${client.defaults.url}/history`;

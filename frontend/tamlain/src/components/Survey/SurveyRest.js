@@ -107,8 +107,9 @@ const SurveyRest = () => {
       6: JSON.parse(localStorage.getItem("Rest")),
     };
 
+    const id = localStorage.getItem("id");
     const data = {
-      userId: 3,
+      userId: id,
       startDate: startDate,
       endDate: endDate,
       travelTheme: theme,
@@ -177,7 +178,7 @@ const SurveyRest = () => {
       <img
         src={`${process.env.PUBLIC_URL}/assets/Icon/recommBtn.png`}
         alt="다음으로"
-        style={{ marginLeft: "190px" }}
+        style={{ marginLeft: "190px", cursor: "pointer" }}
         onClick={registSurvey}
       />
       <motion.div
@@ -197,7 +198,11 @@ const SurveyRest = () => {
             <label id="labelAll" htmlFor="selectAll"></label>
           </S.FormAllBtn>
           <div
-            style={{ marginRight: "550px", marginTop: "2.5px", color: "#666" }}
+            style={{
+              marginRight: "550px",
+              marginTop: "2.5px",
+              color: "#666",
+            }}
           >
             전체선택
           </div>

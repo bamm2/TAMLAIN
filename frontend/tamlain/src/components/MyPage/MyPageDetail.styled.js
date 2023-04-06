@@ -21,16 +21,15 @@ export const BackGroundFilter = styled.div`
   height: 100vh;
   width: 100%;
   z-index: 2;
-  `;
-  
+`;
 
 export const Container = styled.div`
-position:absolute;    
-z-index:100;
-left:25%;
-width:50%;
-top:26.5%;
-height:200%;
+  position: absolute;
+  z-index: 100;
+  left: 25%;
+  width: 50%;
+  top: 26.5%;
+  height: 200%;
 `;
 
 export const BackBtn = styled.img`
@@ -38,23 +37,48 @@ export const BackBtn = styled.img`
   width: 20px;
   margin-top: 4%;
   margin-left: 25px;
+  cursor: pointer;
 `;
 
 export const TextOne = styled.span`
   text-align: left;
-  font-weight:bold;
-  font-size: 35px;
-  margin-top: 3%;
-  margin-left: 30px;
-  margin-bottom: 2%;
+
+  input {
+    font-weight: bold;
+    font-size: 35px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 15px;
+    width: 20ch;
+    border: none;
+    color: white;
+    background-color: transparent;
+  }
 `;
 
 export const TitleUpdateImg = styled.img`
-    object-fit:cover;
-    margin-left:2%;
-    margin-top:3.6%;
-    width:25px;
-    height:25px;
+  object-fit: cover;
+  margin-left: 10px;
+  margin-top: 36px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+
+  :hover {
+    width: 28px;
+    height: 28px;
+  }
+`;
+
+export const TitleUpdateImgReady = styled.img`
+  object-fit: cover;
+  margin-left: 10px;
+  margin-top: 36px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
 `;
 
 export const TextTwo = styled.div`
@@ -62,7 +86,7 @@ export const TextTwo = styled.div`
   font-size: 21px;
   text-align: left;
   color: #727272;
-  font-weight:bold;
+  font-weight: bold;
 `;
 export const TextThree = styled.div`
   margin-left: 30px;
@@ -70,23 +94,21 @@ export const TextThree = styled.div`
   font-size: 21px;
   text-align: left;
   color: #727272;
-  font-weight:bold;
+  font-weight: bold;
 `;
 
 export const FlexBox = styled.div`
-display:flex;
-justify-content: flex-start;
-background-color:blue;
+  display: flex;
+  justify-content: flex-start;
+  background-color: blue;
 `;
-
 
 export const MapContainer = styled.div`
-    width:100%;
-    height:300px;
-    background-color:pink;
-    display:flex;
+  width: 100%;
+  height: 300px;
+  background-color: pink;
+  display: flex;
 `;
-
 
 export const Div = styled.div`
   float: left;

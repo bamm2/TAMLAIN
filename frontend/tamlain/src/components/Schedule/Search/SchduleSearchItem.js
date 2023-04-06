@@ -13,6 +13,7 @@ const SchduleSearchItem = (props) => {
     const obj = {
       title: product.title,
       latlng: product.latlng,
+      jejuPlaceId: product.jejuPlaceId,
     };
     const arr = JSON.parse(localStorage.getItem(`marker${idx}`));
     arr.push(obj);

@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   position: relative;
   // object-fit: contain;
+  width: 150px;
   height: 150px;
 
   // background-color: blue;
@@ -43,6 +44,7 @@ export const Filter = styled.div`
   background-color: #3a3a3a;
   // background: rgba (255, 0, 0, 0.5);
   cursor: pointer;
+  border-radius: 5px;
 `;
 
 export const ReDirectText = styled.div`
@@ -87,11 +89,19 @@ export const StarNum = styled.div`
 export const Flag = styled.div`
   position: absolute;
   top: 65%;
-  left: 42.5%;
-  width: 20px;
-  height: 20px;
+  left: 45%;
   font-size: 20px;
   // background-color: blue;
   z-index: 5;
   cursor: pointer;
+`;
+
+export const FlagImg = styled.img`
+  width: 20px;
+  height: 25px;
+  :hover {
+    width: 25px;
+    height: 30px;
+    transition: 0.3s;
+  }
 `;

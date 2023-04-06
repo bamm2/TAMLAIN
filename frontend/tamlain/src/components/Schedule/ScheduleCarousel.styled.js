@@ -2,42 +2,39 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  top: 50%;
-  // width: 100%;
-  // height: 50%;
-  background-color: #f1efef;
+  margin-top: 30px;
+  background-color: #fff;
+  padding-left: 32px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const CategoryName = styled.span`
-  margin-left: 25px;
-`;
-
-export const ReRecommendBtn = styled.button`
-  display: inline-block;
-  height: 30px;
-  width: 30px;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
+  margin-left: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #343a40;
 `;
 
 export const CarouselContainer = styled.div`
+  margin-top: 10px;
   // height: 20vh;
-  // background-color: red;
+  background-color: red;
 `;
 
 export const BtnNext = styled.img`
   z-index: 99;
-  width: 8px;
-  height: 8px;
-  right: 12px;
+  width: 15px;
+  height: 15px;
+  right: 5px;
   object-fit: cover;
 `;
 
 export const BtnPre = styled.img`
   z-index: 99;
-  left: 6px;
-  width: 8px;
-  height: 8px;
+  width: 15px;
+  height: 15px;
   object-fit: cover;
 `;

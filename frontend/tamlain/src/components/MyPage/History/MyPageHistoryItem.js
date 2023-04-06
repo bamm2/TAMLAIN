@@ -22,14 +22,6 @@ const MyPageHistoryItem = (props) => {
     document.body.style = `overflow:hidden`;
   };
   
-  // const deleteHandler = () => {
-  //   const idx = props.idx;
-  //   const key = localStorage.getItem("token");
-  //   console.log(idx);
-  //   console.log(key);
-  //   deleteScheduleHistory(key,idx).then((res) => console.log(res));
-  // }
-
   const redirectDetail = () => {
     navigate(`/detail/${scheduleId}`, { state:scheduleId }  );
   }

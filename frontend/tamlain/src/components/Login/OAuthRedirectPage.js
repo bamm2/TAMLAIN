@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingLogin from "../../UI/Loading/LoadingLogin";
 
 const OAuthRedirectPage = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const OAuthRedirectPage = () => {
           const USER_NAME = res.data.name;
 
           const USER_ID = res.data.id;
+          console.log(USER_ID);
 
           localStorage.setItem("token", ACCESS_TOKEN); //예시로 로컬에 저장함
           localStorage.setItem("id", USER_ID);
@@ -41,7 +43,7 @@ const OAuthRedirectPage = () => {
 
   return (
     <>
-      <div>로그인 진행중..</div>
+      <LoadingLogin></LoadingLogin>
     </>
   );
 };
