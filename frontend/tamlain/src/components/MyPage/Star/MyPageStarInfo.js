@@ -64,7 +64,7 @@ const MyPageStarInfo = () => {
           }
         }
         setAxiosData(data);
-        console.log(res.data.data.reviewItemList[0].score);
+        console.log(res.data.data.reviewItemList[0].visit);
       });
     }
   }, []);
@@ -85,6 +85,15 @@ const MyPageStarInfo = () => {
   // 등록 버튼 누르면 별점등록 axios 쏘고 마이페이지 메인으로 이동
   const registStar = () => {
     // 보내줄 데이터 만들어주기
+
+    for (let i = 0; i < size; i++) {
+      if (!visited[i] && starArr[i] === 0) {
+        window.alert("등록하지 않은 별점이 존재합니다.");
+        return;
+      }
+    }
+
+
     let tmp = [];
 
     for (let i = 0; i < size; i++) {
@@ -191,7 +200,7 @@ const MyPageStarInfo = () => {
             {axiosData?.map((items, index) => (
               <S.Container key={index}>
                 <S.RadioBtn
-                  checked={items.visit ? false : true}
+                  onChange={items.visit===true ? true  : false }
                   type="checkbox"
                   onClick={toggleHandler}
                 ></S.RadioBtn>

@@ -15,9 +15,6 @@ const Rating = (props) => {
     setClicked(clickStates);
   };
 
-  const id = localStorage.getItem("id");
-  const size = localStorage.getItem("size");
-
   // 미방문 체크 시 별점 0개로 
   let visitChk = props.select;
   console.log(visitChk);

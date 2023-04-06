@@ -16,7 +16,7 @@ const Login = () => {
   return (
     <S.Container>
       <S.Filter />
-      <S.Img src={`${process.env.PUBLIC_URL}/assets/mainLogo.png`} onClick={reDirectMain}>
+      <S.Img src={`${process.env.PUBLIC_URL}/assets/MainLogo.png`} onClick={reDirectMain}>
       </S.Img>
       <S.KakaoBtnContainer onClick={kakaoLogin}>
         <S.KakaoImg

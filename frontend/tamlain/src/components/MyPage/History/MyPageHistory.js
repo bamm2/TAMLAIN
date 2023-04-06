@@ -26,17 +26,20 @@ const MyPageHistory = () => {
   ]);
 
   useEffect(() => {
+    //  일정 목록 불러오기 
     getScheduleHistory(key, user_id)
       .then((res) => {
         let size = res.data.data.length;
-
+        
         let tmpArr = [];
         let tmpArr2 = [];
         for (let i = 0; i < size; i++) {
           tmpArr[i] = false;
           tmpArr2[i] = 0;
         }
+        // 유저의 일정이 별점을 부여했는지 
         setStarRegistOk(tmpArr);
+        // 유저의 스케줄id 를 담을 배열 
         setStarRegistScheduleId(tmpArr2);
 
         const tmp = [];
@@ -50,33 +53,30 @@ const MyPageHistory = () => {
             name: res.data.data[idx].name,
             startDate: res.data.data[idx].startDate.replaceAll("-", "."),
             endDate: res.data.data[idx].endDate.replaceAll("-", "."),
-            period:
-              res.data.data[idx].period -
-              1 +
-              "박 " +
-              res.data.data[idx].period +
-              "일",
+            period:res.data.data[idx].period - 1 + "박 " +res.data.data[idx].period +"일",
             review: res.data.data[idx].review,
           };
 
           // 별점 등록 체크용
           starRegistOk[idx] = res.data.data[idx].review;
           setStarRegistOk([...starRegistOk]);
+          // 별점 스케줄아이디 체크용 
           starRegistScheduleId[idx] = res.data.data[idx].scheduleId;
           setStarRegistScheduleId([...starRegistScheduleId]);
+
+          // 일정의 개수 
           localStorage.setItem("starRegistSize", size);
         }
+        // axios 가져온 데이터 저장해주기 
+        setScheduleList(tmp);
 
+        // 별점 등록 여부 체크용 배열크기 기본값 적용해서 넣어주기 
         localStorage.setItem("starRegistArr", JSON.stringify(starRegistOk));
-        localStorage.setItem(
-          "starRegistIdx",
-          JSON.stringify(starRegistScheduleId)
-        );
-
+        // 별점 등록 스케줄아이디 체크용 배열크기 기본값 적용해서 넣어주기   
+        localStorage.setItem("starRegistIdx", JSON.stringify(starRegistScheduleId));
+ 
         localStorage.setItem("scheduleId", JSON.stringify(scheduleIdArr));
         setIdArr(JSON.parse(localStorage.getItem("scheduleId")));
-        console.log(res.data);
-        setScheduleList(tmp);
       })
       .catch((e) => {
         console.error(e);

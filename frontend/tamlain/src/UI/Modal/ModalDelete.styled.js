@@ -6,7 +6,7 @@ export const Contatiner = styled.div`
   top: 10%;
   //   left: 0%;
   width: 100%;
-  height: 200%;
+  height: 3000%;
   opacity: 0.96;
   background-color: gray;
   border-radius: 30px 30px 0 0;
