@@ -1,13 +1,12 @@
-package com.ssafy.db.entity;
+package com.ssafy.db.entity.oauth;
 
+import com.ssafy.db.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;

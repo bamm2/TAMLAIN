@@ -5,11 +5,13 @@ import lombok.Getter;
 
 @Getter
 public class MapInfo {
+    private int jejuPlaceId;
     private String title;
     private LatLng latlng;
 
     @Builder
-    public MapInfo(String title, LatLng latlng) {
+    public MapInfo(int jejuPlaceId, String title, LatLng latlng) {
+        this.jejuPlaceId = jejuPlaceId;
         this.title = title;
         this.latlng = latlng;
     }

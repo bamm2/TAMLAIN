@@ -1,33 +1,29 @@
 package com.ssafy.api.request;
 
-import com.ssafy.api.response.ReviewItem;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.HashMap;
 import java.util.List;
 
-@ApiModel(description = "Flask에서 사용자의 설문 조사를 반영한 추천 장소를 받기 위한 Request")
+@ApiModel(description = "Flask에서 사용자의 추천 장소를 받기 위한 Request")
 @Getter
 public class FlaskRecommendReq {
-    private FlaskSurveyReq flaskSurveyReq;
+    @ApiModelProperty(value = "설문 조사 정보")
+    private FlaskSurveyItem flaskSurveyItem;
+    @ApiModelProperty(value = "제주 장소 목록")
     private List<FlaskJejuPlaceItem> flaskJejuPlaceItemList;
-    private HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap;
-    private List<ReviewItem> reviewItem;
-
-//    @Builder
-//    public FlaskRecommendReq(FlaskSurveyReq flaskSurveyReq, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap) {
-//        this.flaskSurveyReq = flaskSurveyReq;
-//        this.flaskJejuPlaceItemList = flaskJejuPlaceItemList;
-//        this.scheduleItemMap = scheduleItemMap;
-//    }
+    @ApiModelProperty(value = "리뷰 목록")
+    private List<FlaskReviewItem> flaskReviewItemList;
+    @ApiModelProperty(value = "사용자가 선택한 일정 목록")
+    private List<Integer> flaskSceduleList;
 
     @Builder
-    public FlaskRecommendReq(FlaskSurveyReq flaskSurveyReq, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap, List<ReviewItem> reviewItem) {
-        this.flaskSurveyReq = flaskSurveyReq;
+    public FlaskRecommendReq(FlaskSurveyItem flaskSurveyItem, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, List<FlaskReviewItem> flaskReviewItemList, List<Integer> flaskSceduleList) {
+        this.flaskSurveyItem = flaskSurveyItem;
         this.flaskJejuPlaceItemList = flaskJejuPlaceItemList;
-        this.scheduleItemMap = scheduleItemMap;
-        this.reviewItem = reviewItem;
+        this.flaskReviewItemList = flaskReviewItemList;
+        this.flaskSceduleList = flaskSceduleList;
     }
 }

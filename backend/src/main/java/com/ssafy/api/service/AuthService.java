@@ -2,15 +2,16 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.RefreshTokenRequest;
 import com.ssafy.api.response.AccessTokenRes;
+import com.ssafy.db.entity.LoginUser;
 import org.apache.tomcat.websocket.AuthenticationException;
 
 public interface AuthService {
 
-    public void validatesAccessToken(String accessToken) throws AuthenticationException;
+    void validatesAccessToken(String accessToken);
 
-    public void logout(String accessToken);
+    void logout(String accessToken);
 
-    public AccessTokenRes refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) throws AuthenticationException ;
+    AccessTokenRes refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest);
 
-    //    public LoginMember findMemberByToken(String accessToken);
+    LoginUser findMemberByToken(String accessToken);
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class JejuPlaceRes {
-    private int jejuPlaceId;
     private String name;
     private int categoryId;
     private MapInfo mapInfo;
@@ -16,8 +15,7 @@ public class JejuPlaceRes {
     private String tag;
 
     @Builder
-    public JejuPlaceRes(int jejuPlaceId, String name, int categoryId, MapInfo mapInfo, String roadAddress, String placeUrl, String imgUrl, Double reviewScore, String tag) {
-        this.jejuPlaceId = jejuPlaceId;
+    public JejuPlaceRes(String name, int categoryId, MapInfo mapInfo, String roadAddress, String placeUrl, String imgUrl, Double reviewScore, String tag) {
         this.name = name;
         this.categoryId = categoryId;
         this.mapInfo = mapInfo;

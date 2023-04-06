@@ -11,14 +11,14 @@ import java.util.Map;
 
 public interface OauthService {
 
-    public LoginRes login(String providerName, String code);
+    LoginRes login(String providerName, String code);
 
-    public OauthTokenRes getToken(String code, ClientRegistration provider);
+    OauthTokenRes getToken(String code, ClientRegistration provider);
 
-    public MultiValueMap<String, String> tokenRequest(String code, ClientRegistration provider);
+    MultiValueMap<String, String> tokenRequest(String code, ClientRegistration provider);
 
-    public User getUserProfile(String providerName, OauthTokenRes tokenResponse, ClientRegistration provider);
+    User getUserProfile(String providerName, OauthTokenRes tokenResponse, ClientRegistration provider);
 
-    public Map<String, Object> getUserAttributes(ClientRegistration provider, OauthTokenRes tokenResponse);
+    Map<String, Object> getUserAttributes(ClientRegistration provider, OauthTokenRes tokenResponse);
 
 }

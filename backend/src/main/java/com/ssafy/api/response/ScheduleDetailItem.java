@@ -7,7 +7,6 @@ import lombok.Getter;
 public class ScheduleDetailItem {
     private int scheduleItemId;
     private int day;
-    private int jejuPlaceId;
     private MapInfo mapInfo;
     private String roadAddress;
     private String placeUrl;
@@ -16,10 +15,9 @@ public class ScheduleDetailItem {
     private Double reviewScore;
     private String tag;
     @Builder
-    public ScheduleDetailItem(int scheduleItemId, int day, int jejuPlaceId, MapInfo mapInfo, String roadAddress, String placeUrl, String imageUrl, int reviewCount, Double reviewScore, String tag) {
+    public ScheduleDetailItem(int scheduleItemId, int day, MapInfo mapInfo, String roadAddress, String placeUrl, String imageUrl, int reviewCount, Double reviewScore, String tag) {
         this.scheduleItemId = scheduleItemId;
         this.day = day;
-        this.jejuPlaceId = jejuPlaceId;
         this.mapInfo = mapInfo;
         this.roadAddress = roadAddress;
         this.placeUrl = placeUrl;

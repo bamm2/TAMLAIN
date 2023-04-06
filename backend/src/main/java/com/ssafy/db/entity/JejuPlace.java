@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -40,5 +41,17 @@ public class JejuPlace {
         jejuPlace.setReviewScoreSum(reviewScoreSum);
         jejuPlace.setReviewCount(reviewCount);
         return jejuPlace;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof JejuPlace)) {
+            return false;
+        }
+        JejuPlace other = (JejuPlace) obj;
+        return Objects.equals(id, other.id);
     }
 }

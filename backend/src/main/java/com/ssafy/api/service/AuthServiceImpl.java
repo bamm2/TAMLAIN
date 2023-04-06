@@ -2,13 +2,17 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.RefreshTokenRequest;
 import com.ssafy.api.response.AccessTokenRes;
-import com.ssafy.config.JwtTokenProvider;
+import com.ssafy.api.controller.auth.util.JwtTokenProvider;
+import com.ssafy.db.entity.LoginUser;
 import com.ssafy.db.entity.Token;
+import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.exception.AuthenticationException;
-import com.ssafy.util.RedisUtil;
+import com.ssafy.api.controller.auth.util.RedisUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -30,16 +34,17 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
-//    @Transactional(readOnly = true)
-//    public LoginMember findMemberByToken(String accessToken) {
-//        if (!jwtTokenProvider.validateToken(accessToken)) {
-//            return LoginMember.anonymous();
-//        }
-//
-//        int id = Integer.parseInt(jwtTokenProvider.getPayload(accessToken));
-//        User user = userRepository.findById(id);
-//        return new LoginMember(member.getId());
-//    }
+    @Transactional(readOnly = true)
+    public LoginUser findMemberByToken(String accessToken) {
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            return LoginUser.anonymous();
+        }
+
+        int id = Integer.parseInt(jwtTokenProvider.getPayload(accessToken));
+        Optional<User> oUser = userRepository.findById(id);
+        User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
+        return new LoginUser(user.getId());
+    }
 
     @Transactional
     public AccessTokenRes refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) {
@@ -55,7 +60,7 @@ public class AuthServiceImpl implements AuthService{
             throw new AuthenticationException("refresh token이 유효하지 않습니다.");
         }
 
-        Token newAccessToken = jwtTokenProvider.createAccessTok(id);
+        Token newAccessToken = jwtTokenProvider.createAccessToken(id);
 
         return new AccessTokenRes(newAccessToken.getValue());
     }

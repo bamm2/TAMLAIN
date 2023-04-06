@@ -1,4 +1,4 @@
-package com.ssafy.util;
+package com.ssafy.api.controller.auth.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;

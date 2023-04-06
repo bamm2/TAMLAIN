@@ -35,8 +35,8 @@ public class Survey extends BaseEntity {
         this.isDelete = isDelete;
     }
 
-    public static Survey of(Survey survey) {
-        survey.setDelete(true);
+    public static Survey of(Survey survey, boolean isDelete) {
+        survey.setDelete(isDelete);
         return survey;
     }
 }

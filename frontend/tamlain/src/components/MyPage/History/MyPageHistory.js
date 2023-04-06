@@ -29,6 +29,7 @@ const MyPageHistory = () => {
     //  일정 목록 불러오기 
     getScheduleHistory(key, user_id)
       .then((res) => {
+        console.log(res);
         let size = res.data.data.length;
         
         let tmpArr = [];
@@ -44,6 +45,7 @@ const MyPageHistory = () => {
 
         const tmp = [];
         const scheduleIdArr = [];
+        // 유저 일정 데이터 가져오기 
         for (var idx = 0; idx < size; idx++) {
           scheduleIdArr.push(res.data.data[idx].scheduleId);
           tmp[idx] = {
@@ -57,16 +59,18 @@ const MyPageHistory = () => {
             review: res.data.data[idx].review,
           };
 
-          // 별점 등록 체크용
+          //일정 별점 등록 체크용
           starRegistOk[idx] = res.data.data[idx].review;
           setStarRegistOk([...starRegistOk]);
-          // 별점 스케줄아이디 체크용 
+          //일정 별점 스케줄아이디 체크용 
           starRegistScheduleId[idx] = res.data.data[idx].scheduleId;
           setStarRegistScheduleId([...starRegistScheduleId]);
 
           // 일정의 개수 
           localStorage.setItem("starRegistSize", size);
         }
+
+        
         // axios 가져온 데이터 저장해주기 
         setScheduleList(tmp);
 
@@ -96,6 +100,8 @@ const MyPageHistory = () => {
               items.period.length - 2,
               items.period.length - 1
             )}
+            starRegistOk={starRegistOk}
+            starRegistScheduleId={starRegistScheduleId}
           ></MyPageHistoryItem>
         </S.Container>
       ))}

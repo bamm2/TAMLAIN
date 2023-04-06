@@ -1,19 +1,16 @@
 package com.ssafy.db.entity;
 
-import jdk.jfr.Unsigned;
+import com.ssafy.db.entity.oauth.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Getter

@@ -23,11 +23,11 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId) {
+    public Object getReviewScheduleHistory(int scheduleId) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
-        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return null;
+        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return new CommonRes(false, "여행 마지막 날짜 이후부터 리뷰 등록이 가능합니다.");
 
         List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
@@ -55,7 +55,8 @@ public class ReviewServiceImpl implements ReviewService {
                 .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
                 .reviewScheduleItemList(reviewScheduleItemList)
                 .build();
-        return reviewScheduleItemRes;
+
+        return new SuccessRes<>(true, "리뷰 작성을 위해 해당 일정 목록을 조회합니다.", reviewScheduleItemRes);
     }
 
     public MypageCommonInfo getMyPageCommonInfo(int scheduleId) {
@@ -74,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void registReview(ReviewRegistReq reviewRegistReq) {
+    public CommonRes registReview(ReviewRegistReq reviewRegistReq) {
         Optional<User> oUser = userRepository.findById(reviewRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
 
@@ -99,11 +100,15 @@ public class ReviewServiceImpl implements ReviewService {
                     jejuPlace.getReviewCount()+1);
 
             jejuPlaceRepository.save(newJejuPlace);
+
+            scheduleRepository.save(Schedule.of(scheduleItem.getSchedule(), scheduleItem.getSchedule().isDelete(), true));
         }
+
+        return new CommonRes(true, "리뷰 등록을 완료했습니다.");
     }
 
     @Override
-    public ReviewRes getReview(int scheduleId) {
+    public SuccessRes<ReviewRes> getReview(int scheduleId) {
         List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         List<ReviewItem> reviewItemList = new ArrayList<>();
@@ -143,7 +148,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewItemList(reviewItemList)
                 .build();
 
-        return reviewRes;
+        return new SuccessRes<>(true, "리뷰를 조회합니다.", reviewRes);
     }
 
 }

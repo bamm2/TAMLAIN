@@ -1,11 +1,8 @@
 package com.ssafy.db.entity;
 
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -50,9 +47,9 @@ public class Schedule extends BaseEntity {
         return schedule;
     }
 
-    public static Schedule of(Schedule schedule) {
-        schedule.setDelete(true);
+    public static Schedule of(Schedule schedule, boolean isDelete, boolean isReview) {
+        schedule.setDelete(isDelete);
+        schedule.setReview(isReview);
         return schedule;
     }
-
 }

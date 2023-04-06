@@ -24,7 +24,7 @@ public class HistoryServiceImpl implements HistoryService {
     private final ScheduleItemRepository scheduleItemRepository;
     private final SurveyRepository surveyRepository;
     @Override
-    public List<ScheduleHistoryRes> getScheduleHistory(int userId) {
+    public SuccessRes<List<ScheduleHistoryRes>> getScheduleHistory(int userId) {
         List<Schedule> scheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
         List<ScheduleHistoryRes> scheduleHistoryResList = new ArrayList<>();
 
@@ -43,11 +43,11 @@ public class HistoryServiceImpl implements HistoryService {
             scheduleHistoryResList.add(scheduleHistoryRes);
         }
 
-        return scheduleHistoryResList;
+        return new SuccessRes<>(true, "사용자의 일정 목록을 조회합니다.", scheduleHistoryResList);
     }
 
     @Override
-    public void deleteScheduleHistory(int scheduleId) {
+    public CommonRes deleteScheduleHistory(int scheduleId) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
@@ -55,16 +55,21 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-        scheduleRepository.save(Schedule.of(schedule));
-        surveyRepository.save(Survey.of(survey));
+        scheduleRepository.save(Schedule.of(schedule, true, schedule.isReview()));
+        surveyRepository.save(Survey.of(survey, true));
+
+        return new CommonRes(true, "일정 삭제를 완료했습니다.");
     }
 
     @Override
-    public void modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+    public CommonRes modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+        if(scheduleModifyReq.getName() == null || scheduleModifyReq.getName().isBlank()) return new CommonRes(false, "일정명을 입력해주세요.");
+
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
         scheduleRepository.save(Schedule.of(schedule, scheduleModifyReq.getName()));
+        return new CommonRes(true, "일정명 수정을 완료했습니다.");
     }
 
     public MypageCommonInfo getMyPageCommonInfo(int scheduleId) {
@@ -83,7 +88,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public ScheduleDetailRes getScheduleDetail(int scheduleId) {
+    public SuccessRes<ScheduleDetailRes> getScheduleDetail(int scheduleId) {
         List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap = new LinkedHashMap<>();
@@ -93,7 +98,6 @@ public class HistoryServiceImpl implements HistoryService {
         for(ScheduleItem scheduleItem : scheduleItemList) {
             JejuPlace jejuPlace = scheduleItem.getJejuPlace();
             int currentDay = scheduleItem.getDay();
-            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
 
             if(beforeDay != currentDay) {
                 scheduleDetailItemMap.put(beforeDay, scheduleDetailItemList);
@@ -101,6 +105,7 @@ public class HistoryServiceImpl implements HistoryService {
             }
 
             MapInfo mapInfo = MapInfo.builder()
+                    .jejuPlaceId(jejuPlace.getId())
                     .title(jejuPlace.getName())
                     .latlng(LatLng.builder()
                             .la(jejuPlace.getLatitude())
@@ -111,14 +116,13 @@ public class HistoryServiceImpl implements HistoryService {
             ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
                     .scheduleItemId(scheduleItem.getId())
                     .day(currentDay)
-                    .jejuPlaceId(jejuPlace.getId())
                     .mapInfo(mapInfo)
                     .roadAddress(jejuPlace.getRoadAddress())
                     .placeUrl(jejuPlace.getPlaceUrl())
                     .imageUrl(jejuPlace.getImgUrl())
                     .reviewCount(jejuPlace.getReviewCount())
-                    .reviewScore(Math.round(reviewScore*10)/10.0)
-                    .tag(jejuPlace.getTag())
+                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                    .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
                     .build();
 
             scheduleDetailItemList.add(scheduleDetailItem);
@@ -130,6 +134,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
                 .scheduleDetailItemMap(scheduleDetailItemMap)
                 .build();
-        return scheduleDetailRes;
+
+        return new SuccessRes<>(true, "상세 정보를 조회합니다.", scheduleDetailRes);
     }
 }

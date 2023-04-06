@@ -1,10 +1,12 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.controller.auth.util.RedisUtil;
 import com.ssafy.api.response.LoginRes;
 import com.ssafy.api.response.OauthTokenRes;
-import com.ssafy.config.JwtTokenProvider;
+import com.ssafy.api.controller.auth.util.JwtTokenProvider;
 import com.ssafy.api.response.KakaoUserInfo;
 import com.ssafy.api.response.Oauth2UserInfo;
+import com.ssafy.db.entity.Token;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ public class OauthServiceImpl implements OauthService{
     private final InMemoryClientRegistrationRepository inMemoryRepository;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisUtil redisUtil;
 
     @Transactional
     public LoginRes login(String providerName, String code) {
@@ -41,8 +43,10 @@ public class OauthServiceImpl implements OauthService{
         OauthTokenRes tokenResponse = getToken(code, provider);
         User user = getUserProfile(providerName,tokenResponse, provider);
 
-        String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
-        String refreshToken = jwtTokenProvider.createRefreshToken();
+        Token accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
+        Token refreshToken = jwtTokenProvider.createRefreshToken();
+
+        redisUtil.setDataExpire(String.valueOf(user.getId()), refreshToken.getValue(), refreshToken.getExpiredTime());
 
         return LoginRes.builder()
                 .id(user.getId())
@@ -50,8 +54,8 @@ public class OauthServiceImpl implements OauthService{
                 .email(user.getEmail())
                 .role(user.getRole())
                 .tokenType(BEARER_TYPE)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .accessToken(accessToken.getValue())
+                .refreshToken(refreshToken.getValue())
                 .build();
     }
 

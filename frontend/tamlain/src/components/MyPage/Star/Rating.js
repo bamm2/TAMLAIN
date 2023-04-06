@@ -15,10 +15,6 @@ const Rating = (props) => {
     setClicked(clickStates);
   };
 
-  // 미방문 체크 시 별점 0개로 
-  let visitChk = props.select;
-  console.log(visitChk);
-
   let chkIdx = localStorage.getItem("chkedVisited");
 
   useEffect(() => {
@@ -40,6 +36,25 @@ const Rating = (props) => {
     props.setStarIdx(props.index);
   }, []);
 
+  useEffect(() => {
+    if (props.select) {
+      props.setStarCount(0);
+      props.setStarIdx(chkIdx);
+    }
+
+  //   useEffect(() => {
+    
+  // },[props.chkActive])
+
+    // 등록된 별점들 true 
+    let tmp = [];
+    for (let i = 0; i < props.existStar; i++){
+      tmp[i] = true;
+    }
+    setClicked(tmp);
+    props.setStarCount(props.existStar);
+    props.setStarIdx(props.index);
+  }, [props.toggle]);
 
   useEffect(() => {
     sendReview();

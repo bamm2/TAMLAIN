@@ -1,28 +1,30 @@
 package com.ssafy.api.request;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 
+@ApiModel(description = "Flask Request를 위한 제주 장소 정보")
 @Getter
 public class FlaskJejuPlaceItem {
+    @ApiModelProperty(value = "제주 장소 id")
     private int jejuPlaceId;
-    private String name;
+    @ApiModelProperty(value = "카테고리 id")
     private int categoryId;
+    @ApiModelProperty(value = "카테고리명")
     private String categoryName;
-    private String categoryDetailName;
-    private Double latitude;
-    private Double longitude;
-    private Double reviewScore;
+    @ApiModelProperty(value = "평점 총합")
+    private int reviewScoreSum;
+    @ApiModelProperty(value = "평점 수")
+    private int reviewCount;
 
     @Builder
-    public FlaskJejuPlaceItem(int jejuPlaceId, String name, int categoryId, String categoryName, String categoryDetailName, Double latitude, Double longitude, Double reviewScore) {
+    public FlaskJejuPlaceItem(int jejuPlaceId, int categoryId, String categoryName, int reviewScoreSum, int reviewCount) {
         this.jejuPlaceId = jejuPlaceId;
-        this.name = name;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
-        this.categoryDetailName = categoryDetailName;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.reviewScore = reviewScore;
+        this.reviewScoreSum = reviewScoreSum;
+        this.reviewCount = reviewCount;
     }
 }

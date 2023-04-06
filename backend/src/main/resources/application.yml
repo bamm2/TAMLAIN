@@ -12,19 +12,23 @@ jasypt:
 spring:
   datasource:
     # server
-    url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
-    username: ENC(F301hhYYYd0rvHquA7NOgA==)
-    # local
-    #    url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
-    #    username: ENC(AQbYc5mkFpX5qHZRhIxc0w==)
+    url: ENC(ndX6gKk1CNkKXk4CEltuU2IrQ3cWIl5hcVL0KMAr5vi7b5fQQZuckU45z9c8385QnJh+FD7+d0+x4Q7Y7cGW2F87lWHdquUS69Xo8hWDeHpTdH0oQvI8gt8koGqKRGkIk6idPhgzIaKoN5o/Pmu2bFd58Xfrcxln4rtSw5iBLCa3pBrNK9+v4W9U9y5alxEHxoH8evmYzyeCDnpkkor8QT47i1zAe+kb2INo+4I42BXi5Uw7cGXPxA==)
+    username: ENC(bZUHmnyJmvPH7dWd/KJ7oA==)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: ENC(2Ct99Ez3n1dAOA8dnCYfXA==)
+    password: ENC(yZuHUcux2JSILMny9iv5Pg==)
+
+    # local
+#        url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
+#        url: jdbc:mysql://localhost:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+#        username: root
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        password: root
   jpa:
     open-in-view: false
     generate-ddl: true
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         enable_lazy_load_no_trans: true
@@ -32,19 +36,18 @@ spring:
         format_sql: true
         check_nullability: true
   redis:
-    host: ENC(72rWrF8HmrugEKQq0n/iAOJ7NCEH+F3Bn6Vtsg5Q+1Q=)
+    host: ENC(aEaoaiveSmIbp+RsduWANO9WRlWFUwem0KWkZj3UU40=)
     port: 8379
-    password: ENC(GpfgLaeX95xC7pXQX66+gs+5yI039VI7)
+#    password: ENC(MRhLM87UTKhun3MlD+SdQY0cIRaEInLX)
 
   security:
     oauth2:
       client:
         registration:
           kakao:
-            client-id: ENC(pspsCp49iwIKXZSfdz59qYd1AWOrsKMbrPKjLEtPp3FjTKLSC5sdLSAS0fOLgi9/)
-#            redirect-uri: http://localhost:8080/oauth/callback/kakao
+            client-id: ENC(MIphkkA0IKWDEyl7CnbwR7It5pgFcV6xPtiXmKKX4V9RVKqs5U17XA+63e7Ql2AI)
 #            redirect-uri: http://localhost:3000/oauth/callback/kakao
-            redirect-uri: ENC(gR5YHZ7AwDZ13S8Sl/pfv+Fa7r9xtdwnzaaFZr3m9ZxNkEv4PkRl5rZQkRwPHBcBZ0cVE6/4ulk=)
+            redirect-uri: ENC(BWxUAeZaUXpUs+ZZxOzlNkJGfvFOdCZsHfCdRFM+rbS6rFw9K7PZ2yXN+RRMQz2GOF8JFZYD0ek=)
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -64,7 +67,7 @@ spring:
 
 jwt:
   token:
-    secret-key: ENC(kaKqOrrX5YmcpNoH4rOlq4BIhQobzfPfpHLB4SlHnnR68EuLOxCBZ888oMXgeCH8wFuf/Z6uP/4aA/YAMUKc7fqNG99RdBxcOIqYuaHvXGNDaQDCxsuN/Hng8djDZ44wFjcnpf8JYztW1dZSpzuQkRHeoGV45359RVR6PKy0bL6oun3O+eDBKmMRQyEP+y0w)
+    secret-key: ENC(pDBdQXPGdYSFejryUIJuDCnmD0hnyzEwjbUPyYShvqJHD+azAZ9B7TUjFWi6YtbqhA9cvRn63LNRJ3WTr64NiuSyBsLVgRv2IqzJF9DQHeJVOALhraQqFGsnXGsLRlMeO+FOSXNUTTtFvXTG6+xHTCDYXCKqmf+wcJ1uZ7rd3o25le7bFQoaYQ7WwGwmfcp8)
   access-token:
     expire-length: 1800000
   refresh-token:
