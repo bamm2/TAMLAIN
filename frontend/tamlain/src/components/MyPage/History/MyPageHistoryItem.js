@@ -14,6 +14,8 @@ const MyPageHistoryItem = (props) => {
 
   // 별점 페이지로 이동  / schuldeId 가지고 페이지로 이동
   const reDirectStarInfo = () => {
+    console.log(scheduleId);
+    localStorage.setItem("scheduleId", scheduleId);
     navigate(`/myPageStarInfo/${scheduleId}`);
   };
 
