@@ -35,14 +35,55 @@ export const Container = styled.div`
 export const BackBtn = styled.img`
   z-index: 5;
   width: 20px;
-  margin-top: 4%;
-  margin-left: 25px;
+  margin-top: 5%;
+  margin-left: 30px;
   cursor: pointer;
+`;
+
+export const DayBtn = styled.div`
+  position: absolute;
+  z-index: 4;
+  top: 11%;
+  left: -20%;
+  width: 70px;
+  height: 30px;
+  border-radius: 30px;
+  input[type="radio"] {
+    display: none;
+  }
+  label {
+    display: block;
+    cursor: pointer;
+    border-radius: 30px;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 20px;
+    line-height: 45px;
+    width: 70px;
+    height: 20px;
+  }
+  input[type="radio"]:checked + label {
+    background: #fc872a;
+    color: #fff;
+  }
+  input[type="radio"] + label {
+    background: #fff;
+    color: #3a3a3a;
+    &:hover {
+      background: #fc872a;
+      color: #fff;
+    }
+    &:checked {
+      background: #fc872a;
+      color: #fff;
+    }
+  }
 `;
 
 export const TextOne = styled.span`
   text-align: left;
-
+  color: black;
+  background-color: white;
   input {
     font-weight: bold;
     font-size: 35px;
@@ -51,7 +92,25 @@ export const TextOne = styled.span`
     margin-bottom: 15px;
     width: 20ch;
     border: none;
-    color: white;
+    border-radius: 5px;
+    color: black;
+    background-color: transparent;
+  }
+`;
+export const TextOneModify = styled.span`
+  text-align: left;
+  color: black;
+  background-color: white;
+  input {
+    font-weight: bold;
+    font-size: 35px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 15px;
+    width: 20ch;
+    border: 1px solid gray;
+    border-radius: 5px;
+    color: gray;
     background-color: transparent;
   }
 `;
@@ -59,7 +118,7 @@ export const TextOne = styled.span`
 export const TitleUpdateImg = styled.img`
   object-fit: cover;
   margin-left: 10px;
-  margin-top: 36px;
+  margin-top: 26px;
   width: 25px;
   height: 25px;
   cursor: pointer;
@@ -82,14 +141,14 @@ export const TitleUpdateImgReady = styled.img`
 `;
 
 export const TextTwo = styled.div`
-  margin-left: 30px;
+  margin-left: 35px;
   font-size: 21px;
   text-align: left;
   color: #727272;
   font-weight: bold;
 `;
 export const TextThree = styled.div`
-  margin-left: 30px;
+  margin-left: 15px;
   margin-bottom: 5%;
   font-size: 21px;
   text-align: left;
@@ -100,14 +159,6 @@ export const TextThree = styled.div`
 export const FlexBox = styled.div`
   display: flex;
   justify-content: flex-start;
-  background-color: blue;
-`;
-
-export const MapContainer = styled.div`
-  width: 100%;
-  height: 300px;
-  background-color: pink;
-  display: flex;
 `;
 
 export const Div = styled.div`

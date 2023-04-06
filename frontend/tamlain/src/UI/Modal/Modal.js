@@ -24,7 +24,7 @@ const containerVariants = {
 };
 const Modal = (props) => {
   const value = props.name2;
-  const flag = true;
+  var flag = true;
   if (value === null) {
     flag = false;
   }

@@ -6,7 +6,6 @@ import ScheduleCarousel from "./ScheduleCarousel";
 import client from "../../utils/client";
 import { motion } from "framer-motion";
 import { reloadRecommendJejuPlace } from "../../utils/api/scheduleApi";
-import { getRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 /*global kakao*/
 

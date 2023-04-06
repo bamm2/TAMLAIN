@@ -11,11 +11,11 @@ const ScheduleCarousel = (props) => {
   const values = props.values;
   const settings = {
     arrows: true, // 양 끝 화살표 표시여부
-    autoplay: true, // 자동으로 넘어가게
+    autoplay: false, // 자동으로 넘어가게
     autoplaySpeed: 2000, // 자동으로 5초마다 넘어가게
 
     dots: false, // 점을 안보이게
-    infinite: false, // 무한 반복
+    infinite: true, // 무한 반복
     speed: 500, // 이동하는 속도
     slidesToShow: 4, // 4장씩 보이게
     centerPadding: "0px", // 0px하면 슬라이드 끝쪽 이미지가 안 잘린다
