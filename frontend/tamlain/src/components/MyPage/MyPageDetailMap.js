@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import $ from "jquery";
 import * as S from "./MyPageDetilMap.styled";
 import { motion } from "framer-motion";
+import { getScheduleDetail } from "../../utils/api/historyApi";
 /*global kakao*/
 
 const { kakao } = window;
@@ -34,14 +35,26 @@ const MyPageDetilMap = () => {
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
   const [flag, setFlag] = useState(true);
-  const [detailData, setDetailData] = useState([]);
+  const [detailData, setDetailData] = useState(
+    JSON.parse(localStorage.getItem("scheduleDetailItemMap")) || []
+  );
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
+  const [setting, setSetting] = useState(detailData[0][0] || {});
   var count;
   var divnum;
   var divtitle;
+  const scheduleId = localStorage.getItem("scheduleId");
+  const token = localStorage.getItem("token");
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
+    getScheduleDetail(token, scheduleId).then((res) => {
+      console.log(res);
+      localStorage.setItem(
+        "scheduleDetailItemMap",
+        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+      );
+    });
     var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
     console.log(123);
     console.log(data);
@@ -114,10 +127,6 @@ const MyPageDetilMap = () => {
           title: select2[i].title,
         });
         marker.setMap(map);
-        // 마커에 클릭이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, "click", function (e) {
-          viewPlace(e);
-        });
 
         var moveLatLon = new kakao.maps.LatLng(x, y);
 
@@ -228,6 +237,7 @@ const MyPageDetilMap = () => {
     divtitle.style.borderRadius = "5px";
     divtitle.style.backgroundColor = "#fc872a";
     divtitle.style.marginBottom = "12px";
+    divtitle.style.pointerEvents = "auto";
     divtitle.style.cursor = "pointer";
 
     count++;
@@ -242,8 +252,13 @@ const MyPageDetilMap = () => {
 
   //일정표에서 직접 누르면 삭제하는 기능
   const viewPlace = (e) => {
-    console.log(123);
-    console.log(e.target);
+    const title = e.target.getAttribute("value");
+    const data = detailData[idx - 1];
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].mapInfo.title === title) {
+        setSetting(data[i]);
+      }
+    }
   };
 
   const checkSelect = (t) => {
@@ -287,7 +302,7 @@ const MyPageDetilMap = () => {
               id="tagArea"
               style={{
                 position: "absolute",
-                zIndex: "10",
+                zIndex: "999",
                 top: "5%",
                 right: "5%",
                 marginBottom: "5px",
@@ -298,90 +313,76 @@ const MyPageDetilMap = () => {
       <p>&nbsp;</p>
 
       <S.TitleDiv>
-        <span>번호란</span>제목란제목란제목란제목란제목란<S.Tag>태그란</S.Tag>
+        <S.Number>{setting.day}. </S.Number>
+        {setting.mapInfo.title}
+        <S.Tag>{setting.tag}</S.Tag>
       </S.TitleDiv>
       <S.Hr />
-      <S.Banner
-        src={`${process.env.PUBLIC_URL}/assets/Background/EmptyBanner.png`}
-        alt="배너이미지"
-      />
-      <S.AddressDiv>주소</S.AddressDiv>
-      <S.DetailDiv>상세정보</S.DetailDiv>
+      {setting.imageUrl === "" && (
+        <S.Banner
+          src={`${process.env.PUBLIC_URL}/assets/Background/EmptyBanner.png`}
+          alt="배너이미지"
+        />
+      )}
+      {setting.imageUrl !== "" && (
+        <S.Banner src={`https://${setting.imageUrl}`} alt="배너이미지" />
+      )}
+      <S.AddressDiv>{setting.roadAddress}</S.AddressDiv>
+      <S.DetailDiv>
+        <S.DetailA href={setting.placeUrl} target="_blank">
+          {" "}
+          상세정보
+        </S.DetailA>
+      </S.DetailDiv>
       <S.Rating id="second">
         <S.CircleTitle>평점</S.CircleTitle>
         <figure className="donut-graph">
-          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+          <svg
+            class="moving-outline"
+            width="170"
+            height="170"
+            viewBox="0 0 453 453"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <circle
-              className="donut-hole"
-              cx="2115"
-              cy="26"
-              r="15.91549430918954"
-              fill="#fff"
-            ></circle>
-            <circle
-              className="donut-ring"
-              cx="21"
-              cy="21"
-              r="15.91549430918954"
-              fill="transparent"
-              stroke="#D9D9D9"
-              strokeWidth="1"
-            ></circle>
-
-            <circle
-              className="donut-segment"
-              cx="21"
-              cy="21"
-              r="15.91549430918954"
-              fill="transparent"
+              cx="226.5"
+              cy="226.5"
+              r="216.5"
               stroke="#FC872A"
-              strokeWidth="1"
-              strokeDasharray="0 100"
-              strokeDashoffset="25"
-            ></circle>
+              stroke-width="10"
+            />
           </svg>
-
           <figcaption className="donut-graph_caption">
-            <span className="donut-graph_caption-value">80%</span>
+            <span className="donut-graph_caption-value">
+              {setting.reviewScore}
+            </span>
           </figcaption>
         </figure>
       </S.Rating>
       <S.ReviewCnt id="third">
-        <S.CircleTitle>평점</S.CircleTitle>
+        <S.CircleTitle>평점 수</S.CircleTitle>
         <figure className="donut-graph">
-          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+          <svg
+            class="moving-outline"
+            width="170"
+            height="170"
+            viewBox="0 0 453 453"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <circle
-              className="donut-hole"
-              cx="2115"
-              cy="26"
-              r="15.91549430918954"
-              fill="#fff"
-            ></circle>
-            <circle
-              className="donut-ring"
-              cx="21"
-              cy="21"
-              r="15.91549430918954"
-              fill="transparent"
-              stroke="#D9D9D9"
-              strokeWidth="1"
-            ></circle>
-
-            <circle
-              className="donut-segment"
-              cx="21"
-              cy="21"
-              r="15.91549430918954"
-              fill="transparent"
+              cx="226.5"
+              cy="226.5"
+              r="216.5"
               stroke="#FC872A"
-              strokeWidth="1"
-              strokeDasharray="0 100"
-              strokeDashoffset="25"
-            ></circle>
+              stroke-width="10"
+            />
           </svg>
-
           <figcaption className="donut-graph_caption">
-            <span className="donut-graph_caption-value">80%</span>
+            <span className="donut-graph_caption-value">
+              {setting.reviewCount}
+            </span>
           </figcaption>
         </figure>
       </S.ReviewCnt>

@@ -103,7 +103,7 @@ const MainCarousel = () => {
         animate="visible"
       >
         <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
-        <S.Text2> 탐라:IN</S.Text2>
+        <S.Text2> 탐라:인</S.Text2>
       </motion.div>
       <motion.div
         variants={containerVariants2}

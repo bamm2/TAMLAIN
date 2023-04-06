@@ -59,13 +59,13 @@ const Modal = (props) => {
 
   return (
     <>
-      <S.Contatiner>
+      <S.Contatiner className="class1">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <S.Modal>
+          <S.Modal className="class2">
             <S.CloseButton onClick={closeModal}>
               <FontAwesomeIcon icon={faXmark} onClick={props.close} />
             </S.CloseButton>
