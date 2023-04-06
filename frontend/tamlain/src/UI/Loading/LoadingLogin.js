@@ -2,9 +2,8 @@ import * as S from "./Loading.styled";
 import "./Loading.css";
 import { useEffect, useState } from "react";
 import client from "../../utils/client";
-import { getRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
-const Loading = () => {
+const LoadingLogin = () => {
   const [Tip, setTip] = useState("");
 
   const tipData = [
@@ -21,16 +20,6 @@ const Loading = () => {
   ];
   useEffect(() => {
     setTip(tipData[Math.floor(Math.random() * 10)]);
-    const token = localStorage.getItem("token");
-    const surveyId = localStorage.getItem("surveyId");
-    getRecommendJejuPlace(token, surveyId).then((res) => {
-      console.log(res);
-      localStorage.setItem("keys", JSON.stringify(Object.keys(res.data.data)));
-      localStorage.setItem(
-        "values",
-        JSON.stringify(Object.values(res.data.data))
-      );
-    });
   }, []);
 
   const randomTipData = () => {
@@ -39,9 +28,7 @@ const Loading = () => {
 
   setInterval(randomTipData, 3000);
 
-  setTimeout(function () {
-    window.location.href = `${client.defaults.url}/scheduleMain/1`;
-  }, 10000);
+  setTimeout(function () {}, 10000);
 
   return (
     <S.BackGround>
@@ -53,4 +40,4 @@ const Loading = () => {
     </S.BackGround>
   );
 };
-export default Loading;
+export default LoadingLogin;

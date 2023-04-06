@@ -22,6 +22,17 @@ export const getRecommendJejuPlace = async (accessToken, surveyId) => {
   return response;
 };
 
+// 재추천하기
+export const reloadRecommendJejuPlace = async (accessToken, data) => {
+  const response = await client.post(`/schedule/recommend/reload`, data, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return response;
+};
+
 // 사용자가 만든 일정 등록하기
 export const registSchedule = async (accessToken, data) => {
   const response = await client.post(`/schedule/regist`, data, {

@@ -4,7 +4,8 @@ import client from "../client";
 
 // 로그아웃
 export const logout = async (accessToken) => {
-  const response = await client.post(`/oauth/logout`, {
+  console.log("accessToken : " + accessToken);
+  const response = await client.get(`/oauth/logout`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
