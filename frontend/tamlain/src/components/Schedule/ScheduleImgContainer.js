@@ -60,14 +60,14 @@ const ScheduleImgContainer = (props) => {
   };
   return (
     <S.Container>
-      <S.ExitButton onClick={removeCarousel}> X </S.ExitButton>
+      <S.ExitButton onClick={removeCarousel}> x </S.ExitButton>
       <S.Category>{props.tag}</S.Category>
       {!click && props.ImgUrl !== "https://" && (
         <S.ImgContainer src={props.ImgUrl} onClick={OnClickHandler} />
       )}
       {!click && props.ImgUrl === "https://" && (
         <S.ImgContainer
-          src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
+          src={`${process.env.PUBLIC_URL}/assets/Icon/SquareEmptyImg.png`}
           onClick={OnClickHandler}
         />
       )}

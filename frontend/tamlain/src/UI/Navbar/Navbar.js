@@ -42,15 +42,6 @@ const Navbar = (props) => {
   const mypageHandler = () => {
     navigate("/redirectMyPage");
   };
-
-  // 창닫기 버튼 클릭으로 종료시 로컬 비워주기
-  window.addEventListener("beforeunload", (event) => {
-    // 표준에 따라 기본 동작 방지
-    event.preventDefault();
-    // localStorage.clear();
-    // Chrome에서는 returnValue 설정이 필요함
-  });
-
   return (
     <>
       <S.NavFrame>
