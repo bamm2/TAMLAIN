@@ -60,7 +60,7 @@ const ScheduleImgContainer = (props) => {
   };
   return (
     <S.Container>
-      <S.ExitButton onClick={removeCarousel}> X </S.ExitButton>
+      <S.ExitButton onClick={removeCarousel}> x </S.ExitButton>
       <S.Category>{props.tag}</S.Category>
       {!click && props.ImgUrl !== "https://" && (
         <S.ImgContainer src={props.ImgUrl} onClick={OnClickHandler} />

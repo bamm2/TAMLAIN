@@ -5,8 +5,13 @@ export const Container = styled.div`
   // object-fit: contain;
   width: 150px;
   height: 150px;
-
-  // background-color: blue;
+  box-shadow: 0 17px 20px -18px rgba(0, 0, 0, 1);
+  border-radius: 5px;
+  :hover {
+    width: 153px;
+    height: 153px;
+    transition: 0.2s;
+  }
 `;
 
 export const ImgContainer = styled.img`
@@ -22,15 +27,17 @@ export const ExitButton = styled.button`
   background-color: transparent;
   border: none;
   color: white;
-  font-size: 1px;
+  font-size: 10px;
+  // font-weight: bold;
   transform: translate(-10%, 20%);
   cursor: pointer;
+  left: 2%;
 `;
 
 export const Category = styled.span`
   position: absolute;
-  top: 2px;
-  right: 4px;
+  top: 3%;
+  right: 4%;
   color: white;
   font-size: 1px;
 `;

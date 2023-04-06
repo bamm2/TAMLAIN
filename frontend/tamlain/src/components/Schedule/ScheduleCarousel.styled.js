@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-  margin-top: 30px;
+  margin-top: 70px;
   background-color: #fff;
   padding-left: 32px;
   overflow: auto;
@@ -19,7 +19,7 @@ export const CategoryName = styled.span`
 `;
 
 export const CarouselContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
   // height: 20vh;
   background-color: red;
 `;

@@ -11,7 +11,7 @@ const ScheduleCarousel = (props) => {
   const values = props.values;
   const settings = {
     arrows: true, // 양 끝 화살표 표시여부
-    autoplay: true, // 자동으로 넘어가게
+    autoplay: false, // 자동으로 넘어가게
     autoplaySpeed: 2000, // 자동으로 5초마다 넘어가게
 
     dots: false, // 점을 안보이게

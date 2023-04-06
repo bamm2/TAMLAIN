@@ -34,6 +34,7 @@ import MyPageRedirect from "./components/MyPage/MyPageRedirect";
 import MyPageStarMain from "./components/MyPage/Star/MyPageStarMain";
 
 import MyPageDetail from "./components/MyPage/MyPageDetail";
+import MyPageDetailMap from "./components/MyPage/MyPageDetailMap";
 
 const App = () => {
   return (
@@ -90,7 +91,9 @@ const App = () => {
             <Route path="/myPageStarInfo/:id" element={<MyPageStarMain />} />
 
             {/* 마이페이지 일정 세부 */}
-            <Route path="/detail/:scheduleId" element={<MyPageDetail />} />
+            <Route path="/detail/:scheduleId/" element={<MyPageDetail />}>
+              <Route path=":pageId" element={<MyPageDetailMap />} />
+            </Route>
           </Route>
         </Routes>
       </AnimatePresence>

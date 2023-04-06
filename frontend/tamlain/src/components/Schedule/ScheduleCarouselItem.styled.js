@@ -10,11 +10,11 @@ export const CarouselContainer = styled.div`
 
 export const Text2 = styled.div`
   position: relative;
-  width: 100%;
+  width: 83%;
   color: black;
   margin-top: 10px;
   font-size: 15px;
-  text-align: center;
+  text-align: left;
   text-weight: bold;
   color: #3a3a3a;
 `;

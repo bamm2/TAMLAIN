@@ -41,7 +41,7 @@ const Loading = () => {
 
   setTimeout(function () {
     window.location.href = `${client.defaults.url}/scheduleMain/1`;
-  }, 10000);
+  }, 15000);
 
   return (
     <S.BackGround>

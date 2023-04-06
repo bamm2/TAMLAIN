@@ -18,14 +18,31 @@ const Rating = (props) => {
   const id = localStorage.getItem("id");
   const size = localStorage.getItem("size");
 
-  // const chk = props.chk;
+  // 미방문 체크 시 별점 0개로 
+  let visitChk = props.select;
+  console.log(visitChk);
 
-  // console.log("visited배열 체크(rating) : " + chk);
+  let chkIdx = localStorage.getItem("chkedVisited");
 
-  // useEffect(() => {
-  //   sendReview();
-  //   visitedChk();
-  // }, [clicked]); //컨디마 컨디업
+  useEffect(() => {
+    console.log(props.existStar);
+    console.log(props.index);
+    
+    if (props.select) {
+      props.setStarCount(0);
+      props.setStarIdx(chkIdx);
+    }
+
+    // 등록된 별점들 true 
+    let tmp = [];
+    for (let i = 0; i < props.existStar; i++){
+      tmp[i] = true;
+    }
+    setClicked(tmp);
+    props.setStarCount(props.existStar);
+    props.setStarIdx(props.index);
+  }, []);
+
 
   useEffect(() => {
     sendReview();
@@ -38,18 +55,6 @@ const Rating = (props) => {
     console.log("별점 : "+score);
     console.log("인덱스 : "+props.index);
   };
-
-  // const visitedChk = () => {
-  //   let clickStates = [...clicked];
-  //   for (let i = 0; i < size; i++){
-  //     if (chk[i]) {
-  //       for (let j = 0; j < 5; j++) {
-  //         clickStates[j] = false;
-  //       }
-  //     }
-  //   }
-  //   setClicked(clickStates);
-  // }
 
   return (
     <>

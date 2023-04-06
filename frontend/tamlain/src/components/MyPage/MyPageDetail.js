@@ -1,5 +1,5 @@
 import * as S from "./MyPageDetail.styled";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import {
   getScheduleDetail,
@@ -7,13 +7,15 @@ import {
 } from "../../utils/api/historyApi";
 import Frame from "./../../UI/Frame/Frame";
 import { useState } from "react";
+import client from "../../utils/client";
 
 const MyPageDetail = () => {
-  const location = useLocation();
+  var idx = window.location.href.substring(
+    String(window.location.href).length - 1
+  );
   const navigate = useNavigate();
-
   // axios 쏴줄 스케줄 id
-  const scheduleId = location.state;
+  const scheduleId = localStorage.getItem("scheduleId");
   const key = localStorage.getItem("token");
 
   const [mypageCommonInfo, setMypageCommonInfo] = useState({
@@ -27,6 +29,8 @@ const MyPageDetail = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [title, setTitle] = useState("");
 
+  const [period, setPeriod] = useState(0);
+
   // axios로 데이터 전부 가져오기
   useEffect(() => {
     let mypageInfo = {};
@@ -35,40 +39,30 @@ const MyPageDetail = () => {
 
       const data = res.data.data.mypageCommonInfo;
 
+      localStorage.setItem(
+        "scheduleDetailItemMap",
+        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+      );
+
       mypageInfo = {
         title: data.name,
         startDate: data.startDate.replaceAll("-", "."),
         endDate: data.endDate.replaceAll("-", "."),
-        period:
-          data.period - 1 + "박 " + data.period + "일",
+        period: data.period - 1 + "박 " + data.period + "일",
       };
       setMypageCommonInfo(mypageInfo);
       setTitle(data.name);
-
-      // ----- 지도 부분 데이터 가공 ------
-
-      // period로 일차 가져오기
-      console.log(res.data.data.mypageCommonInfo.period);
-      let day = res.data.data.mypageCommonInfo.period;
-
-      //scheduleDetailItemMap[period]  -> 1~N일차 돌리기
-      console.log(
-        res.data.data.scheduleDetailItemMap[1].length
-      );
-
-      // for (let i = 0; i < day; i++){
-      //   let placeCount = res.data.data.scheduleDetailItemMap[i].length;
-      //   for (let j = 0; j < placeCount; j++){
-
-      //   }
-      // }
-
-      //res.data.data.scheduleDetailItemMap[1].length -> 일차별 장소개수
-      //res.data.data.scheduleDetailItemMap[1][0~개수] -> 장소개수만큼 돌리기
-      //res.data.data.scheduleDetailItemMap[][].mapInfo.title -> 장소명
-
-      // console.log(res.data.data.scheduleDetailItemMap[1][0].mapInfo.title);
+      setPeriod(data.period);
+      localStorage.setItem("period", data.period);
     });
+    const period = localStorage.getItem("period");
+    localStorage.removeItem("period");
+    const radioBtns = document.querySelectorAll(".radio-btn label");
+    if (radioBtns === undefined) return;
+    radioBtns[idx - 1].style.backgroundColor = "#fc872a";
+    radioBtns[idx - 1].style.color = "#fff";
+    const arr = day;
+    setDay(arr.slice(0, period));
   }, []);
 
   // 뒤로 가기 버튼
@@ -101,18 +95,6 @@ const MyPageDetail = () => {
     }
   };
 
-  //  -------카카오 지도 -----------
-  const { kakao } = window;
-
-  useEffect(() => {
-    const container = document.getElementById("map");
-    const options = {
-      center: new kakao.maps.LatLng(33.510575, 126.491139),
-      level: 6,
-    };
-    const map = new kakao.maps.Map(container, options);
-  }, []);
-
   const onChangeTitle = (e) => {
     const inputValue = e.target.value;
     if (inputValue.length <= 20) {
@@ -121,6 +103,19 @@ const MyPageDetail = () => {
     } else {
       alert("일정명은 1자 이상 20자 이하입니다.");
     }
+  };
+
+  var dayArr = [
+    { id: 1, name: "1일차" },
+    { id: 2, name: "2일차" },
+    { id: 3, name: "3일차" },
+    { id: 4, name: "4일차" },
+    { id: 5, name: "5일차" },
+  ];
+  const [day, setDay] = useState(dayArr);
+
+  const movepage = (period) => {
+    window.location.href = `${client.defaults.url}/detail/${scheduleId}/${period}`;
   };
 
   return (
@@ -141,12 +136,9 @@ const MyPageDetail = () => {
               <input value={title} disabled />
             </S.TextOne>
           ) : (
-            <S.TextOne>
-              <input
-                value={title}
-                onChange={onChangeTitle}
-              />
-            </S.TextOne>
+            <S.TextOneModify>
+              <input value={title} onChange={onChangeTitle} />
+            </S.TextOneModify>
           )}
           {!isUpdate ? (
             <S.TitleUpdateImg
@@ -162,49 +154,32 @@ const MyPageDetail = () => {
         </S.FlexBox>
         <S.FlexBox>
           <S.TextTwo>
-            {mypageCommonInfo.startDate} ~{" "}
-            {mypageCommonInfo.endDate}
+            {mypageCommonInfo.startDate} ~ {mypageCommonInfo.endDate}
           </S.TextTwo>
-          <S.TextThree>
-            {mypageCommonInfo.period}
-          </S.TextThree>
+          <S.TextThree>{mypageCommonInfo.period}</S.TextThree>
+          {/* 지도 시작  */}
+          {day.map((item) => (
+            <div key={item.id} style={{ float: "left" }}>
+              <S.DayBtn
+                className="radio-btn"
+                style={{ left: `${item.id * 90}px` }}
+              >
+                <input
+                  id={`radio${item.id}`}
+                  type="radio"
+                  name="car"
+                  onClick={() => {
+                    movepage(item.id);
+                  }}
+                />
+                <label htmlFor={`radio${item.id}`}>{item.name}</label>
+              </S.DayBtn>
+            </div>
+          ))}
         </S.FlexBox>
         {/* ----------- 일정명 , 여행 날짜 -----------  */}
 
-        {/* 지도 시작  */}
-        <div> N일차 </div>
-        <S.MapContainer>
-          <div
-            id="map"
-            style={{
-              float: "left",
-              width: "80%",
-              height: "350px",
-              marginTop: "5%",
-            }}
-          ></div>
-
-          <S.Div>
-            <div
-              style={{
-                width: "3px",
-                height: "100vh",
-                marginLeft: "15%",
-                backgroundColor: "#fc872a",
-              }}
-            ></div>
-            <div
-              id="tagArea"
-              style={{
-                position: "absolute",
-                zIndex: "10",
-                top: "5%",
-                right: "5%",
-                marginBottom: "5px",
-              }}
-            ></div>
-          </S.Div>
-        </S.MapContainer>
+        {/* <Outlet /> */}
       </S.Container>
     </>
   );

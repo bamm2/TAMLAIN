@@ -1,52 +1,56 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
-import * as S from "./ScheduleMap.styled";
-import ModalRegist from "../../UI/Modal/ModalRegist";
+import * as S from "./MyPageDetilMap.styled";
+import { motion } from "framer-motion";
+/*global kakao*/
 
 const { kakao } = window;
-const ScheduleMap = () => {
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
+const MyPageDetilMap = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  let { params } = useParams();
-  var positions = [
-    {
-      title: "카카오",
-      latlng: { La: 33.450705, Ma: 126.570677 },
-    },
-    {
-      title: "제주공항",
-      latlng: { La: 33.5066211, Ma: 126.49281 },
-    },
-    {
-      title: "테마파크",
-      latlng: { La: 33.2906595, Ma: 126.322529 },
-    },
-    {
-      title: "수목원",
-      latlng: { La: 33.4696849, Ma: 126.493305 },
-    },
-  ];
+
   const isMounted = useRef(false);
-  const [pick, setPick] = useState(positions);
+
   const [select, setSelect] = useState(() => {
     return JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
   });
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
+  const [flag, setFlag] = useState(true);
+  const [detailData, setDetailData] = useState([]);
+  const [keys, setKeys] = useState([]);
+  const [values, setValues] = useState([]);
   var count;
   var divnum;
   var divtitle;
-
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
+    var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
+    console.log(123);
+    console.log(data);
+    setDetailData(data);
     const radioBtns = document.querySelectorAll(".radio-btn label");
     if (radioBtns === undefined) return;
     for (let i = 0; i < radioBtns.length; i++) {
       radioBtns[i].style.display = "block";
     }
-    console.log(`marker${idx}`);
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
       mapOption = {
         center: new kakao.maps.LatLng(33.374301889561444, 126.56642690880963), // 지도의 중심좌표
@@ -54,7 +58,15 @@ const ScheduleMap = () => {
       };
     var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     setMap(map1);
-    console.log(select);
+    var arr = [];
+    if (data[idx - 1] !== undefined) {
+      for (let i = 0; i < data[idx - 1].length; i++) {
+        arr.push(data[idx - 1][i].mapInfo);
+      }
+      setSelect(arr);
+    }
+    setKeys(JSON.parse(localStorage.getItem("keys")));
+    setValues(JSON.parse(localStorage.getItem("values")));
   }, []);
 
   //2. JSX 코드 상에서 최신화된 select 배열이 감지될때 실행되는 useEffect
@@ -80,8 +92,8 @@ const ScheduleMap = () => {
 
     if (isMounted.current) {
       // localStorage.setItem("marker", JSON.stringify(select2));
-      console.log(select);
-      console.log(select2);
+      // console.log(select);
+      // console.log(select2);
       $("#tagArea").empty();
       //for문 끝나고 선 표시하기 위해 저장할 좌표배열
       var linePath = [];
@@ -102,6 +114,10 @@ const ScheduleMap = () => {
           title: select2[i].title,
         });
         marker.setMap(map);
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "click", function (e) {
+          viewPlace(e);
+        });
 
         var moveLatLon = new kakao.maps.LatLng(x, y);
 
@@ -170,6 +186,10 @@ const ScheduleMap = () => {
 
   //동적으로 div 생성
   const createDiv = (title) => {
+    let titleTmp = title;
+    if (title.length > 6) {
+      titleTmp = title.substring(0, 6);
+    }
     let tagArea = document.getElementById("tagArea");
     divnum = document.createElement("div");
     divtitle = document.createElement("div");
@@ -192,8 +212,10 @@ const ScheduleMap = () => {
     divnum.style.backgroundColor = "#fc872a";
     divnum.style.float = "left";
 
+    divtitle.setAttribute("id", `divTitle${count}`);
     divtitle.setAttribute("class", "divTitle");
-    divtitle.innerHTML = title;
+    divtitle.setAttribute("value", title);
+    divtitle.innerHTML = titleTmp;
     tagArea.appendChild(divtitle);
     divtitle.style.color = "#fff";
     divtitle.style.width = "100px";
@@ -206,8 +228,22 @@ const ScheduleMap = () => {
     divtitle.style.borderRadius = "5px";
     divtitle.style.backgroundColor = "#fc872a";
     divtitle.style.marginBottom = "12px";
+    divtitle.style.cursor = "pointer";
 
     count++;
+    const element = document.querySelectorAll(".divTitle");
+
+    for (let i = 0; i < element.length; i++) {
+      element[i].addEventListener("click", function (e) {
+        viewPlace(e);
+      });
+    }
+  };
+
+  //일정표에서 직접 누르면 삭제하는 기능
+  const viewPlace = (e) => {
+    console.log(123);
+    console.log(e.target);
   };
 
   const checkSelect = (t) => {
@@ -218,42 +254,138 @@ const ScheduleMap = () => {
     }
     return true;
   };
-  const [modaltest2, setModaltest2] = useState(false);
-  const registSchedule = () => {
-    setModaltest2((modaltest2) => !modaltest2);
-  };
 
   return (
-    <div style={{ marginTop: "15%" }}>
-      <div style={{ marginBottom: "20px", left: "95%" }}>
-        <S.RegistBtn onClick={registSchedule}>등록하기</S.RegistBtn>
-        {modaltest2 && <ModalRegist></ModalRegist>}
-      </div>
+    <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <div
         id="map"
-        style={{ float: "left", width: "80%", height: "350px" }}
+        style={{
+          float: "left",
+          width: "80%",
+          height: "350px",
+          marginTop: "29%",
+        }}
       ></div>
-      <S.Div>
-        <div
-          style={{
-            width: "3px",
-            height: "100vh",
-            marginLeft: "15%",
-            backgroundColor: "#fc872a",
-          }}
-        ></div>
-        <div
-          id="tagArea"
-          style={{
-            position: "absolute",
-            zIndex: "10",
-            top: "5%",
-            right: "5%",
-            marginBottom: "5px",
-          }}
-        ></div>
-      </S.Div>
-    </div>
+      {(JSON.parse(localStorage.getItem(`marker${idx}`)) === null ||
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length === 0) && (
+        <S.Div>
+          <S.EmptySpace>아직 등록된 장소가 없습니다.</S.EmptySpace>
+        </S.Div>
+      )}
+      {JSON.parse(localStorage.getItem(`marker${idx}`)) !== null &&
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length !== 0 && (
+          <S.Div>
+            <div
+              style={{
+                width: "3px",
+                height: "100vh",
+                marginLeft: "15%",
+                backgroundColor: "#fc872a",
+              }}
+            ></div>
+            <div
+              id="tagArea"
+              style={{
+                position: "absolute",
+                zIndex: "10",
+                top: "5%",
+                right: "5%",
+                marginBottom: "5px",
+              }}
+            ></div>
+          </S.Div>
+        )}
+      <p>&nbsp;</p>
+
+      <S.TitleDiv>
+        <span>번호란</span>제목란제목란제목란제목란제목란<S.Tag>태그란</S.Tag>
+      </S.TitleDiv>
+      <S.Hr />
+      <S.Banner
+        src={`${process.env.PUBLIC_URL}/assets/Background/EmptyBanner.png`}
+        alt="배너이미지"
+      />
+      <S.AddressDiv>주소</S.AddressDiv>
+      <S.DetailDiv>상세정보</S.DetailDiv>
+      <S.Rating id="second">
+        <S.CircleTitle>평점</S.CircleTitle>
+        <figure className="donut-graph">
+          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+            <circle
+              className="donut-hole"
+              cx="2115"
+              cy="26"
+              r="15.91549430918954"
+              fill="#fff"
+            ></circle>
+            <circle
+              className="donut-ring"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#D9D9D9"
+              strokeWidth="1"
+            ></circle>
+
+            <circle
+              className="donut-segment"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#FC872A"
+              strokeWidth="1"
+              strokeDasharray="0 100"
+              strokeDashoffset="25"
+            ></circle>
+          </svg>
+
+          <figcaption className="donut-graph_caption">
+            <span className="donut-graph_caption-value">80%</span>
+          </figcaption>
+        </figure>
+      </S.Rating>
+      <S.ReviewCnt id="third">
+        <S.CircleTitle>평점</S.CircleTitle>
+        <figure className="donut-graph">
+          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+            <circle
+              className="donut-hole"
+              cx="2115"
+              cy="26"
+              r="15.91549430918954"
+              fill="#fff"
+            ></circle>
+            <circle
+              className="donut-ring"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#D9D9D9"
+              strokeWidth="1"
+            ></circle>
+
+            <circle
+              className="donut-segment"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#FC872A"
+              strokeWidth="1"
+              strokeDasharray="0 100"
+              strokeDashoffset="25"
+            ></circle>
+          </svg>
+
+          <figcaption className="donut-graph_caption">
+            <span className="donut-graph_caption-value">80%</span>
+          </figcaption>
+        </figure>
+      </S.ReviewCnt>
+    </motion.div>
   );
 };
-export default ScheduleMap;
+export default MyPageDetilMap;
