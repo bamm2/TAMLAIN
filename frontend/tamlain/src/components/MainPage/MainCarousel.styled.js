@@ -78,3 +78,24 @@ export const MainBtn = styled.button`
     width: 80px;
   }
 `;
+
+export const Question = styled.img`
+  position: absolute;
+  top: 33%;
+  left: 73.5%;
+  color: #ffffff;
+  width: 20px;
+
+  z-index: 3;
+  cursor: pointer;
+
+  :hover {
+    transition: 0.2s;
+    width: 17px;
+  }
+  @media all and (min-width: 412px) and (max-width: 760px) {
+    top: 23%;
+    left: 68%;
+    width: 15px;
+  }
+`;

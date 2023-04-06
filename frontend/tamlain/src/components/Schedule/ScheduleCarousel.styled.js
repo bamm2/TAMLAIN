@@ -21,7 +21,6 @@ export const CategoryName = styled.span`
 export const CarouselContainer = styled.div`
   margin-top: 20px;
   // height: 20vh;
-  background-color: red;
 `;
 
 export const BtnNext = styled.img`

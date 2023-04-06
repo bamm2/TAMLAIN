@@ -7,6 +7,7 @@ import { getScheduleThumbnail } from "../../utils/api/scheduleApi";
 import { registSchedule } from "../../utils/api/scheduleApi";
 import { motion } from "framer-motion";
 import client from "../../utils/client";
+import Swal from "sweetalert2";
 
 const containerVariants = {
   hidden: {
@@ -81,12 +82,20 @@ const ModalRegist = (props) => {
     const surveyId = localStorage.getItem("surveyId");
     const thumbnailId = localStorage.getItem("thumbnailId");
     if (thumbnailId === null) {
-      alert("사진을 등록해주세요!");
+      Swal.fire({
+        icon: "question",
+        title: "사진을 등록해주세요!",
+        confirmButtonColor: "#fc872a",
+      });
       return;
     }
     const name = document.getElementById("courseTitle").value;
     if (name === "") {
-      alert("일정명을 등록해주세요!");
+      Swal.fire({
+        icon: "question",
+        title: "일정명을 등록해주세요!",
+        confirmButtonColor: "#fc872a",
+      });
       return;
     }
 
@@ -163,7 +172,11 @@ const ModalRegist = (props) => {
     localStorage.removeItem("DayCnt");
     localStorage.removeItem("keys");
     localStorage.removeItem("values");
-    alert("등록이 완료되었습니다.");
+    Swal.fire({
+      icon: "success",
+      title: "등록이 완료되었습니다!",
+      confirmButtonColor: "#fc872a",
+    });
     closeModal();
     window.location.href = `${client.defaults.url}/history`;
   };

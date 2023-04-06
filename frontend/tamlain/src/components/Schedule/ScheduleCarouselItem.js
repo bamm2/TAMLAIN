@@ -32,8 +32,8 @@ const ScheduleCarouselItem = (props) => {
           flag={props.flag}
         />
       )}
-      {/* <S.Text1 htmlFor="place"> {props.tag}</S.Text1> */}
       <S.Text2 htmlFor="place">{props.name}</S.Text2>
+      <S.Text1 htmlFor="place"> {props.tag}</S.Text1>
     </S.Container>
   );
 };

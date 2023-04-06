@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loginReducer from "./KakaoLogin";
+
+import popupReducer from "./popup";
 
 const store = configureStore({
   reducer: {
-    login: loginReducer,
+    popup: popupReducer,
   },
 });
 

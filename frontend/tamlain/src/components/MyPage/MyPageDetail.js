@@ -8,6 +8,7 @@ import {
 import Frame from "./../../UI/Frame/Frame";
 import { useState } from "react";
 import client from "../../utils/client";
+import Swal from "sweetalert2";
 
 const MyPageDetail = () => {
   var idx = window.location.href.substring(
@@ -83,14 +84,22 @@ const MyPageDetail = () => {
       };
 
       if (data.name.length === 0) {
-        alert("일정명은 1자 이상 20자 이하입니다.");
+        Swal.fire({
+          icon: "question",
+          title: "일정명은 1자 이상 20자 이하여야 합니다.",
+          confirmButtonColor: "#fc872a",
+        });
         setIsUpdate(true);
         return;
       } else {
         modifyScheduleName(token, data).then((res) => {
           console.log(res);
         });
-        alert("수정 완료되었습니다.");
+        Swal.fire({
+          icon: "success",
+          title: "수정 완료되었습니다!",
+          confirmButtonColor: "#fc872a",
+        });
       }
     }
   };
@@ -101,7 +110,11 @@ const MyPageDetail = () => {
       // 글자 길이가 20자 이하인 경우에만 처리
       setTitle(inputValue);
     } else {
-      alert("일정명은 1자 이상 20자 이하입니다.");
+      Swal.fire({
+        icon: "question",
+        title: "일정명은 1자 이상 20자 이하여야 합니다.",
+        confirmButtonColor: "#fc872a",
+      });
     }
   };
 
