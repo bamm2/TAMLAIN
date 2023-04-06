@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
 import MyPageStarInfo from "./MyPageStarInfo";
 import Frame from "../../../UI/Frame/Frame";
@@ -41,8 +41,16 @@ const MyPageStarMain = () => {
       }
 
       setScheduleInfo(info);
+
+      forceUpdate();
     });
   }, []);
+
+
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+
   const navigate = useNavigate();
 
   const reDirectMyPage = () => {

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingLogin from "../../UI/Loading/LoadingLogin";
 
 const OAuthRedirectPage = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ const OAuthRedirectPage = () => {
     const loadData = async () => {
       await axios({
         method: "GET",
-        // url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
-        url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
+        url: `http://localhost:8080/oauth/callback/kakao?code=${code}`,
+        // url: `${backUri}/api/oauth/callback/kakao?code=${code}`,
       })
         .then((res) => {
           console.log(backUri);
@@ -42,7 +43,7 @@ const OAuthRedirectPage = () => {
 
   return (
     <>
-      <div>로그인 진행중..</div>
+      <LoadingLogin></LoadingLogin>
     </>
   );
 };

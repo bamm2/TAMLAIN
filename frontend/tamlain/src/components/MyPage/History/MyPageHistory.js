@@ -21,7 +21,7 @@ const MyPageHistory = () => {
       review: false,
     }
   ]);
-  // const resetList = null;
+  
   useEffect(() => {
     getScheduleHistory(key, user_id).then((res) => {
       let size = res.data.data.length;
@@ -39,8 +39,6 @@ const MyPageHistory = () => {
         }
       }
       console.log(res.data);
-      // setScheduleList([...resetList, ...res.data]);
-      // console.log(tmp); 
       setScheduleList(tmp);
     }).catch(e => {
       console.error(e);
