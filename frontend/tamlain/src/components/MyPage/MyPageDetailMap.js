@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import $ from "jquery";
 import * as S from "./MyPageDetilMap.styled";
 import { motion } from "framer-motion";
-
 /*global kakao*/
 
 const { kakao } = window;
@@ -26,35 +25,16 @@ const MyPageDetilMap = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  var positions = [
-    {
-      title: "카카오",
-      latlng: { La: 33.450705, Ma: 126.570677 },
-    },
-    {
-      title: "제주공항",
-      latlng: { La: 33.5066211, Ma: 126.49281 },
-    },
-    {
-      title: "테마파크",
-      latlng: { La: 33.2906595, Ma: 126.322529 },
-    },
-    {
-      title: "수목원",
-      latlng: { La: 33.4696849, Ma: 126.493305 },
-    },
-  ];
+
   const isMounted = useRef(false);
-  const [pick, setPick] = useState(positions);
+
   const [select, setSelect] = useState(() => {
     return JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
   });
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
   const [flag, setFlag] = useState(true);
-  const [flag2, setFlag2] = useState(false);
-
-  //캐러셀 데이터 props로 내려줄 useState들
+  const [detailData, setDetailData] = useState([]);
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
   var count;
@@ -62,6 +42,10 @@ const MyPageDetilMap = () => {
   var divtitle;
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
+    var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
+    console.log(123);
+    console.log(data);
+    setDetailData(data);
     const radioBtns = document.querySelectorAll(".radio-btn label");
     if (radioBtns === undefined) return;
     for (let i = 0; i < radioBtns.length; i++) {
@@ -74,27 +58,16 @@ const MyPageDetilMap = () => {
       };
     var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     setMap(map1);
-    console.log(select);
+    var arr = [];
+    if (data[idx - 1] !== undefined) {
+      for (let i = 0; i < data[idx - 1].length; i++) {
+        arr.push(data[idx - 1][i].mapInfo);
+      }
+      setSelect(arr);
+    }
     setKeys(JSON.parse(localStorage.getItem("keys")));
     setValues(JSON.parse(localStorage.getItem("values")));
   }, []);
-
-  const removeItem = (id) => {
-    const arr = values;
-    const deleteArr = JSON.parse(localStorage.getItem("placeDeleteId")) || [];
-    loop: for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < arr[i].length; j++) {
-        if (arr[i][j].mapInfo.jejuPlaceId === id) {
-          arr[i].splice(j, 1);
-          deleteArr.push(arr[i][j].mapInfo.jejuPlaceId);
-          break loop;
-        }
-      }
-    }
-    localStorage.setItem("placeDeleteId", JSON.stringify(deleteArr));
-    localStorage.setItem("values", JSON.stringify(arr));
-    setValues(JSON.parse(localStorage.getItem("values")));
-  };
 
   //2. JSX 코드 상에서 최신화된 select 배열이 감지될때 실행되는 useEffect
   useEffect(() => {
@@ -141,6 +114,10 @@ const MyPageDetilMap = () => {
           title: select2[i].title,
         });
         marker.setMap(map);
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, "click", function (e) {
+          viewPlace(e);
+        });
 
         var moveLatLon = new kakao.maps.LatLng(x, y);
 
@@ -258,17 +235,15 @@ const MyPageDetilMap = () => {
 
     for (let i = 0; i < element.length; i++) {
       element[i].addEventListener("click", function (e) {
-        removePlace(e);
+        viewPlace(e);
       });
     }
   };
 
   //일정표에서 직접 누르면 삭제하는 기능
-  const removePlace = (e) => {
-    setSelect(
-      select.filter((button) => button.title != e.target.getAttribute("value"))
-    );
-    setFlag(false);
+  const viewPlace = (e) => {
+    console.log(123);
+    console.log(e.target);
   };
 
   const checkSelect = (t) => {
@@ -281,19 +256,14 @@ const MyPageDetilMap = () => {
   };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      style={{ marginTop: "15%" }}
-    >
+    <motion.div variants={containerVariants} initial="hidden" animate="visible">
       <div
         id="map"
         style={{
           float: "left",
           width: "80%",
           height: "350px",
-          marginTop: "5%",
+          marginTop: "29%",
         }}
       ></div>
       {(JSON.parse(localStorage.getItem(`marker${idx}`)) === null ||
@@ -325,6 +295,96 @@ const MyPageDetilMap = () => {
             ></div>
           </S.Div>
         )}
+      <p>&nbsp;</p>
+
+      <S.TitleDiv>
+        <span>번호란</span>제목란제목란제목란제목란제목란<S.Tag>태그란</S.Tag>
+      </S.TitleDiv>
+      <S.Hr />
+      <S.Banner
+        src={`${process.env.PUBLIC_URL}/assets/Background/EmptyBanner.png`}
+        alt="배너이미지"
+      />
+      <S.AddressDiv>주소</S.AddressDiv>
+      <S.DetailDiv>상세정보</S.DetailDiv>
+      <S.Rating id="second">
+        <S.CircleTitle>평점</S.CircleTitle>
+        <figure className="donut-graph">
+          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+            <circle
+              className="donut-hole"
+              cx="2115"
+              cy="26"
+              r="15.91549430918954"
+              fill="#fff"
+            ></circle>
+            <circle
+              className="donut-ring"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#D9D9D9"
+              strokeWidth="1"
+            ></circle>
+
+            <circle
+              className="donut-segment"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#FC872A"
+              strokeWidth="1"
+              strokeDasharray="0 100"
+              strokeDashoffset="25"
+            ></circle>
+          </svg>
+
+          <figcaption className="donut-graph_caption">
+            <span className="donut-graph_caption-value">80%</span>
+          </figcaption>
+        </figure>
+      </S.Rating>
+      <S.ReviewCnt id="third">
+        <S.CircleTitle>평점</S.CircleTitle>
+        <figure className="donut-graph">
+          <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+            <circle
+              className="donut-hole"
+              cx="2115"
+              cy="26"
+              r="15.91549430918954"
+              fill="#fff"
+            ></circle>
+            <circle
+              className="donut-ring"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#D9D9D9"
+              strokeWidth="1"
+            ></circle>
+
+            <circle
+              className="donut-segment"
+              cx="21"
+              cy="21"
+              r="15.91549430918954"
+              fill="transparent"
+              stroke="#FC872A"
+              strokeWidth="1"
+              strokeDasharray="0 100"
+              strokeDashoffset="25"
+            ></circle>
+          </svg>
+
+          <figcaption className="donut-graph_caption">
+            <span className="donut-graph_caption-value">80%</span>
+          </figcaption>
+        </figure>
+      </S.ReviewCnt>
     </motion.div>
   );
 };

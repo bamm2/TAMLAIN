@@ -39,6 +39,11 @@ const MyPageDetail = () => {
 
       const data = res.data.data.mypageCommonInfo;
 
+      localStorage.setItem(
+        "scheduleDetailItemMap",
+        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+      );
+
       mypageInfo = {
         title: data.name,
         startDate: data.startDate.replaceAll("-", "."),
@@ -174,7 +179,7 @@ const MyPageDetail = () => {
         </S.FlexBox>
         {/* ----------- 일정명 , 여행 날짜 -----------  */}
 
-        <Outlet />
+        {/* <Outlet /> */}
       </S.Container>
     </>
   );

@@ -6,6 +6,10 @@ import { getScheduleHistory } from "../../../utils/api/historyApi";
 const MyPageHistory = () => {
   const key = localStorage.getItem("token");
   const user_id = localStorage.getItem("id");
+  const [idArr, setIdArr] = useState([]);
+
+  const [starRegistOk, setStarRegistOk] = useState([]);
+  const [starRegistScheduleId, setStarRegistScheduleId] = useState([]);
 
   //  일정 useState에 저장
   const [scheduleList, setScheduleList] = useState([
@@ -25,7 +29,17 @@ const MyPageHistory = () => {
     getScheduleHistory(key, user_id)
       .then((res) => {
         let size = res.data.data.length;
-        const tmp = [{}];
+
+        let tmpArr = [];
+        let tmpArr2 = [];
+        for (let i = 0; i < size; i++) {
+          tmpArr[i] = false;
+          tmpArr2[i] = 0;
+        }
+        setStarRegistOk(tmpArr);
+        setStarRegistScheduleId(tmpArr2);
+
+        const tmp = [];
         const scheduleIdArr = [];
         for (var idx = 0; idx < size; idx++) {
           scheduleIdArr.push(res.data.data[idx].scheduleId);
@@ -44,8 +58,23 @@ const MyPageHistory = () => {
               "일",
             review: res.data.data[idx].review,
           };
+
+          // 별점 등록 체크용
+          starRegistOk[idx] = res.data.data[idx].review;
+          setStarRegistOk([...starRegistOk]);
+          starRegistScheduleId[idx] = res.data.data[idx].scheduleId;
+          setStarRegistScheduleId([...starRegistScheduleId]);
+          localStorage.setItem("starRegistSize", size);
         }
+
+        localStorage.setItem("starRegistArr", JSON.stringify(starRegistOk));
+        localStorage.setItem(
+          "starRegistIdx",
+          JSON.stringify(starRegistScheduleId)
+        );
+
         localStorage.setItem("scheduleId", JSON.stringify(scheduleIdArr));
+        setIdArr(JSON.parse(localStorage.getItem("scheduleId")));
         console.log(res.data);
         setScheduleList(tmp);
       })
@@ -59,7 +88,7 @@ const MyPageHistory = () => {
       {scheduleList.map((items, index) => (
         <S.Container key={items.scheduleId}>
           <MyPageHistoryItem
-            idx={JSON.parse(localStorage.getItem("scheduleId"))[index]}
+            idx={idArr[index]}
             img={items.thumbnailImageUrl}
             title={items.name}
             date={items.startDate + " ~ " + items.endDate}

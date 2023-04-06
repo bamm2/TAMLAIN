@@ -103,6 +103,10 @@ const ModalRegist = (props) => {
         day: 2,
       },
     ];
+    const realArr = [];
+    for (let i = 0; i < day1.length; i++) {
+      const arr = [];
+    }
     const day1 = JSON.parse(localStorage.getItem("marker1"));
     const day2 = JSON.parse(localStorage.getItem("marker2"));
     const day3 = JSON.parse(localStorage.getItem("marker3"));

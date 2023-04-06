@@ -43,8 +43,8 @@ export const BackBtn = styled.img`
 export const DayBtn = styled.div`
   position: absolute;
   z-index: 4;
-  top: 11%;
-  left: -20%;
+  top: 12.5%;
+  margin-left: -8%;
   width: 70px;
   height: 30px;
   border-radius: 30px;
@@ -86,7 +86,7 @@ export const TextOne = styled.span`
   background-color: white;
   input {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 30px;
     margin-top: 20px;
     margin-left: 30px;
     margin-bottom: 15px;
@@ -103,7 +103,7 @@ export const TextOneModify = styled.span`
   background-color: white;
   input {
     font-weight: bold;
-    font-size: 35px;
+    font-size: 30px;
     margin-top: 20px;
     margin-left: 30px;
     margin-bottom: 15px;
@@ -132,7 +132,7 @@ export const TitleUpdateImg = styled.img`
 export const TitleUpdateImgReady = styled.img`
   object-fit: cover;
   margin-left: 10px;
-  margin-top: 36px;
+  margin-top: 26px;
   width: 25px;
   height: 25px;
   border: 2px solid white;
