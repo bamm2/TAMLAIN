@@ -111,6 +111,7 @@ const MyPageStarInfo = () => {
     for (let i = 0; i < size; i++) {
       // 방문을 했는데 별점을 안줬으면 alert 창 띄우기
       if (!visited[i] && starArr[i] === 0) {
+        console.log(i);
         Swal.fire({
           icon: "question",
           title: "등록하지 않은 별점이 존재합니다.",
@@ -139,11 +140,20 @@ const MyPageStarInfo = () => {
 
     // 리뷰 등록 버튼 요청 발송
     registReview(key, sendDatas).then((res) => console.log(res));
-    // 일정 메인 페이지로 이동
-    navigate("/history");
-    window.location.reload();
+    Swal.fire({
+      icon: "success",
+      title: "일정 등록이 완료되었습니다.",
+      confirmButtonColor: "#fc872a",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        // 일정 메인 페이지로 이동
+        navigate("/history");
+        window.location.reload();
 
-    setChkActive(false);
+        setChkActive(false);
+      }
+    });
   };
 
   // 미방문 체크시 별점 0개로 변환 시키기
