@@ -31,6 +31,10 @@ export const EmptySpace = styled.div`
   position: relative;
   transform: translateY(450%);
 `;
+export const Number = styled.span`
+  color: #fc872a;
+  margin-left: 3%;
+`;
 
 export const TitleDiv = styled.div`
   font-weight: bold;
@@ -62,36 +66,52 @@ export const Banner = styled.img`
 export const AddressDiv = styled.div`
   margin-top: 5%;
   margin-left: 5%;
-  font-weight: bold;
+  font-weight: normal;
   width: 95%;
-  font-size: 28px;
+  font-size: 23px;
   padding-left: 3%;
   color: #646464;
 `;
 export const DetailDiv = styled.div`
   margin-top: 2%;
   margin-left: 5%;
-  font-weight: bold;
+  // font-weight: bold;
   width: 95%;
   font-size: 28px;
   padding-left: 3%;
   color: #646464;
 `;
+export const DetailA = styled.a`
+  text-decoration-line: none;
+  background-color: #646464;
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  color: #fff;
+  &:hover {
+    // border: 2px solid #fc872a;
+    background-color: #fc872a;
+    color: #fff;
+    transition: 0.2s;
+  }
+`;
 export const CircleTitle = styled.div`
-  margin-top: 10%;
+  margin-top: 15%;
   font-weight: bold;
   width: 95%;
-  font-size: 28px;
+  font-size: 25px;
   padding-left: 3%;
   text-align: center;
-  color: #646464;
+  color: #fc872a;
 `;
 
 export const Rating = styled.div`
-  @keyframes donut-graph {
+  .moving-outline circle {
+    stroke-dasharray: 1360;
+    animation: dash 2s linear infinite;
+  }
+  @keyframes dash {
     to {
-      /* 30% */
-      stroke-dasharray: 70 30;
+      stroke-dashoffset: 2720;
     }
   }
 
@@ -99,7 +119,7 @@ export const Rating = styled.div`
     display: block;
     width: 200px;
     height: 200px;
-    margin: 0;
+    margin-left: 15%;
     padding: 0;
     position: relative;
   }
@@ -117,9 +137,9 @@ export const Rating = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 90px;
+    width: 85px;
     height: 105px;
-    margin: -48px 0 0 -48px;
+    margin: 0 148px 148px 0;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -128,7 +148,8 @@ export const Rating = styled.div`
   .donut-graph_caption-value {
     order: 1;
     /* unit size 24px /2 */
-    padding-left: 12px;
+    padding-right: 113px;
+    padding-bottom: 125px;
     font-size: 25px;
     font-weight: bold;
     line-height: 1;
@@ -136,22 +157,27 @@ export const Rating = styled.div`
     white-space: nowrap;
     color: #fc872a;
   }
+  margin-left: 15%;
+
   float: left;
-  margin-left: 22%;
 `;
 
 export const ReviewCnt = styled.div`
-  @keyframes donut-graph {
+  .moving-outline circle {
+    stroke-dasharray: 1360;
+    animation: dash 2s linear infinite;
+  }
+  @keyframes dash {
     to {
-      /* 30% */
-      stroke-dasharray: 70 30;
+      stroke-dashoffset: 2720;
     }
   }
+
   .donut-graph {
     display: block;
     width: 200px;
     height: 200px;
-    margin: 0;
+    margin-left: 15%;
     padding: 0;
     position: relative;
   }
@@ -169,9 +195,9 @@ export const ReviewCnt = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 90px;
+    width: 85px;
     height: 105px;
-    margin: -48px 0 0 -48px;
+    margin: 0 148px 148px 0;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -180,7 +206,8 @@ export const ReviewCnt = styled.div`
   .donut-graph_caption-value {
     order: 1;
     /* unit size 24px /2 */
-    padding-left: 12px;
+    padding-right: 113px;
+    padding-bottom: 125px;
     font-size: 25px;
     font-weight: bold;
     line-height: 1;
@@ -188,5 +215,7 @@ export const ReviewCnt = styled.div`
     white-space: nowrap;
     color: #fc872a;
   }
+  margin-left: 5%;
+
   float: left;
 `;

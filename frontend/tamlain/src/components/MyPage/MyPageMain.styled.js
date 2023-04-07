@@ -39,7 +39,7 @@ export const TitleDiv = styled.div`
   font-size: 28px;
   position: absolute;
   z-index: 6;
-  top: 38%;
+  top: 37.5%;
   left: 31%;
 `;
 

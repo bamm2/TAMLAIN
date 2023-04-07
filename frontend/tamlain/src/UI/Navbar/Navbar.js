@@ -17,6 +17,10 @@ const Navbar = (props) => {
     }
   }, [key]);
 
+  // window.addEventListener('unload', () => {
+  //   localStorage.clear();
+  // });
+
   //  메인 페이지로 이동
   const mainpageHandler = () => {
     navigate("/main");

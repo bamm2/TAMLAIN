@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
@@ -31,27 +30,9 @@ const ScheduleMap = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
   );
-  let { params } = useParams();
-  var positions = [
-    {
-      title: "카카오",
-      latlng: { La: 33.450705, Ma: 126.570677 },
-    },
-    {
-      title: "제주공항",
-      latlng: { La: 33.5066211, Ma: 126.49281 },
-    },
-    {
-      title: "테마파크",
-      latlng: { La: 33.2906595, Ma: 126.322529 },
-    },
-    {
-      title: "수목원",
-      latlng: { La: 33.4696849, Ma: 126.493305 },
-    },
-  ];
+
   const isMounted = useRef(false);
-  const [pick, setPick] = useState(positions);
+
   const [select, setSelect] = useState(() => {
     return JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
   });
@@ -276,7 +257,6 @@ const ScheduleMap = () => {
     );
     setFlag(false);
   };
-  console.log(flag);
 
   const checkSelect = (t) => {
     for (let i = 0; i < select.length; i++) {
@@ -315,6 +295,7 @@ const ScheduleMap = () => {
         "values",
         JSON.stringify(Object.values(res.data.data))
       );
+      localStorage.setItem("keys", JSON.stringify(Object.keys(res.data.data)));
     });
     localStorage.removeItem("placeDeleteId");
     window.location.reload();

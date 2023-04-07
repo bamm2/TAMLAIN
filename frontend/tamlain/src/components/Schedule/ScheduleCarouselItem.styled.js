@@ -7,7 +7,16 @@ export const Container = styled.div`
 export const CarouselContainer = styled.div`
   margin-right: 0px;
 `;
-
+export const Text1 = styled.div`
+  position: relative;
+  width: 83%;
+  color: black;
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: left;
+  text-weight: bold;
+  color: #3a3a3a;
+`;
 export const Text2 = styled.div`
   position: relative;
   width: 83%;

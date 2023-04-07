@@ -3,7 +3,6 @@ import * as S from "./MyPageMain.styled";
 import { Outlet, Link } from "react-router-dom";
 
 const MyPageMain = () => {
-
   const name = localStorage.getItem("name");
 
   return (
@@ -13,7 +12,8 @@ const MyPageMain = () => {
       </S.BackGround>
       <div>
         <S.TitleDiv>
-          🍊 {name}<span style={{ color: "#fc872a" }}>님의 제주여행</span>
+          🍊 {name}
+          <span style={{ color: "#fc872a" }}>님의 제주여행</span>
         </S.TitleDiv>
         <S.Hr />
         <Link to="/main">

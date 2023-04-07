@@ -7,6 +7,7 @@ import { getScheduleThumbnail } from "../../utils/api/scheduleApi";
 import { registSchedule } from "../../utils/api/scheduleApi";
 import { motion } from "framer-motion";
 import client from "../../utils/client";
+import Swal from "sweetalert2";
 
 const containerVariants = {
   hidden: {
@@ -81,44 +82,81 @@ const ModalRegist = (props) => {
     const surveyId = localStorage.getItem("surveyId");
     const thumbnailId = localStorage.getItem("thumbnailId");
     if (thumbnailId === null) {
-      alert("사진을 등록해주세요!");
+      Swal.fire({
+        icon: "question",
+        title: "사진을 등록해주세요!",
+        confirmButtonColor: "#fc872a",
+      });
       return;
     }
     const name = document.getElementById("courseTitle").value;
     if (name === "") {
-      alert("일정명을 등록해주세요!");
+      Swal.fire({
+        icon: "question",
+        title: "일정명을 등록해주세요!",
+        confirmButtonColor: "#fc872a",
+      });
       return;
     }
-    const arr = [
-      {
-        jejuPlaceId: 1,
-        day: 1,
-      },
-      {
-        jejuPlaceId: 3,
-        day: 1,
-      },
-      {
-        jejuPlaceId: 5,
-        day: 2,
-      },
-    ];
+
     const realArr = [];
-    for (let i = 0; i < day1.length; i++) {
-      const arr = [];
-    }
     const day1 = JSON.parse(localStorage.getItem("marker1"));
     const day2 = JSON.parse(localStorage.getItem("marker2"));
     const day3 = JSON.parse(localStorage.getItem("marker3"));
     const day4 = JSON.parse(localStorage.getItem("marker4"));
     const day5 = JSON.parse(localStorage.getItem("marker5"));
+    for (let i = 0; i < day1.length; i++) {
+      const obj = {
+        jejuPlaceId: day1[i].jejuPlaceId,
+        day: 1,
+      };
+      realArr.push(obj);
+    }
+
+    if (day2 !== null) {
+      for (let i = 0; i < day2.length; i++) {
+        const obj = {
+          jejuPlaceId: day2[i].jejuPlaceId,
+          day: 2,
+        };
+        realArr.push(obj);
+      }
+    }
+    if (day3 !== null) {
+      for (let i = 0; i < day3.length; i++) {
+        const obj = {
+          jejuPlaceId: day3[i].jejuPlaceId,
+          day: 3,
+        };
+        realArr.push(obj);
+      }
+    }
+    if (day4 !== null) {
+      for (let i = 0; i < day4.length; i++) {
+        const obj = {
+          jejuPlaceId: day4[i].jejuPlaceId,
+          day: 4,
+        };
+        realArr.push(obj);
+      }
+    }
+
+    if (day5 !== null) {
+      for (let i = 0; i < day5.length; i++) {
+        const obj = {
+          jejuPlaceId: day5[i].jejuPlaceId,
+          day: 5,
+        };
+        realArr.push(obj);
+      }
+    }
 
     const data = {
       userId: userId,
       surveyId: surveyId,
       scheduleThumbnailId: thumbnailId,
       name: name,
-      scheduleRegistItemList: arr,
+      scheduleRegistItemList: realArr,
     };
     console.log(data);
     registSchedule(token, data).then((res) => {
@@ -134,9 +172,17 @@ const ModalRegist = (props) => {
     localStorage.removeItem("DayCnt");
     localStorage.removeItem("keys");
     localStorage.removeItem("values");
-    alert("등록이 완료되었습니다.");
-    closeModal();
-    window.location.href = `${client.defaults.url}/history`;
+    Swal.fire({
+      icon: "success",
+      title: "등록이 완료되었습니다!",
+      confirmButtonColor: "#fc872a",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        closeModal();
+        window.location.href = `${client.defaults.url}/history`;
+      }
+    });
   };
 
   return (

@@ -32,6 +32,7 @@ export const ExitButton = styled.button`
   transform: translate(-10%, 20%);
   cursor: pointer;
   left: 2%;
+  // text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 `;
 
 export const Category = styled.span`
@@ -40,6 +41,7 @@ export const Category = styled.span`
   right: 4%;
   color: white;
   font-size: 1px;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 `;
 
 export const Filter = styled.div`

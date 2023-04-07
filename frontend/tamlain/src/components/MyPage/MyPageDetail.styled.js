@@ -29,7 +29,7 @@ export const Container = styled.div`
   left: 25%;
   width: 50%;
   top: 26.5%;
-  height: 200%;
+  height: 10%;
 `;
 
 export const BackBtn = styled.img`
@@ -43,7 +43,7 @@ export const BackBtn = styled.img`
 export const DayBtn = styled.div`
   position: absolute;
   z-index: 4;
-  top: 12.5%;
+  top: 252.5%;
   margin-left: -8%;
   width: 70px;
   height: 30px;
