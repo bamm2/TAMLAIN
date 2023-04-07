@@ -35,31 +35,36 @@ const MyPageDetilMap = () => {
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
   const [flag, setFlag] = useState(true);
+  console.log(JSON.parse(localStorage.getItem("scheduleDetailItemMap")));
   const [detailData, setDetailData] = useState(() => {
     return JSON.parse(localStorage.getItem("scheduleDetailItemMap")) || [];
   });
+  console.log(detailData);
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
-  const [setting, setSetting] = useState(() => {
-    return detailData[idx - 1][0] || {};
-  });
+  const [setting, setSetting] = useState({ mapInfo: "" });
   var count;
   var divnum;
   var divtitle;
   const scheduleId = localStorage.getItem("scheduleId");
   const token = localStorage.getItem("token");
   //1. 최초렌더링시 실행되는 useEffect()
+  getScheduleDetail(token, scheduleId).then((res) => {
+    console.log(res);
+    localStorage.setItem(
+      "scheduleDetailItemMap",
+      JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+    );
+  });
   useEffect(() => {
-    // getScheduleDetail(token, scheduleId).then((res) => {
-    //   console.log(res);
-    //   localStorage.setItem(
-    //     "scheduleDetailItemMap",
-    //     JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
-    //   );
-    // });
+    getScheduleDetail(token, scheduleId).then((res) => {
+      console.log(res);
+      localStorage.setItem(
+        "scheduleDetailItemMap",
+        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+      );
+    });
     var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
-    console.log(123);
-    console.log(data);
     setDetailData(data);
     const radioBtns = document.querySelectorAll(".radio-btn label");
     if (radioBtns === undefined) return;
