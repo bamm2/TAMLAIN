@@ -1,5 +1,5 @@
 .popup-div {
-  font-family: "ONE-Mobile-POP";
+  font-family: "GmarketSans";
 }
 
 .popup-div .windowBack {
@@ -162,6 +162,12 @@ li button {
   background-color: white;
   border: none;
   text-align: right;
+}
+
+.closeBtn:hover {
+  background-color: #ada5a5;
+  transition: 0.3s;
+  color: #fff;
 }
 
 .deleteBtn {

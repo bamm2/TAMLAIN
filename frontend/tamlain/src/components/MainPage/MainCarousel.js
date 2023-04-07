@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,6 +9,7 @@ import { refreshAccessToken } from "../../utils/api/oauthApi";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import VideoPopUp from "../../UI/Modal/VideoPopUp";
+
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -89,12 +90,10 @@ const MainCarousel = () => {
     }
   };
   const [doSignup, setDoSignup] = useState(false);
-
   const openModal = () => {
-    setDoSignup((doSignup) => !doSignup);
+    setDoSignup(true);
+    document.body.style = `overflow:hidden`;
   };
-
-  const popupOk = useSelector((state) => state.popup.isOk);
 
   // Slider가 filter 컴포넌트도 요소로 인식해서 따로 컴포넌트로 img컴포넌트 빼줌
   return (
@@ -125,7 +124,7 @@ const MainCarousel = () => {
           alt="가이드버튼"
           onClick={openModal}
         />
-        {doSignup && <VideoPopUp />}
+        {doSignup && <VideoPopUp setDoSignup={setDoSignup} />}
       </motion.div>
     </>
   );
