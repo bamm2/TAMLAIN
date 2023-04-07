@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { registReview } from "../../../utils/api/reviewApi";
 import { getReview } from "../../../utils/api/reviewApi";
 import { getScheduleHistory } from "../../../utils/api/historyApi";
+import Swal from "sweetalert2";
 
 const MyPageStarInfo = () => {
   // 토큰
@@ -22,10 +23,9 @@ const MyPageStarInfo = () => {
 
   // 미방문 ,방문 -> 제출 할 때 미방문은 0 점으로 변경
   const [visited, setVisited] = useState([]);
-  
-  //  일정 장소 개수 
-  const size = localStorage.getItem("size");
 
+  //  일정 장소 개수
+  const size = localStorage.getItem("size");
 
   let scheduleId = localStorage.getItem("scheduleId");
   console.log(scheduleId);
@@ -36,8 +36,8 @@ const MyPageStarInfo = () => {
     for (let i = 0; i < size; i++) {
       datas[i] = JSON.parse(localStorage.getItem("placeList" + i));
     }
-    
-    //  가져온 장소데이터 배열로 tmp라는 이름으로 넣기 
+
+    //  가져온 장소데이터 배열로 tmp라는 이름으로 넣기
     localStorage.setItem("tmp", JSON.stringify(datas));
     // setDataList(datas);
 
@@ -55,10 +55,10 @@ const MyPageStarInfo = () => {
     }
     setStarArr(starInit);
 
-    // 클릭한 scheduleId와 같은 거의 별점 부여 여부 찾기 
+    // 클릭한 scheduleId와 같은 거의 별점 부여 여부 찾기
     getScheduleHistory(key, id).then((res) => {
       let size = res.data.data.length;
-      // 유저 일정 데이터 가져오기 
+      // 유저 일정 데이터 가져오기
       for (let idx = 0; idx < size; idx++) {
         if (scheduleId == res.data.data[idx].scheduleId) {
           setChkActive(res.data.data[idx].review);
@@ -72,55 +72,56 @@ const MyPageStarInfo = () => {
   const [chkActive, setChkActive] = useState(false);
 
   useEffect(() => {
-  // 이미 등록했다면 , 
-  if (chkActive) {
-    // 이미 등록한 일정의 별점을 가져오기  
-    getReview(key, scheduleId).then((res) => {
-      console.log(res);
+    // 이미 등록했다면 ,
+    if (chkActive) {
+      // 이미 등록한 일정의 별점을 가져오기
+      getReview(key, scheduleId).then((res) => {
+        console.log(res);
         let data = [];
-        // 등록된 별점들 가져오기 
-        for (let i = 0; i < size; i++){
+        // 등록된 별점들 가져오기
+        for (let i = 0; i < size; i++) {
           let datas = res.data.data.reviewItemList[i];
           data[i] = {
-            jejuPlaceImgUrl:datas.jejuPlaceImgUrl,
+            jejuPlaceImgUrl: datas.jejuPlaceImgUrl,
             jejuPlaceName: datas.jejuPlaceName,
             score: datas.score,
-            visit : datas.visit,
-          }
+            visit: datas.visit,
+          };
         }
-        // 등록된 별점 데이터 
+        // 등록된 별점 데이터
         setAxiosData(data);
       });
-  }  
-}, [chkActive]);
+    }
+  }, [chkActive]);
 
-
-  //  등록된 별점 데이터를 가져올 변수 
+  //  등록된 별점 데이터를 가져올 변수
   const [axiosData, setAxiosData] = useState([]);
-  
-  // 장소 데이터 가져오기 
+
+  // 장소 데이터 가져오기
   useEffect(() => {
     setDataList(JSON.parse(localStorage.getItem("tmp")));
     localStorage.removeItem("tmp");
   }, [localStorage.getItem("tmp")]);
 
   const navigate = useNavigate();
-  
+
   // 별점등록 버튼 누르면 별점등록 axios 쏘고 마이페이지 메인으로 이동
   const registStar = () => {
-
     // 보내줄 데이터 만들어주기
     for (let i = 0; i < size; i++) {
-      // 방문을 했는데 별점을 안줬으면 alert 창 띄우기 
+      // 방문을 했는데 별점을 안줬으면 alert 창 띄우기
       if (!visited[i] && starArr[i] === 0) {
-        window.alert("등록하지 않은 별점이 존재합니다.");
+        Swal.fire({
+          icon: "question",
+          title: "등록하지 않은 별점이 존재합니다.",
+          confirmButtonColor: "#fc872a",
+        });
         return;
       }
     }
 
-
     let tmp = [];
-    //  별점 등록 데이터 쌓아주기 
+    //  별점 등록 데이터 쌓아주기
     for (let i = 0; i < size; i++) {
       tmp[i] = {
         jejuPlaceId: dataList[i].jejuPlaceId,
@@ -130,35 +131,33 @@ const MyPageStarInfo = () => {
     }
 
     let sendDatas = {};
-    // 유저id와 함께 axios 태워줄 data형태 
+    // 유저id와 함께 axios 태워줄 data형태
     sendDatas = {
       userId: id,
       reviewRegistItemList: tmp,
     };
 
-    // 리뷰 등록 버튼 요청 발송 
+    // 리뷰 등록 버튼 요청 발송
     registReview(key, sendDatas).then((res) => console.log(res));
-    // 일정 메인 페이지로 이동 
+    // 일정 메인 페이지로 이동
     navigate("/history");
     window.location.reload();
 
     setChkActive(false);
   };
 
-
-
-  // 미방문 체크시 별점 0개로 변환 시키기 
+  // 미방문 체크시 별점 0개로 변환 시키기
   const [select, setSelect] = useState(false);
 
   // 방문 미방문 배열 업데이트
   const toggleHandler = (e) => {
     visited[e.target.value] = !visited[e.target.value];
     setVisited([...visited]);
-    // 방문 처리 체크 로직 
+    // 방문 처리 체크 로직
     if (visited[e.target.value] == true) {
       setSelect(true);
       localStorage.setItem("chkedVisited", e.target.value);
-      //  방문 안했으면 별점 0으로 바꿔줘서 데이터 넘겨줌 
+      //  방문 안했으면 별점 0으로 바꿔줘서 데이터 넘겨줌
       starArr[e.target.value] = 0;
       setStarArr([...starArr]);
     } else {
@@ -220,10 +219,7 @@ const MyPageStarInfo = () => {
           <>
             {axiosData?.map((items, index) => (
               <S.Container key={index}>
-                <S.RadioBtn
-                  disabled
-                  type="checkbox"
-                ></S.RadioBtn>
+                <S.RadioBtn disabled type="checkbox"></S.RadioBtn>
                 {items.jejuPlaceImgUrl !== "" && (
                   <S.Img src={`https://${items.jejuPlaceImgUrl}`} />
                 )}

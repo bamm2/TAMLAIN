@@ -19,6 +19,14 @@ const MyPageDetail = () => {
   const scheduleId = localStorage.getItem("scheduleId");
   const key = localStorage.getItem("token");
 
+  var dayArr = [
+    { id: 1, name: "1일차" },
+    { id: 2, name: "2일차" },
+    { id: 3, name: "3일차" },
+    { id: 4, name: "4일차" },
+    { id: 5, name: "5일차" },
+  ];
+  const [day, setDay] = useState(dayArr);
   const [mypageCommonInfo, setMypageCommonInfo] = useState({
     title: "",
     startDate: "",
@@ -48,12 +56,13 @@ const MyPageDetail = () => {
       period: data.period - 1 + "박 " + data.period + "일",
     };
     setMypageCommonInfo(mypageInfo);
-    setTitle(data.name);
+    localStorage.setItem("title", data.name);
     setPeriod(data.period);
     localStorage.setItem("period", data.period);
     return;
   });
   useEffect(() => {
+    setTitle(localStorage.getItem("title"));
     const period = localStorage.getItem("period");
     localStorage.removeItem("period");
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -63,6 +72,10 @@ const MyPageDetail = () => {
     const arr = day;
     setDay(arr.slice(0, period));
   }, []);
+
+  useEffect(() => {
+    // window.location.reload();
+  }, [day]);
 
   // 뒤로 가기 버튼
   const redirectPage = () => {
@@ -115,15 +128,6 @@ const MyPageDetail = () => {
       });
     }
   };
-
-  var dayArr = [
-    { id: 1, name: "1일차" },
-    { id: 2, name: "2일차" },
-    { id: 3, name: "3일차" },
-    { id: 4, name: "4일차" },
-    { id: 5, name: "5일차" },
-  ];
-  const [day, setDay] = useState(dayArr);
 
   const movepage = (period) => {
     window.location.href = `${client.defaults.url}/detail/${scheduleId}/${period}`;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Contatiner = styled.div`
   position: absolute;
   z-index: 222;
-  top: 10%;
+  top: 0%;
   //   left: 0%;
   width: 100%;
   height: 3000%;

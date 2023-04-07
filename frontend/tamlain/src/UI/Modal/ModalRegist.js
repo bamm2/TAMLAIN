@@ -176,9 +176,13 @@ const ModalRegist = (props) => {
       icon: "success",
       title: "등록이 완료되었습니다!",
       confirmButtonColor: "#fc872a",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        closeModal();
+        window.location.href = `${client.defaults.url}/history`;
+      }
     });
-    closeModal();
-    window.location.href = `${client.defaults.url}/history`;
   };
 
   return (

@@ -4,6 +4,7 @@ import { useState } from "react";
 import ModalDelete from "../../../UI/Modal/ModalDelete";
 import { useEffect } from "react";
 import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
+import Swal from "sweetalert2";
 
 const MyPageHistoryItem = (props) => {
   const navigate = useNavigate();
@@ -19,7 +20,11 @@ const MyPageHistoryItem = (props) => {
 
       // 리뷰 등록이 불가능한 날짜이면
       if (comp === false) {
-        window.alert("여행 마지막 날짜 이후부터 리뷰 등록이 가능합니다.");
+        Swal.fire({
+          icon: "error",
+          title: "여행 마지막 날짜 이후부터 별점 등록이 가능합니다.",
+          confirmButtonColor: "#fc872a",
+        });
       } else {
         // 리뷰 등록이 가능한 날짜면 스케줄 id 넣고 페이지 이동
         localStorage.setItem("scheduleId", scheduleId);

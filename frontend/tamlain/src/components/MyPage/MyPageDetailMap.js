@@ -41,7 +41,7 @@ const MyPageDetilMap = () => {
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
   const [setting, setSetting] = useState(() => {
-    return detailData[0][0] || {};
+    return detailData[idx - 1][0] || {};
   });
   var count;
   var divnum;
@@ -50,13 +50,13 @@ const MyPageDetilMap = () => {
   const token = localStorage.getItem("token");
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
-    getScheduleDetail(token, scheduleId).then((res) => {
-      console.log(res);
-      localStorage.setItem(
-        "scheduleDetailItemMap",
-        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
-      );
-    });
+    // getScheduleDetail(token, scheduleId).then((res) => {
+    //   console.log(res);
+    //   localStorage.setItem(
+    //     "scheduleDetailItemMap",
+    //     JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+    //   );
+    // });
     var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
     console.log(123);
     console.log(data);
@@ -247,13 +247,13 @@ const MyPageDetilMap = () => {
 
     for (let i = 0; i < element.length; i++) {
       element[i].addEventListener("click", function (e) {
-        viewPlace(e);
+        viewPlace(e, count - 1);
       });
     }
   };
 
   //일정표에서 직접 누르면 삭제하는 기능
-  const viewPlace = (e) => {
+  const viewPlace = (e, cnt) => {
     const title = e.target.getAttribute("value");
     const data = detailData[idx - 1];
     for (let i = 0; i < data.length; i++) {
@@ -315,8 +315,7 @@ const MyPageDetilMap = () => {
       <p>&nbsp;</p>
 
       <S.TitleDiv>
-        <S.Number>{setting.day}. </S.Number>
-        {setting.mapInfo.title}
+        <S.Number>{setting.mapInfo.title} </S.Number>
         <S.Tag>{setting.tag}</S.Tag>
       </S.TitleDiv>
       <S.Hr />

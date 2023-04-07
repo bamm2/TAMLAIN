@@ -66,7 +66,7 @@ const SurveyRest = () => {
   const registSurvey = () => {
     registForm();
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("id");
 
     const dateController = new Date();
     let year = dateController.getFullYear(); // 년도
