@@ -28,10 +28,11 @@ public class AuthServiceImpl implements AuthService{
         this.userRepository = userRepository;
     }
 
-    public void validatesAccessToken(String accessToken) {
+    public boolean validatesAccessToken(String accessToken) {
         if (!jwtTokenProvider.validateToken(accessToken)) {
             throw new AuthenticationException("access token이 유효하지 않습니다.");
         }
+        return false;
     }
 
     @Transactional(readOnly = true)
