@@ -59,7 +59,6 @@ const MyPageDetail = () => {
     localStorage.setItem("title", data.name);
     setPeriod(data.period);
     localStorage.setItem("period", data.period);
-    return;
   });
   useEffect(() => {
     setTitle(localStorage.getItem("title"));
