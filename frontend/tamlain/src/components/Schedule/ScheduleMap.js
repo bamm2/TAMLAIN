@@ -298,6 +298,7 @@ const ScheduleMap = () => {
       localStorage.setItem("keys", JSON.stringify(Object.keys(res.data.data)));
     });
     localStorage.removeItem("placeDeleteId");
+    setValues(JSON.parse(localStorage.getItem("values")));
     window.location.reload();
   };
 

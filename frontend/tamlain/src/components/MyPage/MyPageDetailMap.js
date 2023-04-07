@@ -42,7 +42,13 @@ const MyPageDetilMap = () => {
   console.log(detailData);
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
-  const [setting, setSetting] = useState({ mapInfo: "" });
+  const [setting, setSetting] = useState(() => {
+    return (
+      JSON.parse(localStorage.getItem("scheduleDetailItemMap"))[idx - 1] || {
+        mapInfo: "",
+      }
+    );
+  });
   var count;
   var divnum;
   var divtitle;
@@ -55,6 +61,9 @@ const MyPageDetilMap = () => {
       "scheduleDetailItemMap",
       JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
     );
+    setSetting(
+      JSON.parse(localStorage.getItem("scheduleDetailItemMap"))[idx - 1]
+    );
   });
   useEffect(() => {
     getScheduleDetail(token, scheduleId).then((res) => {
@@ -64,6 +73,9 @@ const MyPageDetilMap = () => {
         JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
       );
     });
+    setSetting(
+      JSON.parse(localStorage.getItem("scheduleDetailItemMap"))[idx - 1]
+    );
     var data = JSON.parse(localStorage.getItem("scheduleDetailItemMap"));
     setDetailData(data);
     const radioBtns = document.querySelectorAll(".radio-btn label");
