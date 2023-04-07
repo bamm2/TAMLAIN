@@ -19,16 +19,37 @@ const containerVariants = {
   },
 };
 const ScheduleImgContainer = (props) => {
+  var idx = window.location.href.substring(
+    String(window.location.href).length - 1
+  );
   const [imgUrl, setImgUrl] = useState("");
   const [size, setSize] = useState(props.size);
   const [click, setClick] = useState(false);
-  const [flagToggle, setFlagToggle] = useState(true);
+  const [flagToggle, setFlagToggle] = useState(false);
   const [info, setInfo] = useState({});
   const [mapInfo, setMapInfo] = useState({});
+  const [select, setSelect] = useState([]);
 
   useEffect(() => {
-    setFlagToggle((flagToggle) => !flagToggle);
+    setSelect(JSON.parse(localStorage.getItem(`marker${idx}`)));
   }, []);
+  useEffect(() => {
+    setSelect(JSON.parse(localStorage.getItem(`marker${idx}`)));
+  }, [JSON.parse(localStorage.getItem(`marker${idx}`))]);
+  useEffect(() => {
+    if (select.length === 0) {
+      setFlagToggle(false);
+      return;
+    }
+    for (let i = 0; i < select.length; i++) {
+      if (select[i].jejuPlaceId === props.id) {
+        setFlagToggle(true);
+        return;
+      } else {
+        setFlagToggle(false);
+      }
+    }
+  }, [select]);
 
   const OnClickHandler = () => {
     const token = localStorage.getItem("token");
@@ -42,18 +63,24 @@ const ScheduleImgContainer = (props) => {
 
   //하트 누르기 토글
   const FlagHandler = () => {
-    if (!flagToggle) {
-      props.setFlag(true);
-    } else {
-      props.setFlag(false);
+    const doubleArr = JSON.parse(localStorage.getItem("values"));
+
+    for (let i = 0; i < doubleArr.length; i++) {
+      for (let j = 0; j < doubleArr[i].length; j++) {
+        if (doubleArr[i][j].mapInfo.jejuPlaceId === props.id) {
+          console.log(doubleArr[i][j].mapInfo.jejuPlaceId);
+          console.log(props.id);
+          if (!flagToggle) {
+            props.setFlag(true);
+          } else {
+            props.setFlag(false);
+          }
+          setFlagToggle((flagToggle) => !flagToggle);
+          return;
+        }
+      }
     }
-    setFlagToggle((flagToggle) => !flagToggle);
   };
-  useEffect(() => {
-    if (!props.flag) {
-      setFlagToggle((flagToggle) => !flagToggle);
-    }
-  }, [props.flag]);
 
   const removeCarousel = () => {
     props.removeItem(props.id);
@@ -61,7 +88,7 @@ const ScheduleImgContainer = (props) => {
   return (
     <S.Container>
       <S.ExitButton onClick={removeCarousel}> x </S.ExitButton>
-      <S.Category>{props.tag}</S.Category>
+      {/* <S.Category>{props.tag}</S.Category> */}
       {!click && props.ImgUrl !== "https://" && (
         <S.ImgContainer src={props.ImgUrl} onClick={OnClickHandler} />
       )}
@@ -89,7 +116,7 @@ const ScheduleImgContainer = (props) => {
           <S.StarNum>{info.reviewScore}</S.StarNum>
           <S.Flag
             onClick={() => {
-              FlagHandler();
+              FlagHandler(props.id);
               props.checkSelect(mapInfo.title) &&
               !props.select.includes(mapInfo)
                 ? props.setSelect((select) => [...select, mapInfo])

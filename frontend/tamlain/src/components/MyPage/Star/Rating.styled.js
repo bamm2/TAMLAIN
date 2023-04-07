@@ -12,14 +12,6 @@ export const Stars = styled.div`
     text-shadow: 0 0 3px #fc872a;
   }
 
-  // :hover svg {
-  //   color: #fc872a;
-  // }
-
-  // & svg:hover ~ svg {
-  //   color: gray;
-  // }
-
   .yellowStar {
     color: #fc872a;
   }

@@ -67,3 +67,4 @@ export const RegistBtn = styled.button`
     color: #ffffff;
   }
 `;
+

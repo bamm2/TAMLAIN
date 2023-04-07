@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,6 +7,9 @@ import * as S from "./MainCarousel.styled";
 import { useNavigate } from "react-router-dom";
 import { refreshAccessToken } from "../../utils/api/oauthApi";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
+import VideoPopUp from "../../UI/Modal/VideoPopUp";
+
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -86,6 +89,11 @@ const MainCarousel = () => {
       navigate("/surveyCalendar");
     }
   };
+  const [doSignup, setDoSignup] = useState(false);
+  const openModal = () => {
+    setDoSignup(true);
+    document.body.style = `overflow:hidden`;
+  };
 
   // Slider가 filter 컴포넌트도 요소로 인식해서 따로 컴포넌트로 img컴포넌트 빼줌
   return (
@@ -103,7 +111,7 @@ const MainCarousel = () => {
         animate="visible"
       >
         <S.Text1> 나를 아는 여행 플랫폼</S.Text1>
-        <S.Text2> 탐라:IN</S.Text2>
+        <S.Text2> 탐라:인</S.Text2>
       </motion.div>
       <motion.div
         variants={containerVariants2}
@@ -111,6 +119,12 @@ const MainCarousel = () => {
         animate="visible"
       >
         <S.MainBtn onClick={reDirectSchedule}> 여행하기 </S.MainBtn>
+        <S.Question
+          src={`${process.env.PUBLIC_URL}/assets/Icon/question.png`}
+          alt="가이드버튼"
+          onClick={openModal}
+        />
+        {doSignup && <VideoPopUp setDoSignup={setDoSignup} />}
       </motion.div>
     </>
   );

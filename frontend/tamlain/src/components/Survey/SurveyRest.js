@@ -5,6 +5,7 @@ import moment from "moment/moment";
 import client from "../../utils/client";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -65,7 +66,7 @@ const SurveyRest = () => {
   const registSurvey = () => {
     registForm();
     const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("id");
 
     const dateController = new Date();
     let year = dateController.getFullYear(); // 년도
@@ -123,25 +124,32 @@ const SurveyRest = () => {
         localStorage.setItem("surveyId", JSON.stringify(surveyId));
       } else {
         const page = res.data.data;
-        console.log(`${client.defaults.url}/surveyCalendar`);
-        alert(res.data.message);
-        if (page === 1) {
-          window.location.href = `${client.defaults.url}/surveyCalendar`;
-        } else if (page === 2) {
-          window.location.href = `${client.defaults.url}/surveyTheme`;
-        } else if (page === 3) {
-          window.location.href = `${client.defaults.url}/surveyFood`;
-        } else if (page === 4) {
-          window.location.href = `${client.defaults.url}/surveyCafe`;
-        } else if (page === 5) {
-          window.location.href = `${client.defaults.url}/surveyActivity`;
-        } else if (page === 6) {
-          window.location.href = `${client.defaults.url}/surveySport`;
-        } else if (page === 7) {
-          window.location.href = `${client.defaults.url}/surveyExhibition`;
-        } else if (page === 8) {
-          window.location.href = `${client.defaults.url}/surveyRest`;
-        }
+        Swal.fire({
+          icon: "error",
+          title: res.data.message,
+          confirmButtonColor: "#fc872a",
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            if (page === 1) {
+              window.location.href = `${client.defaults.url}/surveyCalendar`;
+            } else if (page === 2) {
+              window.location.href = `${client.defaults.url}/surveyTheme`;
+            } else if (page === 3) {
+              window.location.href = `${client.defaults.url}/surveyFood`;
+            } else if (page === 4) {
+              window.location.href = `${client.defaults.url}/surveyCafe`;
+            } else if (page === 5) {
+              window.location.href = `${client.defaults.url}/surveyActivity`;
+            } else if (page === 6) {
+              window.location.href = `${client.defaults.url}/surveySport`;
+            } else if (page === 7) {
+              window.location.href = `${client.defaults.url}/surveyExhibition`;
+            } else if (page === 8) {
+              window.location.href = `${client.defaults.url}/surveyRest`;
+            }
+          }
+        });
         return;
       }
       localStorage.removeItem("Rest");

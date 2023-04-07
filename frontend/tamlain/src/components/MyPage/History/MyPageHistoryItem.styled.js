@@ -13,7 +13,7 @@ export const Img = styled.img`
   border-radius: 50px;
   margin: 20px;
   margin-left: 60px;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 export const TextContainer = styled.div`
@@ -30,7 +30,7 @@ export const TextOne = styled.div`
   margin-top: 12%;
   margin-left: 30px;
   margin-bottom: 2%;
-  cursor:pointer;
+  cursor: pointer;
 `;
 
 export const TextTwo = styled.div`
@@ -62,8 +62,10 @@ export const StarBtn = styled.button`
 
   :hover {
     // background-color: #ffffff;
-    transition: 0.5s;
-    color: wheat;
+    transition: 0.2s;
+    color: ffffff;
+    width: 123px;
+    height: 53px;
   }
 `;
 

@@ -16,6 +16,9 @@ export const NavContainer = styled.div`
   justify-content: space-between;
 
   z-index: 10;
+  @media all and (min-width: 412px) and (max-width: 760px) {
+    margin: 0px 5px 10px -85px;
+  }
 `;
 
 export const RightContainer = styled.div`
@@ -25,6 +28,9 @@ export const RightContainer = styled.div`
   color: white;
 
   z-index: 10;
+  @media all and (min-width: 412px) and (max-width: 760px) {
+    margin: 6px -90px 10px 10px;
+  }
 `;
 
 export const RightItem = styled.div`

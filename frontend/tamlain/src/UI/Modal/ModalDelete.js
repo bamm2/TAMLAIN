@@ -12,6 +12,7 @@ const ModalDelete = (props) => {
   const deleteSchedule = () => {
     deleteScheduleHistory(key, scheduleId).then((res) => console.log(res));
     window.location.reload();
+    localStorage.setItem("delete", 2);
   };
 
   const closeModal = () => {

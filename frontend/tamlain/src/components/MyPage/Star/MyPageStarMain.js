@@ -1,6 +1,6 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
 import MyPageStarInfo from "./MyPageStarInfo";
 import Frame from "../../../UI/Frame/Frame";
@@ -12,13 +12,12 @@ const MyPageStarMain = () => {
 
   const [done, setDone] = useState(false);
 
-  console.log(scheduleId);
-
   //  axios로  데이터 받아와서 상단에 일정 타이틀들 뿌려주고
   //  props로 장소 이미지랑 이름 뿌려주기
   useEffect(() => {
+    // 일정에 대한 상세 장소 가져오기 
     getReviewScheduleHistory(key, scheduleId).then((res) => {
-      console.log(res);
+      // 일정 상단 제목 및 사진 준비 
       let info = {
         title: res.data.data.mypageCommonInfo.name,
         thumbnailImageUrl: res.data.data.mypageCommonInfo.thumbnailImageUrl,
@@ -35,20 +34,19 @@ const MyPageStarMain = () => {
         endDate: res.data.data.mypageCommonInfo.endDate.replaceAll("-", "."),
       };
 
+      // 별점 몇번째 인덱스가 무슨 스케줄 id 인지 
       let chkIdx = JSON.parse(localStorage.getItem("starRegistIdx"));
+      // 별점 몇번째 인덱스가 true ,false 인지  
       let chkBool = JSON.parse(localStorage.getItem("starRegistArr"));
+      //  일정의 개수 가져오기 
       let length = localStorage.getItem("starRegistSize");
 
-      // console.log("로컬스토리지 별점 확인용" + JSON.stringify(chkIdx));
-      // console.log("로컬스토리지 별점 확인용" + JSON.stringify(chkBool));
-
-      console.log(chkIdx);
-      console.log(chkBool);
+      // 일정의 개수 만큼 돌리면서 
       for (let i = 0; i < length; i++) {
+        // 스케줄id와 인덱스 i번째 스케줄 id가 같을 경우 
         if (scheduleId == chkIdx[i]) {
+          // boolean 값 변경  
           setDone(chkBool[i]);
-          console.log("chkIdx : " + chkIdx[i]);
-          console.log("chkbool : " + chkBool[i]);
           break;
         }
       }
@@ -56,18 +54,25 @@ const MyPageStarMain = () => {
       // 장소 배열
       const size = res.data.data.reviewScheduleItemList.length;
 
+      // 장소 배열의 크기 
       localStorage.setItem("size", size);
+
+      
       for (let i = 0; i < size; i++) {
         let data = res.data.data.reviewScheduleItemList[i];
+        // 장소의 데이터 인덱스 순서대로 넣어주기 
         localStorage.setItem("placeList" + i, JSON.stringify(data));
       }
 
+      // 일정에 대한 장소데이터 넣어주기 
       setScheduleInfo(info);
     });
   }, []);
 
+  console.log(done);
+
   useEffect(() => {
-    // 이미 별점을 매겼을 경우 info에서 axios 쏴주기 + 버튼 비활성화
+  // 이미 별점을 매겼을 경우 info에서 axios 쏴주기 + 버튼 비활성화
     if (done) {
       localStorage.setItem("disabledBtn", 1);
     }
@@ -75,6 +80,7 @@ const MyPageStarMain = () => {
 
   const navigate = useNavigate();
 
+  // 일정 불러오는 메인페이지로 이동하기  
   const reDirectMyPage = () => {
     navigate("/history");
     window.location.reload();

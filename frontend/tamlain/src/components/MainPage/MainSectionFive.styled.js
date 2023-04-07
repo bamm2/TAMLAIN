@@ -28,4 +28,10 @@ export const Button = styled.button`
     transition: 0.5s;
     color: #fc872a;
   }
+  @media all and (min-width: 412px) and (max-width: 760px) {
+    width: 250px;
+    height: 70px;
+    margin-left: 21%;
+    margin-top: 27%;
+  }
 `;

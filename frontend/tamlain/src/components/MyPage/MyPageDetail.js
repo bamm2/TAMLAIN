@@ -8,6 +8,7 @@ import {
 import Frame from "./../../UI/Frame/Frame";
 import { useState } from "react";
 import client from "../../utils/client";
+import Swal from "sweetalert2";
 
 const MyPageDetail = () => {
   var idx = window.location.href.substring(
@@ -18,6 +19,14 @@ const MyPageDetail = () => {
   const scheduleId = localStorage.getItem("scheduleId");
   const key = localStorage.getItem("token");
 
+  var dayArr = [
+    { id: 1, name: "1일차" },
+    { id: 2, name: "2일차" },
+    { id: 3, name: "3일차" },
+    { id: 4, name: "4일차" },
+    { id: 5, name: "5일차" },
+  ];
+  const [day, setDay] = useState(dayArr);
   const [mypageCommonInfo, setMypageCommonInfo] = useState({
     title: "",
     startDate: "",
@@ -32,29 +41,27 @@ const MyPageDetail = () => {
   const [period, setPeriod] = useState(0);
 
   // axios로 데이터 전부 가져오기
+  let mypageInfo = {};
+  getScheduleDetail(key, scheduleId).then((res) => {
+    const data = res.data.data.mypageCommonInfo;
+    localStorage.setItem(
+      "scheduleDetailItemMap",
+      JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+    );
+
+    mypageInfo = {
+      title: data.name,
+      startDate: data.startDate.replaceAll("-", "."),
+      endDate: data.endDate.replaceAll("-", "."),
+      period: data.period - 1 + "박 " + data.period + "일",
+    };
+    setMypageCommonInfo(mypageInfo);
+    localStorage.setItem("title", data.name);
+    setPeriod(data.period);
+    localStorage.setItem("period", data.period);
+  });
   useEffect(() => {
-    let mypageInfo = {};
-    getScheduleDetail(key, scheduleId).then((res) => {
-      console.log(res);
-
-      const data = res.data.data.mypageCommonInfo;
-
-      localStorage.setItem(
-        "scheduleDetailItemMap",
-        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
-      );
-
-      mypageInfo = {
-        title: data.name,
-        startDate: data.startDate.replaceAll("-", "."),
-        endDate: data.endDate.replaceAll("-", "."),
-        period: data.period - 1 + "박 " + data.period + "일",
-      };
-      setMypageCommonInfo(mypageInfo);
-      setTitle(data.name);
-      setPeriod(data.period);
-      localStorage.setItem("period", data.period);
-    });
+    setTitle(localStorage.getItem("title"));
     const period = localStorage.getItem("period");
     localStorage.removeItem("period");
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -64,6 +71,10 @@ const MyPageDetail = () => {
     const arr = day;
     setDay(arr.slice(0, period));
   }, []);
+
+  useEffect(() => {
+    // window.location.reload();
+  }, [day]);
 
   // 뒤로 가기 버튼
   const redirectPage = () => {
@@ -83,14 +94,22 @@ const MyPageDetail = () => {
       };
 
       if (data.name.length === 0) {
-        alert("일정명은 1자 이상 20자 이하입니다.");
+        Swal.fire({
+          icon: "question",
+          title: "일정명은 1자 이상 20자 이하여야 합니다.",
+          confirmButtonColor: "#fc872a",
+        });
         setIsUpdate(true);
         return;
       } else {
         modifyScheduleName(token, data).then((res) => {
           console.log(res);
         });
-        alert("수정 완료되었습니다.");
+        Swal.fire({
+          icon: "success",
+          title: "수정 완료되었습니다!",
+          confirmButtonColor: "#fc872a",
+        });
       }
     }
   };
@@ -101,18 +120,13 @@ const MyPageDetail = () => {
       // 글자 길이가 20자 이하인 경우에만 처리
       setTitle(inputValue);
     } else {
-      alert("일정명은 1자 이상 20자 이하입니다.");
+      Swal.fire({
+        icon: "question",
+        title: "일정명은 1자 이상 20자 이하여야 합니다.",
+        confirmButtonColor: "#fc872a",
+      });
     }
   };
-
-  var dayArr = [
-    { id: 1, name: "1일차" },
-    { id: 2, name: "2일차" },
-    { id: 3, name: "3일차" },
-    { id: 4, name: "4일차" },
-    { id: 5, name: "5일차" },
-  ];
-  const [day, setDay] = useState(dayArr);
 
   const movepage = (period) => {
     window.location.href = `${client.defaults.url}/detail/${scheduleId}/${period}`;

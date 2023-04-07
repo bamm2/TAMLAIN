@@ -7,6 +7,8 @@ import moment from "moment";
 import * as S from "./SurveyCalendar.styled";
 import { motion } from "framer-motion";
 import client from "../../utils/client";
+import Swal from "sweetalert2";
+
 const containerVariants = {
   hidden: {
     opacity: 0,
@@ -48,7 +50,11 @@ const SurveyCalendar = () => {
   // 확정하기 버튼 클릭 시
   const onClickIsConfirm = () => {
     if (startDate === null || endDate === null) {
-      alert("일정을 지정해주세요.");
+      Swal.fire({
+        icon: "question",
+        title: "일정을 지정해주세요.",
+        confirmButtonColor: "#fc872a",
+      });
     } else {
       setIsConfirm((cur) => !cur);
 
@@ -63,8 +69,11 @@ const SurveyCalendar = () => {
       const diffDays = moment(endDate).diff(startDate, "days");
       setDayCnt(parseInt(diffDays) + 1);
       if (diffDays > 5) {
-        alert("선택 가능일은 최대 5일 입니다.");
-        endDate = moment(startDate).add(4, "days");
+        Swal.fire({
+          icon: "question",
+          title: "선택 가능일은 최대 5일입니다.",
+          confirmButtonColor: "#fc872a",
+        });
       }
     }
 
@@ -93,7 +102,12 @@ const SurveyCalendar = () => {
   //확정 안누르고 못넘어가게 하기
   const checkCalendar = () => {
     if (!isConfirm) {
-      alert("일정 등록을 확정해주세요!");
+      Swal.fire({
+        icon: "question",
+        title: "일정등록을 확정해주세요!",
+        confirmButtonColor: "#fc872a",
+        outline: 0,
+      });
       return;
     }
     window.location.href = `${client.defaults.url}/surveyTheme`;
