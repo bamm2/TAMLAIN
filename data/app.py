@@ -77,6 +77,7 @@ def getRecommendList():
         schedule["course_similarity"] = schedule["vec"].apply(lambda x: cosine_similarity(x, my_course))
         schedule = schedule[(schedule["course_similarity"] > 0) & (schedule["survey_similarity"] > 0)]
         schedule["similarity"] = (schedule["course_similarity"] + schedule["survey_similarity"]) / 2
+
     else:
         schedule.rename(columns={"survey_similarity": "similarity"}, inplace=True)
         schedule = schedule[schedule["similarity"] > 0]
@@ -96,7 +97,6 @@ def getRecommendList():
                 top_recommend_place_id.append(id)
     ranked_place = pd.DataFrame()
 
-    top_recommend_place_id.append(6300)
     for id in top_recommend_place_id:
         ranked_place = pd.concat([ranked_place, place[place["jejuPlaceId"] == id]])
     place.drop(place[place["jejuPlaceId"].isin(top_recommend_place_id)].index, inplace=True)

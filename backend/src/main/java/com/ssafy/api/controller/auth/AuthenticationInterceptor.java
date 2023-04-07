@@ -21,15 +21,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (isPreflight(request) || isGet(request)) {
             return true;
         }
-        validatesToken(request);
+        if (!validatesToken(request)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return false;
+        }
         return true;
     }
 
-    protected void validatesToken(HttpServletRequest request) {
+    protected boolean validatesToken(HttpServletRequest request) {
         String accessToken = AuthorizationExtractor.extract(request);
-        authService.validatesAccessToken(accessToken);
+        return authService.validatesAccessToken(accessToken);
     }
-
     protected boolean isPreflight(HttpServletRequest request) {
         return HttpMethod.OPTIONS.matches(request.getMethod());
     }
