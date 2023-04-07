@@ -35,12 +35,14 @@ const MyPageDetilMap = () => {
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
   const [flag, setFlag] = useState(true);
-  const [detailData, setDetailData] = useState(
-    JSON.parse(localStorage.getItem("scheduleDetailItemMap")) || []
-  );
+  const [detailData, setDetailData] = useState(() => {
+    return JSON.parse(localStorage.getItem("scheduleDetailItemMap")) || [];
+  });
   const [keys, setKeys] = useState([]);
   const [values, setValues] = useState([]);
-  const [setting, setSetting] = useState(detailData[0][0] || {});
+  const [setting, setSetting] = useState(() => {
+    return detailData[0][0] || {};
+  });
   var count;
   var divnum;
   var divtitle;

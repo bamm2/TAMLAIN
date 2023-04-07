@@ -33,29 +33,27 @@ const MyPageDetail = () => {
   const [period, setPeriod] = useState(0);
 
   // axios로 데이터 전부 가져오기
+  let mypageInfo = {};
+  getScheduleDetail(key, scheduleId).then((res) => {
+    const data = res.data.data.mypageCommonInfo;
+    localStorage.setItem(
+      "scheduleDetailItemMap",
+      JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
+    );
+
+    mypageInfo = {
+      title: data.name,
+      startDate: data.startDate.replaceAll("-", "."),
+      endDate: data.endDate.replaceAll("-", "."),
+      period: data.period - 1 + "박 " + data.period + "일",
+    };
+    setMypageCommonInfo(mypageInfo);
+    setTitle(data.name);
+    setPeriod(data.period);
+    localStorage.setItem("period", data.period);
+    return;
+  });
   useEffect(() => {
-    let mypageInfo = {};
-    getScheduleDetail(key, scheduleId).then((res) => {
-      console.log(res);
-
-      const data = res.data.data.mypageCommonInfo;
-
-      localStorage.setItem(
-        "scheduleDetailItemMap",
-        JSON.stringify(Object.values(res.data.data.scheduleDetailItemMap))
-      );
-
-      mypageInfo = {
-        title: data.name,
-        startDate: data.startDate.replaceAll("-", "."),
-        endDate: data.endDate.replaceAll("-", "."),
-        period: data.period - 1 + "박 " + data.period + "일",
-      };
-      setMypageCommonInfo(mypageInfo);
-      setTitle(data.name);
-      setPeriod(data.period);
-      localStorage.setItem("period", data.period);
-    });
     const period = localStorage.getItem("period");
     localStorage.removeItem("period");
     const radioBtns = document.querySelectorAll(".radio-btn label");
