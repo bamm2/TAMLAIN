@@ -332,7 +332,7 @@ const MyPageDetilMap = () => {
       <p>&nbsp;</p>
 
       <S.TitleDiv>
-        <S.Number>{setting.mapInfo.title} </S.Number>
+        <S.Number>{setting.mapInfo && setting.mapInfo.title} </S.Number>
         <S.Tag>{setting.tag}</S.Tag>
       </S.TitleDiv>
       <S.Hr />
