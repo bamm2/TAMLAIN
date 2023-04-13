@@ -54,14 +54,14 @@ const ScheduleMap = () => {
     for (let i = 0; i < radioBtns.length; i++) {
       radioBtns[i].style.display = "block";
     }
-    var mapContainer = document.getElementById("map"), // 지도를 표시할 div
-      mapOption = {
-        center: new kakao.maps.LatLng(33.374301889561444, 126.56642690880963), // 지도의 중심좌표
+    // console.log(document.getElementById("map"));
+    var container = document.getElementById("map"), // 지도를 표시할 div
+      options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
         level: 10, // 지도의 확대 레벨
       };
-    var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    var map1 = new kakao.maps.Map(container, options); // 지도를 생성합니다
     setMap(map1);
-    console.log(select);
     setKeys(JSON.parse(localStorage.getItem("keys")));
     setValues(JSON.parse(localStorage.getItem("values")));
   }, []);
